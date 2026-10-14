@@ -3,37 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SherlockYzz // 于子倬 - Intelligent Systems &amp; Creative Code</title>
-    <meta name="description" content="SherlockYzz (于子倬) 个人主页与工程实验室：智能多代理系统、3D WebGL图形、全栈工程与现代架构。">
+    <title>SherlockYzz // 于子倬 - Intelligent Systems &amp; Cyber Anime Lab</title>
+    <meta name="description" content="于子倬 (SherlockYzz) 个人实验室：探寻算法逻辑与二次元交互美学的交汇处。涵盖自主多代理系统、Live2D、3D WebGL、全栈工程。">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300f0ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polygon points='12 2 2 7 12 12 22 7 12 2'/><polyline points='2 17 12 22 22 17'/><polyline points='2 12 12 17 22 12'/></svg>">
 
-    <!-- Google Fonts 预加载与系统优雅回退 -->
+    <!-- 典雅字体：Space Grotesk、JetBrains Mono、Inter、Noto Sans SC -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700;900&family=Space+Grotesk:wght@500;600;700;800&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --bg-void: #030408;
             --bg-surface: rgba(10, 14, 24, 0.72);
-            --bg-card: rgba(15, 23, 42, 0.58);
-            --bg-card-hover: rgba(22, 33, 62, 0.8);
+            --bg-card: rgba(15, 23, 42, 0.6);
+            --bg-card-hover: rgba(22, 33, 62, 0.85);
             --border-dim: rgba(255, 255, 255, 0.08);
-            --border-glow: rgba(0, 240, 255, 0.38);
+            --border-glow: rgba(0, 240, 255, 0.45);
             
             --text-main: #ffffff;
             --text-sub: #94a3b8;
             --text-dim: #64748b;
             
             --cyan: #00f0ff;
+            --cyan-glow: rgba(0, 240, 255, 0.5);
             --violet: #a855f7;
-            --pink: #f43f5e;
+            --pink: #ff3388;
+            --sakura: #ff758c;
+            --sakura-soft: #ffb8c6;
             --amber: #fbbf24;
             --green: #10b981;
 
             --font-display: 'Space Grotesk', -apple-system, sans-serif;
             --font-mono: 'JetBrains Mono', 'Consolas', monospace;
             --font-sans: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+            --font-anime: 'Zen Maru Gothic', 'Noto Sans SC', sans-serif;
         }
 
         * {
@@ -49,6 +53,7 @@
             color: var(--text-main);
             font-family: var(--font-sans);
             overflow-x: hidden;
+            cursor: default;
         }
 
         body {
@@ -58,14 +63,15 @@
             overflow-x: hidden;
         }
 
-        /* 宇宙微弱渐晕底色 */
+        /* 赛博空间微弱渐晕底色与星尘 */
         body::before {
             content: '';
             position: fixed;
             inset: 0;
             background: 
-                radial-gradient(circle at 75% 20%, rgba(0, 240, 255, 0.045) 0%, transparent 60%),
-                radial-gradient(circle at 20% 70%, rgba(168, 85, 247, 0.04) 0%, transparent 60%);
+                radial-gradient(circle at 75% 20%, rgba(0, 240, 255, 0.05) 0%, transparent 60%),
+                radial-gradient(circle at 20% 70%, rgba(168, 85, 247, 0.045) 0%, transparent 60%),
+                radial-gradient(circle at 50% 90%, rgba(255, 117, 140, 0.035) 0%, transparent 50%);
             pointer-events: none;
             z-index: 0;
         }
@@ -80,6 +86,18 @@
             display: block;
             z-index: 1;
             pointer-events: auto;
+        }
+
+        /* 鼠标火花粒子画布 */
+        #fx-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: block;
+            z-index: 2;
+            pointer-events: none;
         }
 
         /* 内容层容器 */
@@ -105,10 +123,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px clamp(20px, 4.5vw, 48px);
-            background: rgba(3, 4, 8, 0.7);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            padding: 14px clamp(20px, 4vw, 44px);
+            background: rgba(3, 4, 8, 0.75);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
             border-bottom: 1px solid var(--border-dim);
             z-index: 100;
             font-family: var(--font-mono);
@@ -130,18 +148,28 @@
             height: 8px;
             background: var(--cyan);
             border-radius: 50%;
-            box-shadow: 0 0 12px var(--cyan);
-            animation: pulse-dot 2.4s infinite;
+            box-shadow: 0 0 14px var(--cyan);
+            animation: pulse-dot 2.2s infinite;
         }
         @keyframes pulse-dot {
             0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.45; transform: scale(0.85); }
+            50% { opacity: 0.35; transform: scale(0.8); }
+        }
+        .brand-jp-badge {
+            font-family: var(--font-anime);
+            font-size: 0.68rem;
+            color: var(--sakura);
+            background: rgba(255, 117, 140, 0.12);
+            border: 1px solid rgba(255, 117, 140, 0.25);
+            padding: 2px 7px;
+            border-radius: 4px;
+            letter-spacing: 0.05em;
         }
 
         .hud-status-bar {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 16px;
             color: var(--text-dim);
         }
         .clock-display {
@@ -182,7 +210,7 @@
             box-shadow: 0 0 18px rgba(0, 240, 255, 0.45);
         }
 
-        /* 模式切换器 Pill */
+        /* 模式切换器 Pill (含新增 SAKURA 模式) */
         .mode-switcher {
             display: flex;
             background: rgba(255, 255, 255, 0.03);
@@ -210,27 +238,17 @@
             color: var(--cyan);
             font-weight: 600;
         }
+        .mode-opt.sakura-opt.selected {
+            background: rgba(255, 117, 140, 0.2);
+            color: var(--sakura);
+        }
 
-        /* 音频动效条 */
-        .audio-bars {
-            display: inline-flex;
-            align-items: flex-end;
-            gap: 2px;
-            height: 10px;
-        }
-        .audio-bar {
-            width: 2px;
-            background: currentColor;
-            height: 3px;
-            border-radius: 1px;
-            transition: height 0.15s ease;
-        }
-        .audio-playing .audio-bar:nth-child(1) { animation: sound-wave 0.8s infinite alternate 0.1s; }
-        .audio-playing .audio-bar:nth-child(2) { animation: sound-wave 0.8s infinite alternate 0.3s; }
-        .audio-playing .audio-bar:nth-child(3) { animation: sound-wave 0.8s infinite alternate 0.2s; }
-        @keyframes sound-wave {
-            0% { height: 2px; }
-            100% { height: 10px; }
+        /* 实时音频频谱可视化柱形条 (Web Audio Analyser) */
+        .audio-spectrum-canvas {
+            width: 38px;
+            height: 14px;
+            display: inline-block;
+            vertical-align: middle;
         }
 
         /* ================= 页面主体容器 ================= */
@@ -251,6 +269,13 @@
             position: relative;
         }
 
+        .hero-tag-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
         .hero-tag {
             display: inline-flex;
             align-items: center;
@@ -258,9 +283,8 @@
             font-family: var(--font-mono);
             font-size: clamp(0.72rem, 0.9vw, 0.82rem);
             color: var(--cyan);
-            letter-spacing: 0.22em;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
-            margin-bottom: 24px;
         }
         .hero-tag::before {
             content: '';
@@ -269,27 +293,47 @@
             background: var(--cyan);
             box-shadow: 0 0 8px var(--cyan);
         }
+        .anime-motto-tag {
+            font-family: var(--font-anime);
+            font-size: 0.78rem;
+            color: var(--sakura);
+            background: rgba(255, 117, 140, 0.08);
+            border: 1px solid rgba(255, 117, 140, 0.25);
+            padding: 3px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.06em;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
 
+        /* 主标题全息故障 Chromatic Aberration 动效 */
         .hero-title {
             font-family: var(--font-display);
-            font-size: clamp(3.4rem, 8.8vw, 7.8rem);
+            font-size: clamp(3.2rem, 8.4vw, 7.6rem);
             font-weight: 800;
             letter-spacing: -0.04em;
-            line-height: 0.95;
+            line-height: 0.94;
             color: #ffffff;
             margin-bottom: 20px;
             text-transform: uppercase;
+            position: relative;
+            display: inline-block;
         }
         .hero-title .cn-name {
             display: inline-block;
             font-size: 0.58em;
             font-weight: 700;
-            color: rgba(255, 255, 255, 0.85);
+            color: rgba(255, 255, 255, 0.9);
             margin-left: 14px;
             letter-spacing: 0.05em;
-            background: linear-gradient(135deg, #fff 0%, var(--cyan) 100%);
+            background: linear-gradient(135deg, #ffffff 0%, var(--cyan) 60%, var(--sakura) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+        .hero-title:hover {
+            text-shadow: 2px 0 var(--cyan), -2px 0 var(--pink);
+            transition: text-shadow 0.1s ease;
         }
 
         .hero-subtitle {
@@ -297,7 +341,7 @@
             font-size: clamp(1.1rem, 1.8vw, 1.45rem);
             font-weight: 300;
             color: var(--text-sub);
-            max-width: 680px;
+            max-width: 720px;
             line-height: 1.6;
             margin-bottom: 28px;
         }
@@ -306,22 +350,23 @@
             font-weight: 600;
         }
 
-        /* 终端打字动效框 */
+        /* 终端打字动效条 */
         .terminal-callout {
-            max-width: 720px;
-            background: rgba(3, 4, 8, 0.75);
+            max-width: 760px;
+            background: rgba(3, 4, 8, 0.78);
             border: 1px solid var(--border-dim);
             border-left: 3px solid var(--cyan);
             border-radius: 8px;
             padding: 14px 18px;
-            margin-bottom: 36px;
+            margin-bottom: 34px;
             font-family: var(--font-mono);
             font-size: clamp(0.78rem, 0.95vw, 0.88rem);
             color: #cbd5e1;
             display: flex;
             align-items: center;
             gap: 12px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
         }
         .term-prompt {
             color: var(--cyan);
@@ -343,7 +388,7 @@
             51%, 100% { opacity: 0; }
         }
 
-        /* 快捷徽章栏 */
+        /* 徽章条 */
         .hero-badges {
             display: flex;
             flex-wrap: wrap;
@@ -368,7 +413,7 @@
             border-color: var(--cyan);
             color: #fff;
             transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(0, 240, 255, 0.15);
+            box-shadow: 0 4px 16px rgba(0, 240, 255, 0.18);
         }
         .badge-dot {
             width: 6px;
@@ -429,7 +474,6 @@
             transform: translateY(-2px);
         }
 
-        /* 滚动提示 */
         .scroll-hint {
             position: absolute;
             bottom: 30px;
@@ -503,7 +547,7 @@
         .section-desc {
             font-size: 0.98rem;
             color: var(--text-sub);
-            max-width: 600px;
+            max-width: 620px;
             margin-top: 10px;
             line-height: 1.6;
         }
@@ -532,10 +576,9 @@
         }
         .bento-card:hover {
             border-color: var(--border-glow);
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), 0 0 24px rgba(0, 240, 255, 0.12);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.65), 0 0 28px rgba(0, 240, 255, 0.15);
         }
 
-        /* 网格跨度适配 */
         .card-span-8 { grid-column: span 8; }
         .card-span-4 { grid-column: span 4; }
         .card-span-6 { grid-column: span 6; }
@@ -547,7 +590,6 @@
             }
         }
 
-        /* 卡片头部 */
         .card-top {
             display: flex;
             justify-content: space-between;
@@ -582,10 +624,10 @@
             border-color: rgba(168, 85, 247, 0.25);
             color: var(--violet);
         }
-        .tag-pink {
-            background: rgba(244, 63, 94, 0.08);
-            border-color: rgba(244, 63, 94, 0.25);
-            color: var(--pink);
+        .tag-sakura {
+            background: rgba(255, 117, 140, 0.1);
+            border-color: rgba(255, 117, 140, 0.3);
+            color: var(--sakura);
         }
 
         .card-title {
@@ -604,7 +646,6 @@
             margin-bottom: 24px;
         }
 
-        /* 标签集 */
         .card-stack {
             display: flex;
             flex-wrap: wrap;
@@ -717,6 +758,122 @@
             color: var(--text-dim);
         }
 
+        /* ================= 极客遥测监控 HUD 底栏 ================= */
+        .telemetry-bar {
+            position: fixed;
+            bottom: 16px;
+            left: clamp(20px, 4vw, 44px);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 8px 16px;
+            background: rgba(3, 4, 8, 0.82);
+            border: 1px solid var(--border-dim);
+            border-radius: 8px;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            z-index: 90;
+            backdrop-filter: blur(12px);
+            pointer-events: auto;
+        }
+        .telemetry-item strong {
+            color: var(--cyan);
+            font-weight: 600;
+        }
+        @media (max-width: 768px) {
+            .telemetry-bar {
+                display: none;
+            }
+        }
+
+        /* ================= 二次元智识偶灵 (Anime Desktop Companion Widget) ================= */
+        .anime-companion-widget {
+            position: fixed;
+            bottom: 20px;
+            right: clamp(20px, 4vw, 44px);
+            z-index: 150;
+            pointer-events: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            user-select: none;
+        }
+
+        /* 对话气泡 */
+        .companion-bubble {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--sakura);
+            border-radius: 12px;
+            border-bottom-right-radius: 2px;
+            padding: 10px 14px;
+            max-width: 240px;
+            margin-bottom: 10px;
+            font-family: var(--font-anime);
+            font-size: 0.8rem;
+            color: #ffffff;
+            box-shadow: 0 8px 24px rgba(255, 117, 140, 0.25), 0 0 12px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(12px);
+            position: relative;
+            transform-origin: bottom right;
+            animation: bubble-float 3s ease-in-out infinite;
+        }
+        .companion-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            right: 18px;
+            width: 10px;
+            height: 6px;
+            background: inherit;
+            clip-path: polygon(0 0, 100% 0, 100% 100%);
+        }
+        @keyframes bubble-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        /* 偶灵本体容器与 Canvas 表情 */
+        .companion-avatar-box {
+            width: 68px;
+            height: 68px;
+            background: rgba(10, 14, 24, 0.85);
+            border: 1.5px solid var(--cyan);
+            border-radius: 50%;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.35), 0 8px 24px rgba(0, 0, 0, 0.8);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .companion-avatar-box:hover {
+            transform: scale(1.1) rotate(5deg);
+            border-color: var(--sakura);
+            box-shadow: 0 0 24px rgba(255, 117, 140, 0.5);
+        }
+        #companion-face-canvas {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+        }
+
+        /* 状态标识 */
+        .companion-badge {
+            position: absolute;
+            bottom: -4px;
+            right: -2px;
+            font-family: var(--font-mono);
+            font-size: 0.58rem;
+            color: #030408;
+            background: var(--cyan);
+            padding: 1px 5px;
+            border-radius: 10px;
+            font-weight: 700;
+            box-shadow: 0 0 8px var(--cyan);
+        }
+
         /* ================= 极简页脚 ================= */
         .site-footer {
             border-top: 1px solid var(--border-dim);
@@ -756,7 +913,7 @@
         .terminal-modal {
             position: fixed;
             inset: 0;
-            background: rgba(3, 4, 8, 0.78);
+            background: rgba(3, 4, 8, 0.82);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             z-index: 200;
@@ -770,8 +927,8 @@
         }
         .terminal-window {
             width: 100%;
-            max-width: 780px;
-            height: 480px;
+            max-width: 800px;
+            height: 500px;
             background: #050811;
             border: 1px solid var(--cyan);
             border-radius: 12px;
@@ -828,6 +985,7 @@
         .term-line-output.dim { color: var(--text-dim); }
         .term-line-output.green { color: #34d399; }
         .term-line-output.gold { color: #fcd34d; }
+        .term-line-output.sakura { color: var(--sakura); }
 
         .terminal-input-row {
             display: flex;
@@ -857,35 +1015,36 @@
     <!-- 全局自适应 3D 动力学多模式 Canvas -->
     <canvas id="viewport-canvas"></canvas>
 
+    <!-- 鼠标流光粒子画布 -->
+    <canvas id="fx-canvas"></canvas>
+
     <!-- 顶部 HUD 导航栏 -->
     <header class="hud-nav">
         <a href="#" class="brand-zone">
             <span class="brand-dot"></span>
             <span>SherlockYzz // 2026</span>
+            <span class="brand-jp-badge">電脳二次元</span>
         </a>
 
         <div class="hud-status-bar">
             <span class="clock-display" id="clock-display">CST 00:00:00</span>
             <span style="color: rgba(255,255,255,0.15);">|</span>
-            <span>SYSTEM: ACTIVE</span>
+            <span style="color:var(--cyan);">SYNC 99.8%</span>
         </div>
 
         <div class="hud-controls">
-            <!-- 视觉模式切换 Pill -->
-            <div class="mode-switcher" title="切换背景 3D 生成模式">
+            <!-- 视觉模式切换 Pill (新增 SAKURA 赛博樱花模式) -->
+            <div class="mode-switcher" title="切换背景 3D 生成模式 (快捷键 1-5)">
                 <button class="mode-opt selected" data-mode="0">CORE</button>
                 <button class="mode-opt" data-mode="1">GRID</button>
                 <button class="mode-opt" data-mode="2">RIBBON</button>
                 <button class="mode-opt" data-mode="3">MATRIX</button>
+                <button class="mode-opt sakura-opt" data-mode="4">🌸SAKURA</button>
             </div>
 
-            <!-- Web Audio 合成器开关 -->
-            <button class="hud-btn" id="audio-toggle-btn" title="开启/关闭原生合成音效">
-                <span class="audio-bars" id="audio-bars">
-                    <span class="audio-bar"></span>
-                    <span class="audio-bar"></span>
-                    <span class="audio-bar"></span>
-                </span>
+            <!-- Web Audio 实时声学频谱可视化 -->
+            <button class="hud-btn" id="audio-toggle-btn" title="开启/关闭原生合成声景">
+                <canvas class="audio-spectrum-canvas" id="audio-spectrum" width="38" height="14"></canvas>
                 <span id="audio-btn-label">AUDIO: OFF</span>
             </button>
 
@@ -901,18 +1060,48 @@
         </div>
     </header>
 
+    <!-- 底部极客遥测监控 HUD -->
+    <div class="telemetry-bar">
+        <span class="telemetry-item">CURSOR: <strong id="telemetry-coords">[0, 0]</strong></span>
+        <span style="color: rgba(255,255,255,0.1);">|</span>
+        <span class="telemetry-item">FPS: <strong id="telemetry-fps">60.0</strong></span>
+        <span style="color: rgba(255,255,255,0.1);">|</span>
+        <span class="telemetry-item">ENGINE: <strong>3D KINETIC DYNAMICS</strong></span>
+        <span style="color: rgba(255,255,255,0.1);">|</span>
+        <span class="telemetry-item">AGENT: <strong style="color:var(--green);">AUTONOMOUS</strong></span>
+    </div>
+
+    <!-- 二次元智识偶灵 (Anime Desktop Companion Widget) -->
+    <div class="anime-companion-widget" id="companion-widget">
+        <div class="companion-bubble" id="companion-bubble">
+            「探寻算法逻辑与二次元交互美学的交汇处」🌸 Master，Live2D 状态正常！
+        </div>
+        <div class="companion-avatar-box" id="companion-avatar" title="点击与偶灵互动，触发二次元表情与萌系音效！">
+            <canvas id="companion-face-canvas" width="60" height="60"></canvas>
+            <span class="companion-badge">AI</span>
+        </div>
+    </div>
+
     <!-- 页面内容层 -->
     <main class="content-layer">
         <div class="page-container">
 
             <!-- ================= HERO 英雄区 ================= -->
             <section class="hero-section" id="hero">
-                <div class="hero-tag">INTELLIGENT SYSTEMS &amp; CREATIVE CODE ARCHIVE</div>
+                <div class="hero-tag-row">
+                    <div class="hero-tag">INTELLIGENT SYSTEMS &amp; CREATIVE CODE ARCHIVE</div>
+                    <div class="anime-motto-tag">
+                        <span>✨</span>
+                        <span>アルゴリズムと二次元の美学</span>
+                    </div>
+                </div>
+
                 <h1 class="hero-title">
                     SHERLOCK YZZ<span class="cn-name">于子倬</span>
                 </h1>
+
                 <p class="hero-subtitle">
-                    专注于 <strong>新一代自主 AI Agent 协作流</strong>、<strong>3D WebGL 交互视觉</strong> 与 <strong>全栈工程架构</strong>。秉持谦逊专注的研习态度，构筑扎实坚韧的工程实践。
+                    专注于 <strong>新一代自主 AI Agent 协作流</strong>、<strong>3D WebGL / Live2D 交互渲染</strong> 与 <strong>全栈工程架构</strong>。探寻严谨算法逻辑与二次元交互美学的交汇处。
                 </p>
 
                 <!-- 终端命令提示条 -->
@@ -933,8 +1122,8 @@
                         <span>AI Agent &amp; LLM Tool Calling</span>
                     </div>
                     <div class="badge-pill">
-                        <span class="badge-dot" style="background: var(--amber); box-shadow:0 0 8px var(--amber);"></span>
-                        <span>3D WebGL &amp; Live2D Cubism</span>
+                        <span class="badge-dot" style="background: var(--sakura); box-shadow:0 0 8px var(--sakura);"></span>
+                        <span>Live2D Cubism &amp; 3D WebGL</span>
                     </div>
                     <div class="badge-pill">
                         <span class="badge-dot" style="background: var(--green); box-shadow:0 0 8px var(--green);"></span>
@@ -949,6 +1138,9 @@
                     </a>
                     <button class="btn-secondary" id="hero-terminal-btn">
                         <span>唤起终端控制台 [~]</span>
+                    </button>
+                    <button class="btn-secondary" id="hero-sakura-btn" style="border-color: rgba(255, 117, 140, 0.4); color: var(--sakura);">
+                        <span>🌸 切换赛博樱花模式</span>
                     </button>
                     <a href="https://github.com/SherlockYzz" target="_blank" class="btn-secondary">
                         <span>GitHub 主页 ↗</span>
@@ -966,7 +1158,7 @@
                 <div class="section-header">
                     <div class="section-tag">CORE ENGINEERING WORKS</div>
                     <h2 class="section-title">Featured Projects &amp; Systems</h2>
-                    <p class="section-desc">涵盖桌面多模态智能体、数字文物 3D 拟真、文化创意代码艺术及高标准高校开源知识生态。</p>
+                    <p class="section-desc">涵盖二次元多模态桌面智能体、数字文物 3D 拟真、文化创意代码艺术及高标准高校开源知识生态。</p>
                 </div>
 
                 <div class="bento-grid">
@@ -975,11 +1167,11 @@
                         <div>
                             <div class="card-top">
                                 <span class="card-index">PROJECT // 01 · DESKTOP AGENT</span>
-                                <span class="card-type-tag">LIVE2D × AI AGENT</span>
+                                <span class="card-type-tag tag-sakura">LIVE2D × AI AGENT</span>
                             </div>
                             <h3 class="card-title">AI 二次元桌宠 · Live2D Desktop Companion</h3>
                             <p class="card-desc">
-                                桌面常驻智能交互伴侣。基于 Electron 与 Live2D SDK 打造轻量级高帧率动画管线，深度融合自主多代理工作流与本地/云端大模型 Function Calling，实现多角色自主感知、桌面协同操作与情感化语音交互。
+                                桌面常驻智能交互伴侣。基于 Electron 与 Live2D SDK 打造轻量级高帧率动画管线，深度融合自主多代理工作流与本地/云端大模型 Function Calling，实现多角色自主感知、桌面协同操作与细腻的情感化语音交互。
                             </p>
                             <div class="card-stack">
                                 <span class="stack-pill">Electron</span>
@@ -1031,7 +1223,7 @@
                         <div>
                             <div class="card-top">
                                 <span class="card-index">PROJECT // 03 · CREATIVE CODE</span>
-                                <span class="card-type-tag tag-pink">PIXEL ART &amp; AUDIO</span>
+                                <span class="card-type-tag tag-sakura">PIXEL ART &amp; AUDIO</span>
                             </div>
                             <h3 class="card-title">华夏岁时盛典 · 沉浸式时令交互系统</h3>
                             <p class="card-desc">
@@ -1157,12 +1349,12 @@
 
                     <div class="skill-tile">
                         <div class="skill-header">
-                            <div class="skill-icon" style="color:var(--amber); border-color:rgba(251,191,36,0.3);">3D</div>
+                            <div class="skill-icon" style="color:var(--sakura); border-color:rgba(255,117,140,0.3);">3D</div>
                             <div class="skill-title">Graphics &amp; Visuals</div>
                         </div>
                         <ul class="skill-list">
+                            <li class="skill-item"><span>Live2D Cubism Rigging</span><span class="skill-level">Specialist</span></li>
                             <li class="skill-item"><span>WebGL &amp; Three.js</span><span class="skill-level">Advanced</span></li>
-                            <li class="skill-item"><span>Live2D Cubism Rigging</span><span class="skill-level">Advanced</span></li>
                             <li class="skill-item"><span>Canvas 2D/3D Math</span><span class="skill-level">Core</span></li>
                             <li class="skill-item"><span>GLSL Shaders &amp; FX</span><span class="skill-level">Applied</span></li>
                             <li class="skill-item"><span>Web Audio Synthesis</span><span class="skill-level">Applied</span></li>
@@ -1185,7 +1377,7 @@
 
                     <div class="skill-tile">
                         <div class="skill-header">
-                            <div class="skill-icon" style="color:var(--pink); border-color:rgba(244,63,94,0.3);">SYS</div>
+                            <div class="skill-icon" style="color:var(--green); border-color:rgba(16,185,129,0.3);">SYS</div>
                             <div class="skill-title">Systems &amp; DevOps</div>
                         </div>
                         <ul class="skill-list">
@@ -1208,7 +1400,7 @@
             <div>
                 <span style="color:#fff; font-weight:600;">SHERLOCK YZZ // 于子倬</span>
                 <span style="margin: 0 10px;">·</span>
-                <span>HONESTY IN SCIENCE · AMBITION IN CODE</span>
+                <span style="color:var(--sakura);">「探寻算法逻辑与二次元交互美学的交汇处」</span>
             </div>
             <div class="footer-links">
                 <a href="https://github.com/SherlockYzz" target="_blank" class="footer-link">GitHub</a>
@@ -1228,24 +1420,25 @@
                     <span class="term-dot yellow"></span>
                     <span class="term-dot green"></span>
                 </div>
-                <span>SHERLOCK_CORE_TERMINAL // v2.6.4</span>
+                <span>SHERLOCK_CORE_TERMINAL // v2.8.0 · CYBER_ANIME_LINK</span>
                 <span>ESC to close</span>
             </div>
             <div class="terminal-body" id="term-body">
                 <div class="term-line-output cyan">================================================================</div>
                 <div class="term-line-output cyan">  SHERLOCK YZZ // AUTONOMOUS WORKSPACE HUD (HENU CS)</div>
-                <div class="term-line-output dim">  Type 'help' to view available commands. Press [ESC] or click red dot to exit.</div>
+                <div class="term-line-output sakura">  [ANIME] Live2D Engine &amp; Cyber Assistant Active (Sync: 99.8%)</div>
+                <div class="term-line-output dim">  Type 'help' for commands. Try 'anime', 'sakura', 'waifu'. Press [ESC] to exit.</div>
                 <div class="term-line-output cyan">================================================================</div>
             </div>
             <div class="terminal-input-row">
                 <span>sherlock@core:~$</span>
-                <input type="text" class="terminal-input" id="term-input" autocomplete="off" spellcheck="false" placeholder="type 'help' or any command...">
+                <input type="text" class="terminal-input" id="term-input" autocomplete="off" spellcheck="false" placeholder="type 'help', 'sakura', 'anime'...">
             </div>
         </div>
     </div>
 
     <!-- ============================================================
-       核心生成艺术与动力学引擎 (Multi-Mode 3D Canvas + Web Audio)
+       核心生成艺术、二次元偶灵与动力学引擎
        ============================================================ -->
     <script>
         // ================= 1. 实时时钟 HUD =================
@@ -1263,10 +1456,11 @@
 
         // ================= 2. 终端打字机轮播效果 =================
         const typewriterPhrases = [
+            "探寻算法逻辑与二次元交互美学的交汇处...",
+            "Live2D Cubism 多角色动作管线与自主 Agent 融合完毕...",
             "Initializing autonomous AI agent workflows...",
-            "Rendering real-time WebGL & spatial parametric geometry...",
+            "Rendering real-time WebGL, 3D Canvas & spatial geometry...",
             "Architecting robust full-stack desktop & enterprise systems...",
-            "Contributing high-standard open source repositories...",
             "Stay humble in posture, stay formidable in engineering."
         ];
         let phraseIdx = 0;
@@ -1284,48 +1478,66 @@
                 charIdx++;
             }
 
-            let typeSpeed = isDeleting ? 28 : 55;
+            let typeSpeed = isDeleting ? 25 : 50;
             if (!isDeleting && charIdx === currentPhrase.length) {
                 typeSpeed = 2400;
                 isDeleting = true;
             } else if (isDeleting && charIdx === 0) {
                 isDeleting = false;
                 phraseIdx = (phraseIdx + 1) % typewriterPhrases.length;
-                typeSpeed = 400;
+                typeSpeed = 380;
             }
             setTimeout(typeLoop, typeSpeed);
         }
-        setTimeout(typeLoop, 800);
+        setTimeout(typeLoop, 600);
 
-        // ================= 3. 原生 WEB AUDIO 合成器 =================
+        // ================= 3. 原生 WEB AUDIO 合成器 + 实时频谱可视化 =================
         let audioCtx = null;
         let isAudioPlaying = false;
         let masterGain = null;
         let synthOscs = [];
+        let analyser = null;
+        let audioDataArray = null;
 
         function initAudio() {
             if (audioCtx) return;
             const AudioContext = window.AudioContext || window.webkitAudioContext;
             audioCtx = new AudioContext();
+
+            analyser = audioCtx.createAnalyser();
+            analyser.fftSize = 64;
+            audioDataArray = new Uint8Array(analyser.frequencyBinCount);
+
             masterGain = audioCtx.createGain();
             masterGain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-            masterGain.connect(audioCtx.destination);
+
+            masterGain.connect(analyser);
+            analyser.connect(audioCtx.destination);
         }
 
-        function playUiBeep(freq = 880, duration = 0.04) {
+        // 萌系二次元 / 科技风音效发生器 (短促二次元灵动提示音)
+        function playUiBeep(freq = 880, duration = 0.04, type = 'sine') {
             if (!isAudioPlaying || !audioCtx) return;
             try {
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
-                osc.type = 'sine';
+                osc.type = type;
                 osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.045, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
                 osc.connect(gain);
                 gain.connect(masterGain);
                 osc.start();
                 osc.stop(audioCtx.currentTime + duration);
             } catch (e) {}
+        }
+
+        // 萌系连续和弦琶音
+        function playChime(freqs = [659, 880, 1318], interval = 0.06) {
+            if (!isAudioPlaying || !audioCtx) return;
+            freqs.forEach((f, i) => {
+                setTimeout(() => playUiBeep(f, 0.12, 'sine'), i * interval * 1000);
+            });
         }
 
         function toggleAmbientAudio() {
@@ -1336,10 +1548,10 @@
 
             const btn = document.getElementById('audio-toggle-btn');
             const label = document.getElementById('audio-btn-label');
-            const bars = document.getElementById('audio-bars');
 
             if (!isAudioPlaying) {
-                const freqs = [130.81, 155.56, 196.00, 233.08, 293.66]; // C3, Eb3, G3, Bb3, D4
+                // 空间氛围和弦 (C Minor 9th + 赛博泛音)
+                const freqs = [130.81, 155.56, 196.00, 233.08, 293.66, 392.00];
                 synthOscs = freqs.map((freq, i) => {
                     const osc = audioCtx.createOscillator();
                     const gain = audioCtx.createGain();
@@ -1349,9 +1561,9 @@
                     osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
 
                     filter.type = 'lowpass';
-                    filter.frequency.setValueAtTime(450, audioCtx.currentTime);
+                    filter.frequency.setValueAtTime(500, audioCtx.currentTime);
 
-                    gain.gain.setValueAtTime(0.015, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.012, audioCtx.currentTime);
 
                     osc.connect(filter);
                     filter.connect(gain);
@@ -1362,32 +1574,209 @@
 
                 isAudioPlaying = true;
                 btn.classList.add('active');
-                bars.classList.add('audio-playing');
                 label.textContent = 'AUDIO: ON';
-                playUiBeep(1200, 0.08);
+                playChime([523, 659, 784, 1046]);
             } else {
                 synthOscs.forEach(o => {
                     try {
-                        o.gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.5);
-                        o.osc.stop(audioCtx.currentTime + 0.5);
+                        o.gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.4);
+                        o.osc.stop(audioCtx.currentTime + 0.4);
                     } catch(e) {}
                 });
                 synthOscs = [];
                 isAudioPlaying = false;
                 btn.classList.remove('active');
-                bars.classList.remove('audio-playing');
                 label.textContent = 'AUDIO: OFF';
             }
         }
 
         document.getElementById('audio-toggle-btn').addEventListener('click', toggleAmbientAudio);
 
+        // 绘制实时音频频谱可视化
+        const spectrumCanvas = document.getElementById('audio-spectrum');
+        const sCtx = spectrumCanvas.getContext('2d');
+        function renderSpectrum() {
+            requestAnimationFrame(renderSpectrum);
+            sCtx.clearRect(0, 0, 38, 14);
+            if (!isAudioPlaying || !analyser) {
+                // 待机平息呼吸线
+                sCtx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+                for (let i = 0; i < 6; i++) {
+                    sCtx.fillRect(i * 6 + 2, 6, 3, 2);
+                }
+                return;
+            }
+
+            analyser.getByteFrequencyData(audioDataArray);
+            const barCount = 6;
+            const step = Math.floor(audioDataArray.length / barCount);
+            for (let i = 0; i < barCount; i++) {
+                const val = audioDataArray[i * step] || 0;
+                const h = Math.max(2, (val / 255) * 12);
+                sCtx.fillStyle = i % 2 === 0 ? '#00f0ff' : '#ff758c';
+                sCtx.fillRect(i * 6 + 2, 14 - h, 3, h);
+            }
+        }
+        renderSpectrum();
+
         document.querySelectorAll('a, button, .interactive-card').forEach(el => {
-            el.addEventListener('mouseenter', () => playUiBeep(1046, 0.03));
-            el.addEventListener('click', () => playUiBeep(1318, 0.05));
+            el.addEventListener('mouseenter', () => playUiBeep(1174, 0.03));
+            el.addEventListener('click', () => playUiBeep(1567, 0.05));
         });
 
-        // ================= 4. 交互式黑客终端控制台 HUD =================
+        // ================= 4. 二次元智识偶灵 (Anime Desktop Pet Widget) =================
+        const companionFaceCanvas = document.getElementById('companion-face-canvas');
+        const fCtx = companionFaceCanvas.getContext('2d');
+        const companionWidget = document.getElementById('companion-widget');
+        const companionBubble = document.getElementById('companion-bubble');
+
+        let companionBlinkTimer = 0;
+        let isBlinking = false;
+        let companionEmotion = 'normal'; // 'normal', 'happy', 'surprised', 'wink'
+        let mouseScreenX = window.innerWidth * 0.5;
+        let mouseScreenY = window.innerHeight * 0.5;
+
+        const companionPhrases = [
+            "「探寻算法逻辑与二次元交互美学的交汇处」🌸 Master，Live2D 状态正常！",
+            "Master！今天的代码也如同满开的樱花一般优美呢 (//▽//)",
+            "A.T. Field 全开！已拦截 100% 的内存泄漏与野指针风险！",
+            "于子倬正在全神贯注推导多智能体 Swarm 协同逻辑中……",
+            "主人主人，点击右上角【🌸SAKURA】可以欣赏赛博樱花雨哦！",
+            "代码与爱，皆为不可观测的量子纠缠呢 ✨",
+            "检测到高能访客！正在分配最高优先级响应带宽！"
+        ];
+        let compPhraseIdx = 0;
+
+        function updateCompanionDialogue() {
+            compPhraseIdx = (compPhraseIdx + 1) % companionPhrases.length;
+            companionBubble.style.opacity = '0';
+            setTimeout(() => {
+                companionBubble.textContent = companionPhrases[compPhraseIdx];
+                companionBubble.style.opacity = '1';
+            }, 200);
+        }
+
+        setInterval(updateCompanionDialogue, 8000);
+
+        document.getElementById('companion-avatar').addEventListener('click', () => {
+            // 点击偶灵切换表情并触发欢快提示音
+            const emotions = ['happy', 'wink', 'surprised', 'normal'];
+            const curIdx = emotions.indexOf(companionEmotion);
+            companionEmotion = emotions[(curIdx + 1) % emotions.length];
+            updateCompanionDialogue();
+            playChime([784, 988, 1318], 0.05);
+
+            // 触发粒子溅射
+            spawnSparks(window.innerWidth - 60, window.innerHeight - 60, 24);
+        });
+
+        // 绘制自适应表情眼珠追踪
+        function drawCompanionFace() {
+            requestAnimationFrame(drawCompanionFace);
+            fCtx.clearRect(0, 0, 60, 60);
+
+            // 计算眼球朝向鼠标的偏移角
+            const rect = companionFaceCanvas.getBoundingClientRect();
+            const faceCenterX = rect.left + rect.width / 2;
+            const faceCenterY = rect.top + rect.height / 2;
+            const angle = Math.atan2(mouseScreenY - faceCenterY, mouseScreenX - faceCenterX);
+            const gazeDist = Math.min(3.5, Math.hypot(mouseScreenX - faceCenterX, mouseScreenY - faceCenterY) * 0.015);
+            const gazeX = Math.cos(angle) * gazeDist;
+            const gazeY = Math.sin(angle) * gazeDist;
+
+            // 眨眼逻辑
+            companionBlinkTimer++;
+            if (companionBlinkTimer > 180) {
+                isBlinking = true;
+                if (companionBlinkTimer > 192) {
+                    isBlinking = false;
+                    companionBlinkTimer = 0;
+                }
+            }
+
+            // 绘制偶灵脸颊微弱腮红
+            fCtx.fillStyle = 'rgba(255, 117, 140, 0.45)';
+            fCtx.beginPath();
+            fCtx.ellipse(14, 38, 4, 2, 0, 0, Math.PI * 2);
+            fCtx.fill();
+            fCtx.beginPath();
+            fCtx.ellipse(46, 38, 4, 2, 0, 0, Math.PI * 2);
+            fCtx.fill();
+
+            // 绘制眼睛 (二次元灵动大眼睛)
+            fCtx.save();
+            if (isBlinking || companionEmotion === 'happy') {
+                // 弯弯笑眼 ^ ^
+                fCtx.strokeStyle = '#00f0ff';
+                fCtx.lineWidth = 2.5;
+                fCtx.lineCap = 'round';
+                fCtx.beginPath();
+                fCtx.arc(20, 29, 6, Math.PI * 1.15, Math.PI * 1.85);
+                fCtx.stroke();
+                fCtx.beginPath();
+                fCtx.arc(40, 29, 6, Math.PI * 1.15, Math.PI * 1.85);
+                fCtx.stroke();
+            } else if (companionEmotion === 'wink') {
+                // 左眨右睁 (^_-)
+                fCtx.strokeStyle = '#ff758c';
+                fCtx.lineWidth = 2.5;
+                fCtx.lineCap = 'round';
+                fCtx.beginPath();
+                fCtx.arc(20, 29, 6, Math.PI * 1.15, Math.PI * 1.85);
+                fCtx.stroke();
+
+                // 右眼
+                drawEye(40, 28, gazeX, gazeY);
+            } else {
+                // 双眼正常注视
+                drawEye(20, 28, gazeX, gazeY);
+                drawEye(40, 28, gazeX, gazeY);
+            }
+            fCtx.restore();
+
+            // 小嘴巴
+            fCtx.strokeStyle = '#cbd5e1';
+            fCtx.lineWidth = 1.8;
+            fCtx.lineCap = 'round';
+            fCtx.beginPath();
+            if (companionEmotion === 'surprised') {
+                fCtx.arc(30, 42, 2.5, 0, Math.PI * 2);
+                fCtx.stroke();
+            } else {
+                fCtx.arc(30, 40, 3.5, 0.1, Math.PI - 0.1);
+                fCtx.stroke();
+            }
+        }
+
+        function drawEye(x, y, gx, gy) {
+            // 眼眶底
+            fCtx.fillStyle = '#0f172a';
+            fCtx.beginPath();
+            fCtx.ellipse(x, y, 7, 9.5, 0, 0, Math.PI * 2);
+            fCtx.fill();
+            fCtx.strokeStyle = '#00f0ff';
+            fCtx.lineWidth = 1.5;
+            fCtx.stroke();
+
+            // 瞳孔
+            fCtx.fillStyle = '#00f0ff';
+            fCtx.beginPath();
+            fCtx.ellipse(x + gx, y + gy, 4.5, 6, 0, 0, Math.PI * 2);
+            fCtx.fill();
+
+            // 瞳孔内渐变高光
+            fCtx.fillStyle = '#ffffff';
+            fCtx.beginPath();
+            fCtx.arc(x + gx - 1.5, y + gy - 2.5, 2, 0, Math.PI * 2);
+            fCtx.fill();
+            fCtx.beginPath();
+            fCtx.arc(x + gx + 1.8, y + gy + 1.8, 1, 0, Math.PI * 2);
+            fCtx.fill();
+        }
+
+        drawCompanionFace();
+
+        // ================= 5. 交互式黑客终端控制台 HUD =================
         const termModal = document.getElementById('terminal-modal');
         const termBody = document.getElementById('term-body');
         const termInput = document.getElementById('term-input');
@@ -1427,34 +1816,59 @@
         const terminalCommands = {
             help: () => {
                 appendTermLine('Available commands:', 'gold');
-                appendTermLine('  about        - View author bio and philosophy');
-                appendTermLine('  projects     - List primary engineering projects');
+                appendTermLine('  anime        - Show anime character matrix & Live2D pipeline');
+                appendTermLine('  sakura       - Trigger Sakura Cyber particle stream');
+                appendTermLine('  waifu / pet  - Poke companion & trigger anime quote');
+                appendTermLine('  projects     - List primary engineering works');
                 appendTermLine('  skills       - Display core technical capabilities');
-                appendTermLine('  mode <0|1|2|3> - Change 3D background mode');
-                appendTermLine('  sound        - Toggle ambient audio synthesizer');
-                appendTermLine('  matrix       - Quick trigger matrix code rain');
+                appendTermLine('  mode <0-4>   - Change 3D background mode (0:Core, 1:Grid, 2:Ribbon, 3:Matrix, 4:Sakura)');
+                appendTermLine('  sound        - Toggle ambient Web Audio synthesizer');
+                appendTermLine('  stats        - Show browser telemetry & FPS');
                 appendTermLine('  contact      - Display communication endpoints');
                 appendTermLine('  clear        - Clear console output');
                 appendTermLine('  exit         - Close this terminal modal');
             },
+            anime: () => {
+                appendTermLine('  (\\__/)   CYBER ANIME ENGINE ACTIVATED', 'sakura');
+                appendTermLine('  (>.<)    Live2D Cubism SDK 5.0 Interpolation: OK', 'sakura');
+                appendTermLine('  c(\")(\")  Neural Voice Synthesis (TTS): ONLINE', 'sakura');
+                appendTermLine('「探寻算法逻辑与二次元交互美学的交汇处」—— 于子倬', 'cyan');
+            },
+            sakura: () => {
+                switchVisualMode(4);
+                appendTermLine('Switched to Mode 4: 🌸 SAKURA CYBER DRIFT', 'sakura');
+            },
+            waifu: () => {
+                updateCompanionDialogue();
+                playChime([880, 1174, 1567]);
+                appendTermLine('Companion: ' + companionBubble.textContent, 'sakura');
+            },
+            pet: () => {
+                terminalCommands.waifu();
+            },
             about: () => {
                 appendTermLine('于子倬 (SherlockYzz) // HENU Computer Science & Software Engineering', 'cyan');
-                appendTermLine('Core Focus: Autonomous AI Agents, 3D WebGL / Live2D, Full-Stack Architecture.');
-                appendTermLine('Creed: "Stay humble in posture, stay formidable in engineering."');
+                appendTermLine('Focus: Autonomous AI Agents, Live2D / 3D WebGL, Full-Stack Architecture.');
+                appendTermLine('Creed: \"Stay humble in posture, stay formidable in engineering.\"');
             },
             projects: () => {
-                appendTermLine('1. AI Anime Desktop Pet (Electron + Live2D + LLM Tool-Calling)', 'green');
+                appendTermLine('1. AI Anime Desktop Pet (Electron + Live2D + LLM Tool-Calling)', 'sakura');
                 appendTermLine('2. Memories of Chinese Porcelain (Three.js WebGL 3D Heritage)', 'green');
-                appendTermLine('3. Mid-Autumn Celebration (Pixel Art & Dynamic Canvas FX)', 'green');
+                appendTermLine('3. Mid-Autumn Celebration (Pixel Art & Dynamic Canvas FX)', 'sakura');
                 appendTermLine('4. HENU Final Review Knowledge Base (Open Source Infra)', 'green');
-                appendTermLine('5. Kaifeng Government & Tourism Private Enterprise AI', 'green');
-                appendTermLine('6. Differential Equations Theoretical Methodology Archive', 'green');
+                appendTermLine('5. Kaifeng Government & Tourism Private Enterprise AI', 'cyan');
+                appendTermLine('6. Differential Equations Theoretical Methodology Archive', 'gold');
             },
             skills: () => {
                 appendTermLine('[AI & Agents]  : Autonomous Agents, Tool Calling, RAG, Prompt Architecture', 'cyan');
-                appendTermLine('[3D & Visuals] : WebGL, Three.js, Live2D Cubism, Canvas Math, Web Audio', 'cyan');
+                appendTermLine('[3D & Visuals] : Live2D Cubism, WebGL, Three.js, Canvas Math, Web Audio', 'sakura');
                 appendTermLine('[Languages]    : TypeScript, JavaScript, Python, C/C++, Node.js, Modern CSS', 'cyan');
-                appendTermLine('[Engineering]  : GitHub Actions CI/CD, Git Flow, Linux Admin, Shell', 'cyan');
+                appendTermLine('[Engineering]  : GitHub Actions CI/CD, Git Flow, Linux Admin, Shell', 'green');
+            },
+            stats: () => {
+                appendTermLine(`Resolution : ${window.innerWidth} x ${window.innerHeight} (DPR: ${window.devicePixelRatio})`, 'dim');
+                appendTermLine(`Telemetry  : 60.0 FPS · Audio Context: ${audioCtx ? audioCtx.state : 'off'}`, 'cyan');
+                appendTermLine(`Active Mode: ${currentMode} · Companion Sync: 99.8%`, 'sakura');
             },
             sound: () => {
                 toggleAmbientAudio();
@@ -1462,7 +1876,7 @@
             },
             matrix: () => {
                 switchVisualMode(3);
-                appendTermLine('Background switched to Mode 3: MATRIX CASCADE', 'green');
+                appendTermLine('Switched to Mode 3: MATRIX CASCADE', 'green');
             },
             contact: () => {
                 appendTermLine('GitHub : https://github.com/SherlockYzz', 'cyan');
@@ -1489,11 +1903,11 @@
 
                 if (cmd === 'mode') {
                     const m = parseInt(arg, 10);
-                    if (!isNaN(m) && m >= 0 && m <= 3) {
+                    if (!isNaN(m) && m >= 0 && m <= 4) {
                         switchVisualMode(m);
                         appendTermLine(`Switched background mode to ${m}`, 'green');
                     } else {
-                        appendTermLine('Usage: mode <0|1|2|3>', 'gold');
+                        appendTermLine('Usage: mode <0|1|2|3|4>', 'gold');
                     }
                 } else if (terminalCommands[cmd]) {
                     terminalCommands[cmd]();
@@ -1503,19 +1917,27 @@
             }
         });
 
-        // ================= 5. 多模式 3D 动力学生成艺术引擎 =================
+        // ================= 6. 3D 多模式动力学生成艺术引擎 (含 SAKURA 模式) =================
         const canvas = document.getElementById('viewport-canvas');
         const ctx = canvas.getContext('2d');
+        const fxCanvas = document.getElementById('fx-canvas');
+        const fxCtx = fxCanvas.getContext('2d');
+
         let width = 0, height = 0, dpr = 1;
-        let currentMode = 0; // 0: Quantum Core, 1: Cyber Grid, 2: 3D Ribbon, 3: Matrix
+        let currentMode = 0; // 0: Core, 1: Grid, 2: Ribbon, 3: Matrix, 4: Sakura
 
         function resizeCanvas() {
             width = window.innerWidth;
             height = window.innerHeight;
             dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+            
             canvas.width = width * dpr;
             canvas.height = height * dpr;
             ctx.scale(dpr, dpr);
+
+            fxCanvas.width = width * dpr;
+            fxCanvas.height = height * dpr;
+            fxCtx.scale(dpr, dpr);
         }
         window.addEventListener('resize', resizeCanvas, { passive: true });
         resizeCanvas();
@@ -1525,15 +1947,55 @@
         let rotX = 0.2, rotY = 0.3;
         let isPointerDown = false;
         let shockwaves = [];
+        let sparks = [];
+
+        // 鼠标遥测与光标火花流光
+        const coordsEl = document.getElementById('telemetry-coords');
+        const fpsEl = document.getElementById('telemetry-fps');
+        let frameCounter = 0, lastFpsUpdate = performance.now();
 
         window.addEventListener('pointermove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
+            mouseScreenX = e.clientX;
+            mouseScreenY = e.clientY;
+
+            if (coordsEl) coordsEl.textContent = `[${Math.round(e.clientX)}, ${Math.round(e.clientY)}]`;
+
             const nx = (e.clientX / width - 0.5) * 2;
             const ny = (e.clientY / height - 0.5) * 2;
             targetRotY = nx * 0.45;
             targetRotX = -ny * 0.35 + 0.15;
+
+            // 微妙鼠标流光粒子
+            if (Math.random() > 0.4) {
+                sparks.push({
+                    x: e.clientX,
+                    y: e.clientY,
+                    vx: (Math.random() - 0.5) * 1.5,
+                    vy: (Math.random() - 0.5) * 1.5 - 0.5,
+                    life: 1.0,
+                    size: Math.random() * 2 + 1,
+                    color: Math.random() > 0.5 ? '#00f0ff' : '#ff758c'
+                });
+            }
         });
+
+        function spawnSparks(x, y, count = 16) {
+            for (let i = 0; i < count; i++) {
+                const a = Math.random() * Math.PI * 2;
+                const spd = Math.random() * 4 + 1.5;
+                sparks.push({
+                    x: x,
+                    y: y,
+                    vx: Math.cos(a) * spd,
+                    vy: Math.sin(a) * spd,
+                    life: 1.0,
+                    size: Math.random() * 3 + 1.5,
+                    color: Math.random() > 0.4 ? '#ff758c' : '#00f0ff'
+                });
+            }
+        }
 
         window.addEventListener('pointerdown', (e) => {
             isPointerDown = true;
@@ -1544,7 +2006,8 @@
                 maxRadius: Math.max(width, height) * 0.45,
                 opacity: 0.85
             });
-            playUiBeep(320, 0.1);
+            spawnSparks(e.clientX, e.clientY, 12);
+            playUiBeep(320, 0.08);
         });
         window.addEventListener('pointerup', () => isPointerDown = false);
 
@@ -1554,16 +2017,20 @@
                 if (idx === modeIndex) btn.classList.add('selected');
                 else btn.classList.remove('selected');
             });
-            playUiBeep(600 + modeIndex * 150, 0.05);
+            playUiBeep(600 + modeIndex * 140, 0.06);
         }
 
         document.querySelectorAll('.mode-opt').forEach((btn, idx) => {
             btn.addEventListener('click', () => switchVisualMode(idx));
         });
 
+        document.getElementById('hero-sakura-btn').addEventListener('click', () => {
+            switchVisualMode(4);
+        });
+
         window.addEventListener('keydown', (e) => {
             if (termModal.classList.contains('open')) return;
-            if (['1', '2', '3', '4'].includes(e.key)) {
+            if (['1', '2', '3', '4', '5'].includes(e.key)) {
                 switchVisualMode(parseInt(e.key, 10) - 1);
             }
         });
@@ -1593,7 +2060,27 @@
         for (let i = 0; i < matrixCols; i++) {
             matrixDrops[i] = Math.floor(Math.random() * -50);
         }
-        const matrixChars = '0123456789ABCDEFSHERLOCKAGENT01アイウエオカキクケコサシスセソタチツテト';
+        const matrixChars = '0123456789ABCDEFSHERLOCKAGENT01アイウエオカキクケコサシスセソタチツテト🌸';
+
+        // ---------- MODE 4: 赛博樱花散华 (SAKURA CYBER DRIFT) ----------
+        const SAKURA_COUNT = 240;
+        const sakuraPetals = [];
+        for (let i = 0; i < SAKURA_COUNT; i++) {
+            sakuraPetals.push({
+                x: (Math.random() - 0.5) * 1600,
+                y: (Math.random() - 0.5) * 1200,
+                z: (Math.random() - 0.5) * 800,
+                vx: 0.6 + Math.random() * 1.2,
+                vy: 0.8 + Math.random() * 1.5,
+                rotPitch: Math.random() * Math.PI * 2,
+                rotYaw: Math.random() * Math.PI * 2,
+                rotRoll: Math.random() * Math.PI * 2,
+                pitchSpeed: 0.02 + Math.random() * 0.03,
+                yawSpeed: 0.01 + Math.random() * 0.02,
+                size: 6 + Math.random() * 8,
+                colorType: Math.random() // pink or cyan-tinted sakura
+            });
+        }
 
         function project3D(x, y, z, cx, cy, fov = 680) {
             const rotCosX = Math.cos(rotX);
@@ -1628,6 +2115,15 @@
             lastFrameTime = now;
             const t = (now - startTime) * 0.00085;
 
+            // 实时 FPS 监控
+            frameCounter++;
+            if (now - lastFpsUpdate > 500) {
+                const currentFps = (frameCounter * 1000 / (now - lastFpsUpdate)).toFixed(1);
+                if (fpsEl) fpsEl.textContent = currentFps;
+                frameCounter = 0;
+                lastFpsUpdate = now;
+            }
+
             rotX += (targetRotX - rotX) * 0.05;
             rotY += (targetRotY - rotY) * 0.05;
 
@@ -1636,7 +2132,7 @@
             const cx = width > 1024 ? width * 0.62 : width * 0.5;
             const cy = height * 0.5;
 
-            // ================= 模式 0: 量子引力核心与能量场 =================
+            // ================= 模式 0: 量子引力核心与粒子云 =================
             if (currentMode === 0) {
                 const coreGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 280);
                 coreGrad.addColorStop(0, 'rgba(0, 240, 255, 0.12)');
@@ -1799,7 +2295,7 @@
                     } else if (ratio < 0.75) {
                         ctx.strokeStyle = 'rgba(168, 85, 247, 0.3)';
                     } else {
-                        ctx.strokeStyle = 'rgba(244, 63, 94, 0.25)';
+                        ctx.strokeStyle = 'rgba(255, 117, 140, 0.28)';
                     }
                     ctx.lineWidth = 0.95;
                     ctx.stroke();
@@ -1830,6 +2326,59 @@
                 }
             }
 
+            // ================= 模式 4: 赛博樱花散华 (Sakura Cyber Drift) =================
+            else if (currentMode === 4) {
+                for (let i = 0; i < sakuraPetals.length; i++) {
+                    const p = sakuraPetals[i];
+                    p.x += p.vx + Math.sin(t + i) * 0.4;
+                    p.y += p.vy;
+                    p.rotPitch += p.pitchSpeed;
+                    p.rotYaw += p.yawSpeed;
+
+                    // 鼠标空气动力学排斥
+                    const dx = p.x - (mouseX - width * 0.5);
+                    const dy = p.y - (mouseY - height * 0.5);
+                    const distSq = dx * dx + dy * dy;
+                    if (distSq < 25000 && distSq > 10) {
+                        const dist = Math.sqrt(distSq);
+                        const force = (1 - dist / 158) * 8;
+                        p.x += (dx / dist) * force;
+                        p.y += (dy / dist) * force;
+                    }
+
+                    // 边界回环
+                    if (p.y > 600) p.y = -600;
+                    if (p.x > 800) p.x = -800;
+
+                    const proj = project3D(p.x, p.y, p.z, width * 0.5, height * 0.5);
+                    if (proj) {
+                        const depthAlpha = Math.max(0.2, Math.min(0.9, 1 - (proj.depth - 300) / 750));
+                        ctx.save();
+                        ctx.translate(proj.x, proj.y);
+                        ctx.rotate(p.rotYaw);
+                        ctx.scale(Math.cos(p.rotPitch) * proj.scale, proj.scale);
+
+                        // 绘制具有半透明渐变的赛博霓虹樱花花瓣
+                        ctx.beginPath();
+                        ctx.moveTo(0, 0);
+                        ctx.bezierCurveTo(-p.size * 0.7, -p.size * 1.1, -p.size * 1.3, -p.size * 0.2, 0, p.size * 1.2);
+                        ctx.bezierCurveTo(p.size * 1.3, -p.size * 0.2, p.size * 0.7, -p.size * 1.1, 0, 0);
+
+                        if (p.colorType < 0.75) {
+                            ctx.fillStyle = `rgba(255, 117, 140, ${depthAlpha * 0.8})`;
+                            ctx.strokeStyle = `rgba(255, 184, 198, ${depthAlpha * 0.9})`;
+                        } else {
+                            ctx.fillStyle = `rgba(0, 240, 255, ${depthAlpha * 0.75})`;
+                            ctx.strokeStyle = `rgba(255, 255, 255, ${depthAlpha * 0.85})`;
+                        }
+                        ctx.lineWidth = 0.8;
+                        ctx.fill();
+                        ctx.stroke();
+                        ctx.restore();
+                    }
+                }
+            }
+
             // ================= 渲染冲击波环 (Shockwaves) =================
             for (let i = shockwaves.length - 1; i >= 0; i--) {
                 const sw = shockwaves[i];
@@ -1846,11 +2395,31 @@
                     shockwaves.splice(i, 1);
                 }
             }
+
+            // ================= 渲染鼠标光标流光火花 (FX Canvas) =================
+            fxCtx.clearRect(0, 0, width, height);
+            for (let i = sparks.length - 1; i >= 0; i--) {
+                const s = sparks[i];
+                s.x += s.vx;
+                s.y += s.vy;
+                s.life *= 0.93;
+
+                fxCtx.beginPath();
+                fxCtx.arc(s.x, s.y, s.size * s.life, 0, Math.PI * 2);
+                fxCtx.fillStyle = s.color;
+                fxCtx.globalAlpha = s.life;
+                fxCtx.fill();
+                fxCtx.globalAlpha = 1.0;
+
+                if (s.life < 0.05) {
+                    sparks.splice(i, 1);
+                }
+            }
         }
 
         requestAnimationFrame(mainRenderLoop);
 
-        // ================= 6. 卡片 3D 悬浮视差阻尼 =================
+        // ================= 7. 卡片 3D 悬浮视差阻尼 =================
         document.querySelectorAll('.interactive-card').forEach(card => {
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
