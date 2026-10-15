@@ -4085,17 +4085,30 @@
             }
         }
 
-        // 默认初始化装载第 1 首曲目
+        // 默认初始化装载并全力尝试自动起播第 1 首曲目
         if (bgmAudio) {
             bgmAudio.src = bgmPlaylist[0].src;
-            loadAndPlay(0, false);
+            loadAndPlay(0, true); // 直接尝试起播！
         }
 
-        // 页面首次任意用户手势交互时，自动就绪 Web Audio 并激活环境声景
+        // 页面首次任意用户交互（点击、触摸、滚轮、按键）触发全站音频（BGM + 环境声景）智能无缝起奏
         let hasAwakenedAudio = false;
         function autoAwakenAudioOnFirstGesture() {
             if (hasAwakenedAudio) return;
             hasAwakenedAudio = true;
+            
+            // 1. 唤醒并播放 BGM 音乐盒
+            if (bgmAudio && bgmAudio.paused) {
+                bgmAudio.play().then(() => {
+                    isBgmPlaying = true;
+                    syncMusicUI();
+                }).catch(err => {
+                    console.log('Gesture play caught, reloading:', err);
+                    loadAndPlay(bgmIndex, true);
+                });
+            }
+            
+            // 2. 唤醒 Web Audio 环境声景
             initAudio();
             if (audioCtx && audioCtx.state === 'suspended') {
                 audioCtx.resume();
@@ -4104,8 +4117,11 @@
                 toggleAmbientAudio();
             }
         }
-        window.addEventListener('pointerdown', autoAwakenAudioOnFirstGesture, { once: true });
-        window.addEventListener('keydown', autoAwakenAudioOnFirstGesture, { once: true });
+        
+        // 监听多源首个手势（点击页面任何区域、滚动、触摸、按键均立即起播）
+        ['pointerdown', 'click', 'touchstart', 'keydown', 'wheel'].forEach(evt => {
+            window.addEventListener(evt, autoAwakenAudioOnFirstGesture, { once: true, passive: true });
+        });
 
 
         // 播放/暂停总控
