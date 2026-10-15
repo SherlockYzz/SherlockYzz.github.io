@@ -785,6 +785,166 @@
             .telemetry-bar {
                 display: none;
             }
+            
+            /* ================= 彻底修复移动端半屏 BUG：自适应视口收容 ================= */
+            .hud-nav {
+                padding: 10px 14px;
+            }
+            .hud-status-bar {
+                display: none; /* 移动端隐藏状态栏，释放横向宽度 */
+            }
+            .hud-nav .mode-switcher {
+                display: none; /* 模式切换已在首屏专属切换坞中展示，导航栏隐藏冗余 */
+            }
+            .hud-nav #terminal-trigger-btn {
+                display: none; /* 移动端导航栏隐藏终端按钮，首屏已有完整呼出入口 */
+            }
+            .hud-controls {
+                gap: 6px;
+            }
+            .hud-btn {
+                padding: 5px 9px;
+                font-size: 0.7rem;
+            }
+
+            /* 顶部 3D 模式切换坞移动端精致自适应 */
+            .top-visual-dock-wrapper {
+                margin-bottom: 18px;
+            }
+            .top-visual-dock {
+                padding: 5px 8px;
+                gap: 5px;
+                border-radius: 20px;
+                max-width: 100%;
+            }
+            .dock-tag-label {
+                display: none; /* 手机端隐藏标签文字，确保 5 个模式按钮整齐居中排布 */
+            }
+            .dock-btn-group {
+                gap: 4px;
+                justify-content: center;
+            }
+            .dock-mode-btn {
+                padding: 4px 7px;
+                font-size: 0.68rem;
+                gap: 3px;
+            }
+            .dock-shortcut-badge {
+                display: none; /* 手机无物理按键，隐藏数字 1-5 */
+            }
+
+            /* 首屏 Bento 网格与胶囊音乐盒自适应 */
+            .hero-main-row {
+                grid-template-columns: minmax(0, 1fr) !important;
+                gap: 20px;
+                width: 100%;
+            }
+            .hero-left-info, .hero-right-player-slot {
+                min-width: 0;
+                width: 100%;
+                max-width: 100%;
+            }
+            .hero-right-player-slot {
+                justify-content: center;
+            }
+            .hero-capsule-music-box {
+                width: 100%;
+                max-width: 100%;
+                padding: 14px 16px;
+                border-radius: 20px;
+                box-sizing: border-box;
+            }
+            .capsule-content-row {
+                gap: 10px;
+            }
+            .capsule-meta-box {
+                min-width: 0;
+                flex: 1;
+            }
+            .capsule-song-title {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                font-size: 0.88rem;
+            }
+            .capsule-disc-vinyl {
+                width: 46px;
+                height: 46px;
+                flex-shrink: 0;
+            }
+            .capsule-ctrl-btn {
+                padding: 2px;
+            }
+            .capsule-play-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+
+            /* 跑马灯视口约束 */
+            .hero-lyric-bar {
+                padding: 6px 12px;
+                gap: 10px;
+                border-radius: 20px;
+                max-width: 100%;
+            }
+            .lyric-bar-label {
+                font-size: 0.65rem;
+                padding: 3px 8px;
+            }
+            .lyric-marquee-item {
+                font-size: 0.75rem;
+            }
+
+            /* 头像与首屏排版优化 */
+            .profile-header-group {
+                gap: 14px;
+            }
+            .profile-avatar-box {
+                width: 60px;
+                height: 60px;
+            }
+            .hero-title {
+                font-size: clamp(1.4rem, 6vw, 2.0rem) !important;
+            }
+            .terminal-callout {
+                max-width: 100%;
+                padding: 10px 14px;
+                font-size: 0.78rem;
+            }
+            .hero-badges {
+                gap: 8px;
+                margin-bottom: 22px;
+            }
+            .badge-pill {
+                padding: 5px 10px;
+                font-size: 0.7rem;
+            }
+            .hero-actions {
+                gap: 10px;
+            }
+            .btn-primary, .btn-secondary {
+                padding: 10px 16px;
+                font-size: 0.76rem;
+            }
+
+            /* 偶灵悬浮气泡移动端位置优化 */
+            .anime-companion-widget {
+                bottom: 12px;
+                right: 12px;
+            }
+            .companion-avatar-box {
+                width: 54px;
+                height: 54px;
+            }
+
+            /* 卡片移动端内边距与排版 */
+            .tech-stack-card {
+                padding: 18px 16px;
+            }
+            .bento-card {
+                padding: 20px 18px;
+            }
         }
 
         /* ================= 二次元智识偶灵 (Anime Desktop Companion Widget) ================= */
@@ -2621,13 +2781,13 @@
                             </h3>
                             <div class="tech-list-group">
                                 <div class="tech-item-row">
-                                    <strong>C / C++</strong>：当前主要学习与使用的编程语言，用于<strong>备战算法竞赛</strong>、数据结构与算法学习，扎实积累计算机底层思维。
+                                    <strong>C / C++</strong>：当前主要学习与使用的编程语言，用于数据结构与算法学习、备战算法竞赛，并积极探索其在基础后端与游戏开发中的应用，扎实积累计算机底层思维。
                                 </div>
                                 <div class="tech-item-row">
                                     <strong>JavaScript</strong>：主要使用的开发语言，应用于网页交互、动态效果与前端开发实践。
                                 </div>
                                 <div class="tech-item-row">
-                                    <strong>Java</strong>：初步学习过，了解面向对象编程思想，正在积累语言特性与开发经验。
+                                    <strong>Java</strong>：已初步学习，了解面向对象编程思想，正在积累语言特性与开发经验。
                                 </div>
                                 <div class="tech-item-row">
                                     <strong>Python</strong>：正在学习与探索，关注其在自动化、人工智能及数据处理等领域的应用。
@@ -2635,7 +2795,7 @@
                             </div>
                         </div>
                         <div class="tech-pill-container">
-                            <span class="tech-mini-pill">C / C++ (算法竞赛)</span>
+                            <span class="tech-mini-pill">C / C++ (数据结构/竞赛/游戏与后端)</span>
                             <span class="tech-mini-pill">JavaScript (网页交互)</span>
                             <span class="tech-mini-pill">Java (面向对象)</span>
                             <span class="tech-mini-pill">Python (自动化/AI)</span>
@@ -2694,7 +2854,10 @@
                                     <strong>工具协同</strong>：在日常开发中使用 <strong>Antigravity</strong>、<strong>Codex</strong>、<strong>Claude</strong>、<strong>DSH</strong> 等工具辅助编码，探索工具在代码生成、任务排错中的应用。
                                 </div>
                                 <div class="tech-item-row">
-                                    <strong>开发流程</strong>：尝试将需求拆解、架构梳理、编码实现与调试串联起来，在借助 AI 提升效率的同时，注重理解代码实现与底层原理。
+                                    <strong>开发流程</strong>：尝试将需求拆解、架构梳理、编码实现与调试串联起来，探索 Vibe Coding 流程，在借助 AI 提升效率的同时，注重理解代码实现与底层原理。
+                                </div>
+                                <div class="tech-item-row">
+                                    <strong>提示词工程与上下文</strong>：探索针对工程任务的结构化 Prompt 编写与长文本上下文管理，提升人机协同编码的精准度与交付质量。
                                 </div>
                             </div>
                         </div>
@@ -2704,6 +2867,7 @@
                             <span class="tech-mini-pill">Claude</span>
                             <span class="tech-mini-pill">DSH</span>
                             <span class="tech-mini-pill">Vibe Coding 流程</span>
+                            <span class="tech-mini-pill">提示词工程</span>
                             <span class="tech-mini-pill">协同排错</span>
                         </div>
                     </div>
