@@ -1546,197 +1546,383 @@
             text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95), 0 0 4px rgba(0, 0, 0, 0.9);
         }
 
-        /* 极简轻盈、通透灵动的 Hi-Fi 浮空音乐条 (绝不遮挡 3D 视觉与粒子) */
-        .hero-compact-music-bar {
-            display: inline-flex;
+        /* ================= 🌟 首屏左右均衡双列栅格 ================= */
+        .hero-main-row {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 36px;
             align-items: center;
-            gap: 14px;
-            background: rgba(8, 12, 24, 0.42);
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            border-radius: 40px;
-            padding: 8px 16px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 16px rgba(0, 240, 255, 0.12);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            max-width: 460px;
-            width: fit-content;
-            margin-top: 4px;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            width: 100%;
             position: relative;
+            z-index: 15;
+            margin-bottom: 24px;
         }
-        .hero-compact-music-bar:hover {
+        @media (max-width: 1080px) {
+            .hero-main-row {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+        }
+
+        .hero-left-info {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* ================= 🌟 右侧长方形胶囊音乐盒 (大小适中、不遮3D核心、交互无阻) ================= */
+        .hero-right-player-slot {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            position: relative;
+            z-index: 25;
+            pointer-events: auto !important;
+        }
+        @media (max-width: 1080px) {
+            .hero-right-player-slot {
+                justify-content: flex-start;
+            }
+        }
+
+        .hero-capsule-music-box {
+            width: 440px;
+            max-width: 100%;
+            background: rgba(9, 14, 28, 0.65); /* 通透黑曜毛玻璃，3D粒子全景流淌一览无遗 */
+            border: 1.5px solid rgba(0, 240, 255, 0.4);
+            border-radius: 28px; /* 优雅长方形胶囊形态 */
+            padding: 16px 20px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 24px rgba(0, 240, 255, 0.18);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: auto !important;
+        }
+        .hero-capsule-music-box * {
+            pointer-events: auto !important;
+        }
+        .hero-capsule-music-box:hover {
             border-color: var(--cyan);
-            background: rgba(8, 12, 24, 0.6);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55), 0 0 24px rgba(0, 240, 255, 0.25);
+            background: rgba(9, 14, 28, 0.78);
+            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.75), 0 0 32px rgba(0, 240, 255, 0.3);
             transform: translateY(-2px);
         }
 
-        .mini-disc-vinyl {
-            width: 44px;
-            height: 44px;
+        .capsule-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .capsule-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(0, 240, 255, 0.12);
+            border: 1px solid rgba(0, 240, 255, 0.35);
+            color: var(--cyan);
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 16px;
+            letter-spacing: 0.06em;
+            font-family: var(--font-mono);
+        }
+        .capsule-pulse-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 8px #10b981;
+            animation: dock-pulse 1.8s infinite;
+        }
+        .capsule-counter {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        .capsule-content-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        /* 旋转黑胶唱片 (点击可起播/暂停) */
+        .capsule-disc-vinyl {
+            width: 58px;
+            height: 58px;
             border-radius: 50%;
             background: radial-gradient(circle, #0b1120 28%, #00f0ff 29%, #020617 33%, #1e293b 80%, #00f0ff 100%);
-            border: 1.8px solid rgba(0, 240, 255, 0.6);
-            box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+            border: 2px solid rgba(0, 240, 255, 0.65);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), 0 0 12px rgba(0, 240, 255, 0.25);
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
             cursor: pointer;
+            transition: transform 0.2s ease;
         }
-        .mini-disc-vinyl.spinning {
+        .capsule-disc-vinyl:hover {
+            transform: scale(1.08);
+            border-color: #ffffff;
+            box-shadow: 0 0 18px var(--cyan);
+        }
+        .capsule-disc-vinyl.spinning {
             animation: disc-rotate 5s linear infinite;
         }
-        .mini-disc-center {
-            width: 15px;
-            height: 15px;
+        .disc-center-label {
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--cyan), var(--sakura));
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        .mini-disc-hole {
-            width: 5px;
-            height: 5px;
+        .disc-hole {
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
             background: #020617;
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
-        .mini-player-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            min-width: 140px;
-            max-width: 180px;
+        .capsule-meta-box {
+            flex: 1;
+            min-width: 0;
         }
-        .mini-song-name {
-            font-size: 0.88rem;
+        .capsule-song-tag {
+            font-size: 0.7rem;
+            color: var(--sakura);
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 2px;
+        }
+        .capsule-song-title {
+            font-size: 0.96rem;
             font-weight: 800;
             color: #ffffff;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            line-height: 1.2;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
-        }
-        .mini-song-tag {
-            font-size: 0.68rem;
-            color: var(--sakura);
-            font-weight: 600;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            line-height: 1.25;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+            margin-bottom: 6px;
         }
 
-        .mini-controls-group {
+        .capsule-progress-box {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .capsule-time-row {
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--font-mono);
+            font-size: 0.66rem;
+            color: #94a3b8;
+        }
+        .capsule-progress-bg {
+            width: 100%;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .capsule-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--cyan), var(--sakura));
+            border-radius: 6px;
+            box-shadow: 0 0 8px var(--cyan);
+            transition: width 0.1s linear;
+        }
+
+        .capsule-ctrl-group {
             display: flex;
             align-items: center;
             gap: 8px;
             flex-shrink: 0;
         }
-        .mini-play-btn {
-            width: 38px;
-            height: 38px;
+        .capsule-ctrl-btn {
+            background: transparent;
+            border: none;
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            cursor: pointer;
+            padding: 4px;
+            transition: all 0.2s ease;
+        }
+        .capsule-ctrl-btn:hover {
+            color: #ffffff;
+            transform: scale(1.15);
+        }
+        .capsule-play-btn {
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             background: linear-gradient(135deg, #00f0ff 0%, #6366f1 100%);
             border: 1.5px solid rgba(255, 255, 255, 0.6);
             color: #030712;
-            font-size: 1.05rem;
+            font-size: 1.15rem;
             font-weight: 900;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 0 16px rgba(0, 240, 255, 0.45);
+            box-shadow: 0 0 18px rgba(0, 240, 255, 0.45);
             transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .mini-play-btn:hover {
+        .capsule-play-btn:hover {
             transform: scale(1.14);
-            box-shadow: 0 0 24px rgba(0, 240, 255, 0.7);
+            box-shadow: 0 0 28px rgba(0, 240, 255, 0.75);
         }
-        .mini-sub-btn {
-            background: transparent;
-            border: none;
-            color: #cbd5e1;
-            font-size: 0.85rem;
-            cursor: pointer;
-            padding: 4px;
-            transition: all 0.2s ease;
-        }
-        .mini-sub-btn:hover {
-            color: #ffffff;
-            transform: scale(1.15);
-        }
-
-        .mini-playlist-btn {
+        .capsule-list-btn {
             font-size: 0.72rem;
             color: var(--cyan);
-            background: rgba(0, 240, 255, 0.1);
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            border-radius: 12px;
-            padding: 3px 8px;
+            background: rgba(0, 240, 255, 0.12);
+            border: 1px solid rgba(0, 240, 255, 0.35);
+            border-radius: 14px;
+            padding: 4px 10px;
             font-weight: 700;
             cursor: pointer;
             white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+        .capsule-list-btn:hover {
+            background: rgba(0, 240, 255, 0.25);
+            color: #ffffff;
+            border-color: var(--cyan);
         }
 
-        /* 浮动下拉 10 首曲目抽屉 */
-        .mini-playlist-dropdown {
-            position: absolute;
-            top: calc(100% + 8px);
-            left: 0;
-            width: 320px;
-            background: rgba(10, 15, 30, 0.92);
-            border: 1px solid rgba(0, 240, 255, 0.35);
-            border-radius: 16px;
-            padding: 10px;
-            max-height: 220px;
-            overflow-y: auto;
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            box-shadow: 0 16px 40px rgba(0,0,0,0.7), 0 0 24px rgba(0, 240, 255, 0.2);
-            backdrop-filter: blur(20px);
-            z-index: 50;
-        }
-        .mini-playlist-dropdown.open {
+        .capsule-bottom-row {
             display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 6px;
+        }
+        .capsule-vol-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .capsule-hint {
+            font-size: 0.68rem;
+            color: #94a3b8;
+            font-style: italic;
         }
 
-        /* ================= 歌词/名言流光跑马灯 (LyricBar) ================= */
+        /* 浮动下拉 10 首曲目抽屉 (默认严格隐藏，绝不出现纯文本横流！) */
+        .capsule-playlist-dropdown {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            width: 340px;
+            background: rgba(10, 15, 30, 0.95);
+            border: 1px solid rgba(0, 240, 255, 0.4);
+            border-radius: 18px;
+            padding: 12px;
+            max-height: 240px;
+            overflow-y: auto;
+            display: none !important; /* 关键：未激活时绝不展示！ */
+            flex-direction: column;
+            gap: 6px;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.75), 0 0 24px rgba(0, 240, 255, 0.25);
+            backdrop-filter: blur(24px);
+            z-index: 60;
+        }
+        .capsule-playlist-dropdown.open {
+            display: flex !important;
+        }
+        .drawer-song-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .drawer-song-item:hover {
+            background: rgba(0, 240, 255, 0.12);
+            border-color: rgba(0, 240, 255, 0.3);
+            transform: translateX(3px);
+        }
+        .drawer-song-item.active {
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(99, 102, 241, 0.2));
+            border-color: var(--cyan);
+            color: #ffffff;
+        }
+        .drawer-song-title {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+        .drawer-song-artist {
+            font-size: 0.66rem;
+            color: #94a3b8;
+        }
+
+        /* ================= 🌟 跑马灯视口隔离！文字绝对不可能越界碰撞或遮盖标签 ================= */
         .hero-lyric-bar {
             width: 100%;
-            background: rgba(10, 15, 30, 0.65);
-            border: 1px solid rgba(0, 240, 255, 0.2);
+            background: rgba(8, 12, 24, 0.58);
+            border: 1px solid rgba(0, 240, 255, 0.25);
             border-radius: 30px;
-            padding: 10px 20px;
+            padding: 8px 16px;
             display: flex;
             align-items: center;
             gap: 16px;
-            overflow: hidden;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 16px rgba(0, 240, 255, 0.08);
             backdrop-filter: blur(16px);
-            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
         }
         .lyric-bar-label {
             font-family: var(--font-mono);
             font-size: 0.72rem;
             font-weight: 800;
             color: var(--cyan);
-            letter-spacing: 0.15em;
+            letter-spacing: 0.12em;
             white-space: nowrap;
             display: flex;
             align-items: center;
             gap: 6px;
             flex-shrink: 0;
+            background: #080c18;
+            padding: 4px 12px;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            position: relative;
+            z-index: 10;
+        }
+        .lyric-marquee-viewport {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
         }
         .lyric-bar-track {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 24px;
+            gap: 28px;
             white-space: nowrap;
-            animation: marquee 38s linear infinite;
+            animation: marquee 36s linear infinite;
         }
         .lyric-bar-track:hover {
             animation-play-state: paused;
@@ -1756,7 +1942,7 @@
             font-size: 0.75rem;
             opacity: 0.8;
         }
-
+    
     </style>
 </head>
 <body>
@@ -1788,13 +1974,13 @@
                 <button class="mode-opt" data-mode="1">GRID</button>
                 <button class="mode-opt" data-mode="2">RIBBON</button>
                 <button class="mode-opt" data-mode="3">MATRIX</button>
-                <button class="mode-opt sakura-opt" data-mode="4">🌸SAKURA</button>
+                <button class="mode-opt warp-opt" data-mode="4">🚀WARP</button>
             </div>
 
             <!-- Web Audio 实时声学频谱可视化 -->
-            <button class="hud-btn" id="audio-toggle-btn" title="开启/关闭原生合成声景">
+            <button class="hud-btn active" id="audio-toggle-btn" title="原生赛博空间合成声景与实时频谱 (默认已启用)">
                 <canvas class="audio-spectrum-canvas" id="audio-spectrum" width="38" height="14"></canvas>
-                <span id="audio-btn-label">AUDIO: OFF</span>
+                <span id="audio-btn-label">AUDIO: ON</span>
             </button>
 
             <!-- 呼出黑客终端 HUD -->
@@ -1881,7 +2067,7 @@
             <div class="music-playlist-drawer" id="music-playlist-drawer"></div>
         </div>
         <!-- 核心音频元素 (preload="none" 确保0字节启动负担) -->
-        <audio id="global-bgm-audio" preload="none"></audio>
+        <audio id="global-bgm-audio" src="audio/track_01.mp3" preload="metadata"></audio>
     </div>
 
     <!-- 页面内容层 -->
@@ -1920,9 +2106,9 @@
                                 <span>矩阵代码</span>
                                 <span class="dock-shortcut-badge">4</span>
                             </button>
-                            <button class="dock-mode-btn mode-opt sakura-mode" data-mode="4" title="切换模式 5: 赛博樱花散华">
-                                <span>🌸</span>
-                                <span>樱花散华</span>
+                            <button class="dock-mode-btn mode-opt warp-mode" data-mode="4" title="切换模式 5: 超维星轨跃迁">
+                                <span>🚀</span>
+                                <span>星轨跃迁</span>
                                 <span class="dock-shortcut-badge">5</span>
                             </button>
                         </div>
@@ -1954,7 +2140,7 @@
                                 </h1>
                                 <div class="profile-role-line">
                                     <span class="role-badge">博主 · UP 主</span>
-                                    <span class="role-subtext">HENU 计算机系在读 · 科研萌新 · 探索二次元与智能交互美学</span>
+                                    <span class="role-subtext">河南大学(HENU)软件学院在读 · 科研萌新 · 探索二次元与智能交互美学</span>
                                 </div>
                             </div>
                         </div>
@@ -1976,7 +2162,7 @@
                         <div class="hero-badges" style="margin-bottom: 6px;">
                             <div class="badge-pill">
                                 <span class="badge-dot" style="background: var(--cyan); box-shadow:0 0 8px var(--cyan);"></span>
-                                <span>河南大学 HENU 本科在读</span>
+                                <span>河南大学(HENU)软件学院本科在读</span>
                             </div>
                             <div class="badge-pill">
                                 <span class="badge-dot" style="background: var(--violet); box-shadow:0 0 8px var(--violet);"></span>
@@ -2369,7 +2555,7 @@
             </div>
             <div class="terminal-body" id="term-body">
                 <div class="term-line-output cyan">================================================================</div>
-                <div class="term-line-output cyan">  SHERLOCK YZZ // AUTONOMOUS WORKSPACE HUD (HENU CS)</div>
+                <div class="term-line-output cyan">  SHERLOCK YZZ // AUTONOMOUS WORKSPACE HUD (HENU Software Engineering)</div>
                 <div class="term-line-output sakura">  [ANIME] Live2D Engine &amp; Cyber Assistant Active (Sync: 99.8%)</div>
                 <div class="term-line-output dim">  Type 'help' for commands. Try 'anime', 'sakura', 'waifu'. Press [ESC] to exit.</div>
                 <div class="term-line-output cyan">================================================================</div>
@@ -2794,7 +2980,7 @@
                 terminalCommands.waifu();
             },
             about: () => {
-                appendTermLine('SherlockYzz (折木柯南) // HENU Computer Science & Software Engineering', 'cyan');
+                appendTermLine('SherlockYzz (折木柯南) // 河南大学(HENU)软件学院在读', 'cyan');
                 appendTermLine('Focus: Autonomous AI Agents, Live2D / 3D WebGL, Full-Stack Architecture.');
                 appendTermLine('Creed: \"Stay humble in posture, stay formidable in engineering.\"');
             },
@@ -3091,11 +3277,11 @@
             const heroSakuraBtn = document.getElementById('hero-sakura-btn');
             if (heroSakuraBtn) {
                 if (modeIndex === 4) {
-                    heroSakuraBtn.innerHTML = '<span>🌌 聚焦赛博核心模式</span>';
+                    heroSakuraBtn.innerHTML = '<span>🌌 聚焦量子核心</span>';
                     heroSakuraBtn.style.borderColor = 'rgba(0, 240, 255, 0.45)';
                     heroSakuraBtn.style.color = 'var(--cyan)';
                 } else {
-                    heroSakuraBtn.innerHTML = '<span>🌸 增强赛博樱花散华</span>';
+                    heroSakuraBtn.innerHTML = '<span>🚀 超维星轨跃迁</span>';
                     heroSakuraBtn.style.borderColor = 'rgba(255, 117, 140, 0.4)';
                     heroSakuraBtn.style.color = 'var(--sakura)';
                 }
@@ -3354,27 +3540,79 @@
                 }
             }
 
-            // ================= 模式 1: 赛博空间曲面网格 =================
+            // ================= 模式 1: 赛博空间上下双层镜像网格隧道 (绝不空洞！立体霓虹视界) =================
             else if (currentMode === 1) {
-                const gridCols = 32, gridRows = 24, cellW = 42, cellH = 42;
+                const gridCols = 36, gridRows = 28, cellW = 44, cellH = 44;
                 ctx.save();
+                
+                // 1. 地面赛博起伏网格 (Floor Grid)
                 for (let r = 0; r < gridRows; r++) {
                     ctx.beginPath();
                     let started = false;
                     for (let c = 0; c < gridCols; c++) {
                         const gx = (c - gridCols / 2) * cellW;
                         const gz = (r - gridRows / 2) * cellH;
-                        const gy = 180 + Math.sin(c * 0.35 + t * 2) * 28 + Math.cos(r * 0.4 - t * 1.5) * 22;
-                        const proj = project3D(gx, gy, gz, cx, cy + 40);
+                        // 动态三维波浪地形
+                        const waveDist = Math.hypot(gx, gz);
+                        const gy = 190 + Math.sin(c * 0.38 + t * 2.2) * 26 + Math.cos(r * 0.35 - t * 1.8) * 20 + Math.sin(waveDist * 0.02 - t * 3) * 16;
+                        const proj = project3D(gx, gy, gz, cx, cy + 30);
                         if (proj) {
                             if (!started) { ctx.moveTo(proj.x, proj.y); started = true; }
                             else { ctx.lineTo(proj.x, proj.y); }
                         }
                     }
-                    ctx.strokeStyle = 'rgba(168, 85, 247, 0.26)';
-                    ctx.lineWidth = 0.8;
+                    ctx.strokeStyle = r % 4 === 0 ? 'rgba(0, 240, 255, 0.45)' : 'rgba(168, 85, 247, 0.24)';
+                    ctx.lineWidth = r % 4 === 0 ? 1.2 : 0.75;
                     ctx.stroke();
                 }
+
+                // 2. 纵向深度线 (纵深网络连线，形成真正棋盘空间网格)
+                for (let c = 0; c < gridCols; c += 2) {
+                    ctx.beginPath();
+                    let started = false;
+                    for (let r = 0; r < gridRows; r++) {
+                        const gx = (c - gridCols / 2) * cellW;
+                        const gz = (r - gridRows / 2) * cellH;
+                        const gy = 190 + Math.sin(c * 0.38 + t * 2.2) * 26 + Math.cos(r * 0.35 - t * 1.8) * 20;
+                        const proj = project3D(gx, gy, gz, cx, cy + 30);
+                        if (proj) {
+                            if (!started) { ctx.moveTo(proj.x, proj.y); started = true; }
+                            else { ctx.lineTo(proj.x, proj.y); }
+                        }
+                    }
+                    ctx.strokeStyle = 'rgba(0, 240, 255, 0.22)';
+                    ctx.lineWidth = 0.7;
+                    ctx.stroke();
+                }
+
+                // 3. 天顶镜像对冲网格 (Ceiling Grid - 打造完整折跃隧道氛围)
+                for (let r = 0; r < gridRows; r += 2) {
+                    ctx.beginPath();
+                    let started = false;
+                    for (let c = 0; c < gridCols; c += 2) {
+                        const gx = (c - gridCols / 2) * cellW;
+                        const gz = (r - gridRows / 2) * cellH;
+                        const gy = -240 - Math.sin(c * 0.3 + t * 1.5) * 20 - Math.cos(r * 0.3 - t * 1.2) * 18;
+                        const proj = project3D(gx, gy, gz, cx, cy - 20);
+                        if (proj) {
+                            if (!started) { ctx.moveTo(proj.x, proj.y); started = true; }
+                            else { ctx.lineTo(proj.x, proj.y); }
+                        }
+                    }
+                    ctx.strokeStyle = 'rgba(255, 117, 140, 0.22)';
+                    ctx.lineWidth = 0.75;
+                    ctx.stroke();
+                }
+
+                // 4. 地平线发光脉冲带
+                const horizonY = cy + 30;
+                const gradH = ctx.createLinearGradient(0, horizonY - 15, 0, horizonY + 15);
+                gradH.addColorStop(0, 'rgba(0, 240, 255, 0)');
+                gradH.addColorStop(0.5, 'rgba(0, 240, 255, 0.25)');
+                gradH.addColorStop(1, 'rgba(0, 240, 255, 0)');
+                ctx.fillStyle = gradH;
+                ctx.fillRect(0, horizonY - 15, width, 30);
+
                 ctx.restore();
             }
 
@@ -3424,7 +3662,53 @@
                 }
             }
 
-                        // ================= 4. 全局常驻三维赛博樱花散华与长按汇聚物理引擎 (560 瓣) =================
+            // ================= 模式 4: 超维星轨跃迁 (Hyperdrive Warp Stars 替代鸡肋樱花模式) =================
+            else if (currentMode === 4) {
+                if (!window.warpStars) {
+                    window.warpStars = [];
+                    for (let s = 0; s < 450; s++) {
+                        window.warpStars.push({
+                            x: (Math.random() - 0.5) * 1600,
+                            y: (Math.random() - 0.5) * 1200,
+                            z: Math.random() * 1000 + 10,
+                            pz: Math.random() * 1000 + 10
+                        });
+                    }
+                }
+
+                ctx.save();
+                for (let s = 0; s < window.warpStars.length; s++) {
+                    const star = window.warpStars[s];
+                    star.pz = star.z;
+                    star.z -= 18; // 相对论超光速折跃速度
+                    if (star.z <= 10) {
+                        star.z = 1000;
+                        star.pz = 1000;
+                        star.x = (Math.random() - 0.5) * 1600;
+                        star.y = (Math.random() - 0.5) * 1200;
+                    }
+
+                    const k = 450 / star.z;
+                    const pk = 450 / star.pz;
+                    const sx = star.x * k + cx;
+                    const sy = star.y * k + cy;
+                    const psx = star.x * pk + cx;
+                    const psy = star.y * pk + cy;
+
+                    if (sx >= 0 && sx <= width && sy >= 0 && sy <= height) {
+                        const alpha = Math.min(1.0, (1 - star.z / 1000) * 1.4);
+                        ctx.beginPath();
+                        ctx.moveTo(psx, psy);
+                        ctx.lineTo(sx, sy);
+                        ctx.strokeStyle = s % 3 === 0 ? `rgba(0, 240, 255, ${alpha})` : (s % 3 === 1 ? `rgba(255, 117, 140, ${alpha})` : `rgba(255, 255, 255, ${alpha})`);
+                        ctx.lineWidth = Math.max(1, (1 - star.z / 1000) * 3);
+                        ctx.stroke();
+                    }
+                }
+                ctx.restore();
+            }
+
+            // ================= 4. 全局常驻三维赛博樱花散华与长按汇聚物理引擎 (560 瓣) =================
             const mouseSpeed = Math.hypot(mouseSpeedX, mouseSpeedY);
             const activeSakuraLimit = currentMode === 4 ? sakuraPetals.length : Math.floor(sakuraPetals.length * 0.9);
 
@@ -3801,19 +4085,44 @@
             }
         }
 
-        // 默认初始化装载第 1 首 (preload="none" 保证 0 字节启动)
+        // 默认初始化装载第 1 首曲目
         if (bgmAudio) {
+            bgmAudio.src = bgmPlaylist[0].src;
             loadAndPlay(0, false);
         }
+
+        // 页面首次任意用户手势交互时，自动就绪 Web Audio 并激活环境声景
+        let hasAwakenedAudio = false;
+        function autoAwakenAudioOnFirstGesture() {
+            if (hasAwakenedAudio) return;
+            hasAwakenedAudio = true;
+            initAudio();
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            if (!isAudioPlaying) {
+                toggleAmbientAudio();
+            }
+        }
+        window.addEventListener('pointerdown', autoAwakenAudioOnFirstGesture, { once: true });
+        window.addEventListener('keydown', autoAwakenAudioOnFirstGesture, { once: true });
+
 
         // 播放/暂停总控
         function togglePlayPause() {
             if (!bgmAudio) return;
+            if (!bgmAudio.src || bgmAudio.src === '' || bgmAudio.src === window.location.href) {
+                loadAndPlay(bgmIndex, true);
+                return;
+            }
             if (bgmAudio.paused) {
                 bgmAudio.play().then(() => {
                     isBgmPlaying = true;
                     syncMusicUI();
-                }).catch(err => console.log('Play err:', err));
+                }).catch(err => {
+                    console.log('Play err, retrying with load:', err);
+                    loadAndPlay(bgmIndex, true);
+                });
             } else {
                 bgmAudio.pause();
                 isBgmPlaying = false;
@@ -3821,8 +4130,9 @@
             }
         }
 
-        // Hero 专属大键绑定
+        // Hero 专属大键绑定 (唱片黑胶与中央大播放键双重绑定)
         if (heroPlayBtn) heroPlayBtn.addEventListener('click', togglePlayPause);
+        if (heroVinylDisc) heroVinylDisc.addEventListener('click', togglePlayPause);
         if (heroDiscWrap) heroDiscWrap.addEventListener('click', togglePlayPause);
         if (heroNextBtn) heroNextBtn.addEventListener('click', () => loadAndPlay(bgmIndex + 1, true));
         if (heroPrevBtn) heroPrevBtn.addEventListener('click', () => loadAndPlay(bgmIndex - 1, true));
