@@ -1333,519 +1333,375 @@
             max-width: 220px;
         }
 
-        /* ================= BENTO HERO 布局系统 (参考 XinghuisamaBlogs) ================= */
+        
+        /* ================= 全景通透、完全无黑框遮挡的 HUD 英雄区 ================= */
         .hero-section {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding-top: 100px;
-            padding-bottom: 60px;
+            padding-top: 85px;
+            padding-bottom: 50px;
             position: relative;
         }
 
-        .hero-bento-row {
-            display: grid;
-            grid-template-columns: 7fr 5fr;
-            gap: 28px;
-            align-items: stretch;
+        /* 顶部显眼 3D 动力学交互模式切换坞 */
+        .top-visual-dock-wrapper {
             width: 100%;
-            margin-bottom: 24px;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 26px;
+            position: relative;
+            z-index: 20;
+        }
+        .top-visual-dock {
+            background: rgba(8, 12, 24, 0.45);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 40px;
+            padding: 6px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), 0 0 16px rgba(0, 240, 255, 0.12);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .dock-tag-label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: var(--cyan);
+            letter-spacing: 0.08em;
+            padding-right: 8px;
+            border-right: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .dock-led {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 8px #10b981;
+            animation: dock-pulse 1.8s infinite;
+        }
+        @keyframes dock-pulse {
+            0% { transform: scale(0.9); opacity: 0.8; }
+            50% { transform: scale(1.3); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.8; }
+        }
+        .dock-btn-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .dock-mode-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            letter-spacing: 0.02em;
+        }
+        .dock-mode-btn:hover {
+            color: #ffffff;
+            border-color: var(--cyan);
+            background: rgba(0, 240, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(0, 240, 255, 0.25);
+        }
+        .dock-mode-btn.selected {
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.3), rgba(99, 102, 241, 0.35));
+            border-color: var(--cyan);
+            color: #ffffff;
+            box-shadow: 0 0 16px rgba(0, 240, 255, 0.4);
+        }
+        .dock-mode-btn.sakura-mode.selected {
+            background: linear-gradient(135deg, rgba(255, 117, 140, 0.35), rgba(255, 184, 198, 0.3));
+            border-color: var(--sakura);
+            color: #ffffff;
+            box-shadow: 0 0 16px rgba(255, 117, 140, 0.5);
+        }
+        .dock-shortcut-badge {
+            font-size: 0.65rem;
+            font-family: var(--font-mono);
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1px 5px;
+            border-radius: 6px;
+            color: #94a3b8;
         }
 
-        @media (max-width: 1024px) {
-            .hero-bento-row {
-                grid-template-columns: 1fr;
-                gap: 24px;
-            }
-        }
-
-        /* 左侧 Profile 卡片 */
-        .hero-profile-card {
-            background: rgba(10, 15, 30, 0.72);
-            border: 1px solid rgba(0, 240, 255, 0.22);
-            border-radius: 24px;
-            padding: clamp(24px, 3.2vw, 36px);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 24px rgba(0, 240, 255, 0.08);
+        /* 纯透无框容器：彻底告别黑框框！3D 樱花与粒子一览无遗 */
+        .hero-frameless-layout {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            gap: 18px;
+            max-width: 680px;
             position: relative;
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .hero-profile-card:hover {
-            border-color: rgba(0, 240, 255, 0.45);
-            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.6), 0 0 32px rgba(0, 240, 255, 0.18);
+            z-index: 10;
         }
 
         .profile-header-group {
             display: flex;
             align-items: center;
             gap: 20px;
-            margin-bottom: 16px;
+            margin-bottom: 6px;
         }
         .profile-avatar-box {
             position: relative;
-            width: 72px;
-            height: 72px;
-            border-radius: 20px;
+            width: 74px;
+            height: 74px;
+            border-radius: 50%;
             padding: 3px;
             background: linear-gradient(135deg, var(--cyan), var(--sakura));
-            box-shadow: 0 0 16px rgba(0, 240, 255, 0.35);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
             flex-shrink: 0;
         }
         .profile-avatar-img {
             width: 100%;
             height: 100%;
-            border-radius: 17px;
-            object-cover: cover;
+            border-radius: 50%;
+            object-fit: cover;
             display: block;
             background: #0b1120;
         }
         .avatar-status-dot {
             position: absolute;
-            bottom: -2px;
-            right: -2px;
+            bottom: 2px;
+            right: 2px;
             width: 16px;
             height: 16px;
             background: #10b981;
-            border: 3px solid #0a0f1e;
+            border: 2.5px solid #060913;
             border-radius: 50%;
-            box-shadow: 0 0 10px #10b981;
+            box-shadow: 0 0 8px #10b981;
         }
-        .profile-title-group {
-            flex: 1;
-            min-width: 0;
+
+        /* 标题文字加上电影级纯净投影，脱离黑框也能极其清晰锋利 */
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.8rem, 6.2vw, 5.2rem);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            line-height: 1.0;
+            color: #ffffff;
+            margin: 0;
+            text-transform: uppercase;
+            text-shadow: 0 4px 18px rgba(0, 0, 0, 0.9), 0 0 8px rgba(0, 240, 255, 0.3);
         }
+        .hero-title .cn-name {
+            display: inline-block;
+            font-size: 0.52em;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.95);
+            margin-left: 14px;
+            letter-spacing: 0.05em;
+            background: linear-gradient(135deg, #ffffff 0%, var(--cyan) 60%, var(--sakura) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
         .profile-role-line {
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-top: 4px;
+            margin-top: 6px;
             flex-wrap: wrap;
         }
         .role-badge {
             font-size: 0.72rem;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--cyan);
-            background: rgba(0, 240, 255, 0.1);
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            padding: 2px 8px;
+            background: rgba(0, 240, 255, 0.12);
+            border: 1px solid rgba(0, 240, 255, 0.35);
+            padding: 2px 10px;
             border-radius: 12px;
             letter-spacing: 0.05em;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
         }
         .role-subtext {
-            font-size: 0.8rem;
-            color: var(--text-dim);
-            letter-spacing: 0.02em;
+            font-size: 0.84rem;
+            color: #e2e8f0;
+            font-weight: 500;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.9);
         }
 
-        /* 右侧 CloudPlayer 大尺寸毛玻璃音乐盒卡片 */
-        .hero-cloud-player-card {
-            background: rgba(13, 20, 42, 0.78);
-            border: 1.5px solid rgba(0, 240, 255, 0.38);
-            border-radius: 24px;
-            padding: clamp(22px, 2.8vw, 32px);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.65), 0 0 32px rgba(0, 240, 255, 0.16);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        .hero-subtitle-clean {
+            font-size: clamp(0.95rem, 1.25vw, 1.1rem);
+            color: #e2e8f0;
+            line-height: 1.65;
+            margin-top: 8px;
+            text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95), 0 0 4px rgba(0, 0, 0, 0.9);
         }
-        .hero-cloud-player-card:hover {
+
+        /* 极简轻盈、通透灵动的 Hi-Fi 浮空音乐条 (绝不遮挡 3D 视觉与粒子) */
+        .hero-compact-music-bar {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            background: rgba(8, 12, 24, 0.42);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 40px;
+            padding: 8px 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 16px rgba(0, 240, 255, 0.12);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            max-width: 460px;
+            width: fit-content;
+            margin-top: 4px;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+        .hero-compact-music-bar:hover {
             border-color: var(--cyan);
-            box-shadow: 0 24px 56px rgba(0, 0, 0, 0.75), 0 0 40px rgba(0, 240, 255, 0.28);
+            background: rgba(8, 12, 24, 0.6);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55), 0 0 24px rgba(0, 240, 255, 0.25);
             transform: translateY(-2px);
         }
 
-        .player-glow-blob {
-            position: absolute;
-            top: -40px;
-            right: -40px;
-            width: 160px;
-            height: 160px;
+        .mini-disc-vinyl {
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(0, 240, 255, 0.25) 0%, rgba(255, 117, 140, 0.15) 50%, transparent 80%);
-            filter: blur(30px);
-            pointer-events: none;
-        }
-
-        .player-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-            position: relative;
-            z-index: 2;
-        }
-        .player-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(0, 240, 255, 0.12);
-            border: 1px solid rgba(0, 240, 255, 0.4);
-            color: var(--cyan);
-            font-size: 0.72rem;
-            font-weight: 800;
-            padding: 4px 12px;
-            border-radius: 20px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-        .player-pulse-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--cyan);
-            box-shadow: 0 0 10px var(--cyan);
-            animation: pulse-ring 1.8s infinite;
-        }
-        @keyframes pulse-ring {
-            0% { transform: scale(0.9); opacity: 0.8; }
-            50% { transform: scale(1.3); opacity: 1; }
-            100% { transform: scale(0.9); opacity: 0.8; }
-        }
-        .player-track-counter {
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            color: #94a3b8;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-        }
-
-        /* 唱片与歌曲信息区 */
-        .player-main-info {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 16px;
-            position: relative;
-            z-index: 2;
-        }
-        .player-disc-wrap {
-            width: 82px;
-            height: 82px;
-            flex-shrink: 0;
-            cursor: pointer;
-            position: relative;
-        }
-        .player-disc-vinyl {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: radial-gradient(circle, #0b1120 30%, #00f0ff 31%, #020617 33%, #1e293b 80%, #00f0ff 100%);
-            border: 2.5px solid rgba(0, 240, 255, 0.6);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 16px rgba(0, 240, 255, 0.25);
+            background: radial-gradient(circle, #0b1120 28%, #00f0ff 29%, #020617 33%, #1e293b 80%, #00f0ff 100%);
+            border: 1.8px solid rgba(0, 240, 255, 0.6);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            transition: transform 0.2s ease;
+            flex-shrink: 0;
+            cursor: pointer;
         }
-        .player-disc-vinyl.spinning {
+        .mini-disc-vinyl.spinning {
             animation: disc-rotate 5s linear infinite;
         }
-        @keyframes disc-rotate {
-            100% { transform: rotate(360deg); }
-        }
-        .disc-center-label {
-            width: 28px;
-            height: 28px;
+        .mini-disc-center {
+            width: 15px;
+            height: 15px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--cyan), var(--sakura));
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
         }
-        .disc-hole {
-            width: 8px;
-            height: 8px;
+        .mini-disc-hole {
+            width: 5px;
+            height: 5px;
             border-radius: 50%;
             background: #020617;
-            border: 1px solid rgba(255, 255, 255, 0.6);
         }
 
-        .player-meta-box {
-            flex: 1;
-            min-width: 0;
+        .mini-player-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 140px;
+            max-width: 180px;
         }
-        .player-song-tag {
-            font-size: 0.72rem;
-            color: var(--sakura);
-            font-weight: 600;
-            letter-spacing: 0.04em;
-            margin-bottom: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .player-song-title {
-            font-size: clamp(1.2rem, 1.8vw, 1.45rem);
+        .mini-song-name {
+            font-size: 0.88rem;
             font-weight: 800;
             color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             line-height: 1.2;
-            margin-bottom: 6px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
         }
-        .player-play-status {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.75rem;
-            color: var(--cyan);
-            font-weight: 600;
-        }
-
-        /* 动态打字机歌词栏 */
-        .player-lyric-box {
-            background: rgba(0, 0, 0, 0.35);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            padding: 8px 14px;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            min-height: 38px;
-            position: relative;
-            z-index: 2;
-        }
-        .lyric-icon {
+        .mini-song-tag {
+            font-size: 0.68rem;
             color: var(--sakura);
-            font-size: 0.9rem;
-            animation: bounce-note 1.2s infinite alternate;
-        }
-        @keyframes bounce-note {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-3px); }
-        }
-        .lyric-text {
-            font-size: 0.82rem;
-            color: #cbd5e1;
-            font-weight: 500;
+            font-weight: 600;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            letter-spacing: 0.03em;
         }
 
-        /* 进度条与时间 */
-        .player-progress-area {
-            margin-bottom: 16px;
-            position: relative;
-            z-index: 2;
-        }
-        .player-time-row {
-            display: flex;
-            justify-content: space-between;
-            font-family: var(--font-mono);
-            font-size: 0.72rem;
-            color: #94a3b8;
-            margin-bottom: 6px;
-            font-weight: 600;
-        }
-        .player-progress-bar-bg {
-            width: 100%;
-            height: 7px;
-            background: rgba(255, 255, 255, 0.12);
-            border-radius: 6px;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.4);
-        }
-        .player-progress-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--cyan), var(--sakura));
-            border-radius: 6px;
-            position: relative;
-            box-shadow: 0 0 12px var(--cyan);
-            transition: width 0.1s linear;
-        }
-
-        /* 控制按钮主行 (大尺寸显眼 Play 键) */
-        .player-controls-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 14px;
-            margin-bottom: 14px;
-            position: relative;
-            z-index: 2;
-        }
-        .player-btn {
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            color: #cbd5e1;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .player-btn:hover {
-            color: #ffffff;
-            transform: scale(1.12);
-        }
-        .player-sub-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            font-size: 0.95rem;
-        }
-        .player-sub-btn:hover {
-            border-color: var(--cyan);
-            background: rgba(0, 240, 255, 0.15);
-        }
-        .player-big-play-btn {
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #00f0ff 0%, #6366f1 100%);
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            color: #030712;
-            font-size: 1.35rem;
-            font-weight: 900;
-            box-shadow: 0 0 24px rgba(0, 240, 255, 0.5), 0 4px 14px rgba(0, 0, 0, 0.4);
-            animation: play-pulse 2.4s infinite;
-        }
-        @keyframes play-pulse {
-            0% { box-shadow: 0 0 20px rgba(0, 240, 255, 0.4); }
-            50% { box-shadow: 0 0 32px rgba(0, 240, 255, 0.7), 0 0 12px var(--sakura); }
-            100% { box-shadow: 0 0 20px rgba(0, 240, 255, 0.4); }
-        }
-        .player-big-play-btn:hover {
-            transform: scale(1.16);
-            box-shadow: 0 0 36px rgba(0, 240, 255, 0.8);
-        }
-        .player-list-btn {
-            padding: 6px 14px;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            font-size: 0.78rem;
-            font-weight: 700;
-            color: var(--cyan);
-            letter-spacing: 0.05em;
-        }
-        .player-list-btn:hover {
-            background: rgba(0, 240, 255, 0.2);
-            border-color: var(--cyan);
-        }
-
-        /* 底部音量调节与提示 */
-        .player-bottom-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            padding-top: 12px;
-            position: relative;
-            z-index: 2;
-        }
-        .player-vol-box {
+        .mini-controls-group {
             display: flex;
             align-items: center;
             gap: 8px;
+            flex-shrink: 0;
         }
-        .vol-icon {
-            font-size: 0.85rem;
-            color: var(--cyan);
-            cursor: pointer;
-        }
-        .vol-slider {
-            width: 80px;
-            height: 4px;
-            -webkit-appearance: none;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-            outline: none;
-            cursor: pointer;
-        }
-        .vol-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 12px;
-            height: 12px;
+        .mini-play-btn {
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
-            background: var(--cyan);
-            box-shadow: 0 0 8px var(--cyan);
-            cursor: pointer;
-        }
-        .player-prompt-hint {
-            font-size: 0.7rem;
-            color: #94a3b8;
-            font-weight: 500;
-            letter-spacing: 0.02em;
-        }
-
-        /* 10 首曲目抽屉列表 */
-        .player-playlist-drawer {
-            max-height: 0;
-            overflow-y: auto;
-            transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), margin-top 0.3s ease;
+            background: linear-gradient(135deg, #00f0ff 0%, #6366f1 100%);
+            border: 1.5px solid rgba(255, 255, 255, 0.6);
+            color: #030712;
+            font-size: 1.05rem;
+            font-weight: 900;
             display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin-top: 0;
-            position: relative;
-            z-index: 2;
-        }
-        .player-playlist-drawer.open {
-            max-height: 220px;
-            margin-top: 14px;
-            padding-top: 10px;
-            border-top: 1px dashed rgba(255, 255, 255, 0.15);
-        }
-        .player-playlist-drawer::-webkit-scrollbar {
-            width: 4px;
-        }
-        .player-playlist-drawer::-webkit-scrollbar-thumb {
-            background: var(--cyan);
-            border-radius: 2px;
-        }
-        .drawer-song-item {
-            display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 8px 12px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 10px;
+            justify-content: center;
             cursor: pointer;
+            box-shadow: 0 0 16px rgba(0, 240, 255, 0.45);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .mini-play-btn:hover {
+            transform: scale(1.14);
+            box-shadow: 0 0 24px rgba(0, 240, 255, 0.7);
+        }
+        .mini-sub-btn {
+            background: transparent;
+            border: none;
+            color: #cbd5e1;
+            font-size: 0.85rem;
+            cursor: pointer;
+            padding: 4px;
             transition: all 0.2s ease;
         }
-        .drawer-song-item:hover {
-            background: rgba(0, 240, 255, 0.12);
-            border-color: rgba(0, 240, 255, 0.35);
-            transform: translateX(4px);
-        }
-        .drawer-song-item.active {
-            background: rgba(0, 240, 255, 0.2);
-            border-color: var(--cyan);
-            box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
-        }
-        .drawer-song-title {
-            font-size: 0.78rem;
-            font-weight: 600;
+        .mini-sub-btn:hover {
             color: #ffffff;
+            transform: scale(1.15);
         }
-        .drawer-song-artist {
-            font-size: 0.68rem;
-            color: #94a3b8;
+
+        .mini-playlist-btn {
+            font-size: 0.72rem;
+            color: var(--cyan);
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 12px;
+            padding: 3px 8px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        /* 浮动下拉 10 首曲目抽屉 */
+        .mini-playlist-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            width: 320px;
+            background: rgba(10, 15, 30, 0.92);
+            border: 1px solid rgba(0, 240, 255, 0.35);
+            border-radius: 16px;
+            padding: 10px;
+            max-height: 220px;
+            overflow-y: auto;
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.7), 0 0 24px rgba(0, 240, 255, 0.2);
+            backdrop-filter: blur(20px);
+            z-index: 50;
+        }
+        .mini-playlist-dropdown.open {
+            display: flex;
         }
 
         /* ================= 歌词/名言流光跑马灯 (LyricBar) ================= */
@@ -2033,162 +1889,148 @@
         <div class="page-container">
 
             <!-- ================= HERO 英雄区 (现代 Bento 架构 · 参考 XinghuisamaBlogs) ================= -->
+                        <!-- ================= 全景纯净 HERO 英雄区 (无黑框遮挡 · 3D 画布全景展现) ================= -->
             <section class="hero-section" id="hero">
-                <!-- 第一行：个人信息卡片 (7fr) + 大尺寸毛玻璃音乐盒 (5fr) -->
-                <div class="hero-bento-row">
-                    
-                    <!-- 左侧 7fr: Profile Card 个人形象与极客介绍卡片 -->
-                    <div class="hero-profile-card interactive-card">
-                        <div class="hero-tag-row">
-                            <div class="hero-tag">CODE, RESEARCH &amp; AIGC EXPLORER</div>
-                            <div class="anime-motto-tag">
-                                <span>✨</span>
-                                <span>アルゴリズムと二次元の美学</span>
-                            </div>
+                <!-- 🌟 顶部超显眼 3D 动力学交互模式切换坞 (1-5 键一目了然) -->
+                <div class="top-visual-dock-wrapper">
+                    <div class="top-visual-dock">
+                        <div class="dock-tag-label">
+                            <span class="dock-led"></span>
+                            <span>3D 视觉引擎交互切换</span>
                         </div>
-
-                        <div class="profile-header-group">
-                            <div class="profile-avatar-box">
-                                <img src="https://avatars.githubusercontent.com/u/108399580?v=4" alt="SherlockYzz Avatar" class="profile-avatar-img" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=SherlockYzz'">
-                                <span class="avatar-status-dot" title="Online"></span>
-                            </div>
-                            <div class="profile-title-group">
-                                <h1 class="hero-title" style="margin-bottom:0;">
-                                    SHERLOCK YZZ<span class="cn-name">折木柯南</span>
-                                </h1>
-                                <div class="profile-role-line">
-                                    <span class="role-badge">博主 · UP 主</span>
-                                    <span class="role-subtext">HENU 计算机系本科在读 · 科研萌新 · 探索二次元与智能交互美学</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <p class="hero-subtitle" style="margin-top: 14px;">
-                            你好，我是一位正在探索代码、科研以及 AIGC 创作的 19 岁大学生，也是一位热爱二次元与生活的技术探索者。<br>
-                            <span style="display:inline-block; margin-top:6px; color:#ffffff; font-weight:600;">我们生而眺望，自星海尽处回响！</span> · 
-                            <span style="color:var(--cyan); font-family:var(--font-mono); font-weight:600; letter-spacing:0.05em;">El Psy Congroo！</span>
-                        </p>
-
-                        <!-- 终端打字机名言栏 -->
-                        <div class="terminal-callout">
-                            <span class="term-prompt">&gt;</span>
-                            <span class="term-text" id="typewriter-target">少年何妨梦摘星，敢挽桑弓射玉衡。</span>
-                            <span class="cursor-blink"></span>
-                        </div>
-
-                        <!-- 核心标签栏 -->
-                        <div class="hero-badges">
-                            <div class="badge-pill">
-                                <span class="badge-dot" style="background: var(--cyan); box-shadow:0 0 8px var(--cyan);"></span>
-                                <span>河南大学 HENU 本科在读</span>
-                            </div>
-                            <div class="badge-pill">
-                                <span class="badge-dot" style="background: var(--violet); box-shadow:0 0 8px var(--violet);"></span>
-                                <span>C++ / JS / Python 算法储备</span>
-                            </div>
-                            <div class="badge-pill">
-                                <span class="badge-dot" style="background: var(--sakura); box-shadow:0 0 8px var(--sakura);"></span>
-                                <span>Live2D / 3D WebGL 视觉探索</span>
-                            </div>
-                            <div class="badge-pill">
-                                <span class="badge-dot" style="background: var(--green); box-shadow:0 0 8px var(--green);"></span>
-                                <span>B 站 UP 主 · 科研萌新</span>
-                            </div>
-                        </div>
-
-                        <!-- 交互动作按钮 -->
-                        <div class="hero-actions">
-                            <a href="#projects" class="btn-primary">
-                                <span>浏览工程项目 / Projects ↓</span>
-                            </a>
-                            <button class="btn-secondary" id="hero-terminal-btn">
-                                <span>控制台 [~]</span>
+                        <div class="dock-btn-group">
+                            <button class="dock-mode-btn selected" data-mode="0">
+                                <span>🌌</span>
+                                <span>量子核心</span>
+                                <span class="dock-shortcut-badge">1</span>
                             </button>
-                            <button class="btn-secondary" id="hero-sakura-btn" style="border-color: rgba(255, 117, 140, 0.4); color: var(--sakura);">
-                                <span>🌸 樱花散华</span>
+                            <button class="dock-mode-btn" data-mode="1">
+                                <span>🌐</span>
+                                <span>赛博网格</span>
+                                <span class="dock-shortcut-badge">2</span>
                             </button>
-                            <a href="https://github.com/SherlockYzz" target="_blank" class="btn-secondary">
-                                <span>GitHub ↗</span>
-                            </a>
+                            <button class="dock-mode-btn" data-mode="2">
+                                <span>💫</span>
+                                <span>拓扑流线</span>
+                                <span class="dock-shortcut-badge">3</span>
+                            </button>
+                            <button class="dock-mode-btn" data-mode="3">
+                                <span>💻</span>
+                                <span>矩阵代码</span>
+                                <span class="dock-shortcut-badge">4</span>
+                            </button>
+                            <button class="dock-mode-btn sakura-mode" data-mode="4">
+                                <span>🌸</span>
+                                <span>樱花散华</span>
+                                <span class="dock-shortcut-badge">5</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 纯透 HUD 文本区 (完全无黑框背景！3D 樱花粒子全屏无死角流淌) -->
+                <div class="hero-frameless-layout">
+                    <div class="hero-tag-row" style="margin-bottom: 8px;">
+                        <div class="hero-tag">CODE, RESEARCH &amp; AIGC EXPLORER</div>
+                        <div class="anime-motto-tag">
+                            <span>✨</span>
+                            <span>アルゴリズムと二次元の美学</span>
                         </div>
                     </div>
 
-                    <!-- 右侧 5fr: 大尺寸二次元毛玻璃音乐盒卡片 (CloudPlayer · 显眼明朗) -->
-                    <div class="hero-cloud-player-card interactive-card" id="hero-cloud-player">
-                        <div class="player-glow-blob"></div>
-
-                        <div class="player-card-header">
-                            <div class="player-badge">
-                                <span class="player-pulse-dot"></span>
-                                <span>CLOUD MUSIC JUKEBOX</span>
-                            </div>
-                            <span class="player-track-counter" id="hero-track-counter">1 / 10 TRACKS</span>
+                    <div class="profile-header-group">
+                        <div class="profile-avatar-box">
+                            <!-- GitHub 真实头像，本地离线+线上双重保障 -->
+                            <img src="avatar.png" onerror="this.src='https://avatars.githubusercontent.com/u/283559275?v=4'" alt="SherlockYzz (折木柯南)" class="profile-avatar-img">
+                            <span class="avatar-status-dot" title="Online"></span>
                         </div>
-
-                        <!-- 黑胶唱片与歌曲信息行 -->
-                        <div class="player-main-info">
-                            <div class="player-disc-wrap" id="hero-disc-wrap" title="点击一键播放/暂停">
-                                <div class="player-disc-vinyl" id="hero-vinyl-disc">
-                                    <div class="disc-center-label">
-                                        <span class="disc-hole"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="player-meta-box">
-                                <div class="player-song-tag" id="hero-song-tag">《鸣潮》心月狐主题曲</div>
-                                <h3 class="player-song-title" id="hero-song-title">月声尽，心灯明</h3>
-                                <div class="player-play-status" id="hero-play-status">
-                                    <span class="status-icon">▶</span>
-                                    <span class="status-text">点击中央大键即刻启奏</span>
-                                </div>
+                        <div class="profile-title-group">
+                            <h1 class="hero-title">
+                                SHERLOCK YZZ<span class="cn-name">折木柯南</span>
+                            </h1>
+                            <div class="profile-role-line">
+                                <span class="role-badge">博主 · UP 主</span>
+                                <span class="role-subtext">HENU 计算机系在读 · 科研萌新 · 探索二次元与智能交互美学</span>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- 动态歌词/名言展示条 -->
-                        <div class="player-lyric-box">
-                            <span class="lyric-icon">♫</span>
-                            <span class="lyric-text" id="hero-lyric-text">「月声尽，心灯明，踏遍万水千山长夜有光」</span>
+                    <p class="hero-subtitle-clean">
+                        你好，我是一位正在探索代码、科研以及 AIGC 创作的 19 岁大学生，也是一位热爱二次元与生活的技术探索者。<br>
+                        <span style="display:inline-block; margin-top:6px; color:#ffffff; font-weight:700;">我们生而眺望，自星海尽处回响！</span> · 
+                        <span style="color:var(--cyan); font-family:var(--font-mono); font-weight:600; letter-spacing:0.05em;">El Psy Congroo！</span>
+                    </p>
+
+                    <!-- 终端打字机名言栏 (微光浮空，无厚重黑框) -->
+                    <div class="terminal-callout" style="max-width: 580px; margin: 6px 0 10px 0;">
+                        <span class="term-prompt">&gt;</span>
+                        <span class="term-text" id="typewriter-target">少年何妨梦摘星，敢挽桑弓射玉衡。</span>
+                        <span class="cursor-blink"></span>
+                    </div>
+
+                    <!-- 核心标签栏 (清透胶囊) -->
+                    <div class="hero-badges" style="margin-bottom: 8px;">
+                        <div class="badge-pill">
+                            <span class="badge-dot" style="background: var(--cyan); box-shadow:0 0 8px var(--cyan);"></span>
+                            <span>河南大学 HENU 本科在读</span>
                         </div>
+                        <div class="badge-pill">
+                            <span class="badge-dot" style="background: var(--violet); box-shadow:0 0 8px var(--violet);"></span>
+                            <span>C++ / JS / Python 算法储备</span>
+                        </div>
+                        <div class="badge-pill">
+                            <span class="badge-dot" style="background: var(--sakura); box-shadow:0 0 8px var(--sakura);"></span>
+                            <span>Live2D / 3D WebGL 视觉探索</span>
+                        </div>
+                        <div class="badge-pill">
+                            <span class="badge-dot" style="background: var(--green); box-shadow:0 0 8px var(--green);"></span>
+                            <span>B 站 UP 主 · 科研萌新</span>
+                        </div>
+                    </div>
 
-                        <!-- 进度条与时间 -->
-                        <div class="player-progress-area">
-                            <div class="player-time-row">
-                                <span id="hero-cur-time">00:00</span>
-                                <span id="hero-dur-time">03:48</span>
-                            </div>
-                            <div class="player-progress-bar-bg" id="hero-progress-bg">
-                                <div class="player-progress-fill" id="hero-progress-fill"></div>
+                    <!-- 🌟 紧凑精巧 Hi-Fi 浮空音乐盒 (极简通透，绝不挡住右侧3D核心与漫天樱花) -->
+                    <div class="hero-compact-music-bar" id="hero-cloud-player">
+                        <div class="mini-disc-vinyl" id="hero-vinyl-disc" title="点击播放/暂停">
+                            <div class="mini-disc-center">
+                                <span class="mini-disc-hole"></span>
                             </div>
                         </div>
-
-                        <!-- 核心大按键播放控制栏 (大号 52px 播放按键，极为醒目) -->
-                        <div class="player-controls-row">
-                            <button class="player-btn player-sub-btn" id="hero-prev-btn" title="上一首">⏮</button>
-                            <button class="player-btn player-big-play-btn" id="hero-play-btn" title="一键播放/暂停">
+                        <div class="mini-player-info">
+                            <div class="mini-song-name" id="hero-song-title">月声尽，心灯明</div>
+                            <div class="mini-song-tag" id="hero-song-tag">《鸣潮》心月狐主题曲</div>
+                        </div>
+                        <div class="mini-controls-group">
+                            <button class="mini-sub-btn" id="hero-prev-btn" title="上一首">⏮</button>
+                            <button class="mini-play-btn" id="hero-play-btn" title="点击一键起播">
                                 <span id="hero-play-icon">▶</span>
                             </button>
-                            <button class="player-btn player-sub-btn" id="hero-next-btn" title="下一首">⏭</button>
-                            <button class="player-btn player-sub-btn" id="hero-loop-btn" title="单曲循环 / 列表循环">🔁</button>
-                            <button class="player-btn player-list-btn" id="hero-list-btn" title="展开 10 首曲目歌单">歌单 📋</button>
+                            <button class="mini-sub-btn" id="hero-next-btn" title="下一首">⏭</button>
+                            <button class="mini-playlist-btn" id="hero-list-btn" title="点播 10 首曲目">歌单 📋</button>
                         </div>
 
-                        <!-- 底部音量调节与提示 -->
-                        <div class="player-bottom-bar">
-                            <div class="player-vol-box">
-                                <span class="vol-icon" id="hero-mute-icon" title="静音切换">🔊</span>
-                                <input type="range" class="vol-slider" id="hero-vol-slider" min="0" max="1" step="0.01" value="0.25" title="音量调节">
-                            </div>
-                            <span class="player-prompt-hint">✨ 进站点击即可畅听</span>
-                        </div>
-
-                        <!-- 内嵌 10 首曲目抽屉面板 -->
-                        <div class="player-playlist-drawer" id="hero-playlist-drawer"></div>
+                        <!-- 浮动下拉 10 首曲目抽屉 (展开时不撑大主界面) -->
+                        <div class="mini-playlist-dropdown" id="hero-playlist-drawer"></div>
                     </div>
 
+                    <!-- 交互动作按钮 -->
+                    <div class="hero-actions" style="margin-top: 10px;">
+                        <a href="#projects" class="btn-primary">
+                            <span>浏览工程项目 / Projects ↓</span>
+                        </a>
+                        <button class="btn-secondary" id="hero-terminal-btn">
+                            <span>控制台 [~]</span>
+                        </button>
+                        <button class="btn-secondary" id="hero-sakura-btn" style="border-color: rgba(255, 117, 140, 0.4); color: var(--sakura);">
+                            <span>🌸 樱花散华</span>
+                        </button>
+                        <a href="https://github.com/SherlockYzz" target="_blank" class="btn-secondary">
+                            <span>GitHub ↗</span>
+                        </a>
+                    </div>
                 </div>
 
                 <!-- 歌词 / 励志台词流光跑马灯 (LyricBar) -->
-                <div class="hero-lyric-bar">
+                <div class="hero-lyric-bar" style="margin-top: 28px;">
                     <div class="lyric-bar-label">✦ QUOTES &amp; CREED</div>
                     <div class="lyric-bar-track">
                         <span class="lyric-marquee-item">The game is on.</span>
@@ -2208,8 +2050,6 @@
                         <span class="lyric-marquee-item">The game is on.</span>
                         <span class="lyric-marquee-sep">✦</span>
                         <span class="lyric-marquee-item">生命因为有限所以宝贵，因为有限所以才要不懈努力。</span>
-                        <span class="lyric-marquee-sep">✦</span>
-                        <span class="lyric-marquee-item">真相永远只有一个。</span>
                     </div>
                 </div>
 
@@ -3155,11 +2995,11 @@
             playSciFiAudio(580, 0.12, 'sine', false);
         });
 
-        // 鼠标松开：若蓄力达到引力奇点，则引爆全屏超新星大爆炸！
+                // 鼠标松开：若蓄力达到引力奇点，则引爆【全屏超新星樱花散华大爆炸】！
         window.addEventListener('pointerup', (e) => {
             const holdTime = performance.now() - pointerDownTime;
-            if (isPointerDown && holdTime > 260) {
-                screenShake = 12.0;
+            if (isPointerDown && holdTime > 200) {
+                screenShake = 14.0;
                 shockwaves.push({
                     x: e.clientX,
                     y: e.clientY,
@@ -3168,10 +3008,26 @@
                     opacity: 1.0,
                     colorMain: 'rgba(255, 255, 255, ',
                     colorHalo: 'rgba(255, 117, 140, ',
-                    power: 65,
+                    power: 80, // 超强散华爆退力
                     isSupernova: true
                 });
-                spawnBlastSparks(e.clientX, e.clientY, 72, true);
+
+                // 将汇聚在鼠标周围的花瓣狂暴炸向四面八方
+                for (let j = 0; j < sakuraPetals.length; j++) {
+                    const p = sakuraPetals[j];
+                    const bDx = (p.x + width * 0.5) - e.clientX;
+                    const bDy = (p.y + height * 0.5) - e.clientY;
+                    const bDist = Math.hypot(bDx, bDy);
+                    if (bDist < 600) {
+                        const blastPower = (1 - bDist / 600) * 45;
+                        p.blastVx += (bDx / (bDist || 1)) * blastPower;
+                        p.blastVy += (bDy / (bDist || 1)) * blastPower;
+                        p.rotPitch += (Math.random() - 0.5) * 2;
+                        p.rotYaw += (Math.random() - 0.5) * 2;
+                    }
+                }
+
+                spawnBlastSparks(e.clientX, e.clientY, 80, true);
                 playSciFiAudio(220, 0.45, 'triangle', true);
             }
             isPointerDown = false;
@@ -3256,27 +3112,28 @@
         }
         const matrixChars = '0123456789ABCDEFSHERLOCKAGENT01アイウエオカキクケコサシスセソタチツテト🌸✨⚡';
 
-        // ---------- 3. 全局常驻3D赛博樱花散华模型 (Sakura Petals) ----------
-        const SAKURA_COUNT = 280;
+                // ---------- 3. 全局常驻三维赛博樱花散华模型 (升级至 560 瓣高密度浪漫花海) ----------
+        const SAKURA_COUNT = 560;
         const sakuraPetals = [];
         for (let i = 0; i < SAKURA_COUNT; i++) {
             sakuraPetals.push({
-                x: (Math.random() - 0.5) * 1800,
-                y: (Math.random() - 0.5) * 1400,
-                z: (Math.random() - 0.5) * 900,
-                vx: 0.8 + Math.random() * 1.4,
-                vy: 0.9 + Math.random() * 1.6,
-                vz: (Math.random() - 0.5) * 0.5,
+                x: (Math.random() - 0.5) * 2000,
+                y: (Math.random() - 0.5) * 1600,
+                z: (Math.random() - 0.5) * 1000,
+                vx: 0.7 + Math.random() * 1.5,
+                vy: 0.8 + Math.random() * 1.6,
+                vz: (Math.random() - 0.5) * 0.6,
                 blastVx: 0,
                 blastVy: 0,
                 blastVz: 0,
                 rotPitch: Math.random() * Math.PI * 2,
                 rotYaw: Math.random() * Math.PI * 2,
                 rotRoll: Math.random() * Math.PI * 2,
-                pitchSpeed: 0.02 + Math.random() * 0.03,
-                yawSpeed: 0.01 + Math.random() * 0.02,
-                size: 7 + Math.random() * 9,
-                colorType: Math.random()
+                pitchSpeed: 0.02 + Math.random() * 0.035,
+                yawSpeed: 0.015 + Math.random() * 0.025,
+                size: 6.5 + Math.random() * 8.5,
+                notch: 0.2 + Math.random() * 0.2, // 逼真花瓣缺口曲率
+                colorType: Math.random() // 双色渐变：75% 霓虹樱粉，25% 赛博青光
             });
         }
 
@@ -3509,67 +3366,74 @@
                 }
             }
 
-            // ================= 4. 全局常驻三维赛博樱花散华与物理引擎 (Ambient 3D Sakura) =================
+                        // ================= 4. 全局常驻三维赛博樱花散华与长按汇聚物理引擎 (560 瓣) =================
             const mouseSpeed = Math.hypot(mouseSpeedX, mouseSpeedY);
-            const activeSakuraLimit = currentMode === 4 ? sakuraPetals.length : Math.floor(sakuraPetals.length * 0.85);
+            const activeSakuraLimit = currentMode === 4 ? sakuraPetals.length : Math.floor(sakuraPetals.length * 0.9);
 
             for (let i = 0; i < activeSakuraLimit; i++) {
                 const p = sakuraPetals[i];
 
-                p.blastVx *= 0.93;
-                p.blastVy *= 0.93;
-                p.blastVz *= 0.93;
+                p.blastVx *= 0.94;
+                p.blastVy *= 0.94;
+                p.blastVz *= 0.94;
 
-                p.x += p.vx + Math.sin(t + i) * 0.5 + p.blastVx;
+                p.x += p.vx + Math.sin(t + i * 0.7) * 0.6 + p.blastVx;
                 p.y += p.vy + p.blastVy;
                 p.z += p.vz + p.blastVz;
                 p.rotPitch += p.pitchSpeed;
                 p.rotYaw += p.yawSpeed;
 
-                // 物理交互 1: 鼠标气动流体风洞
+                // 物理交互 1: 鼠标移动气动流体风洞 (拂面落英)
                 const dx = p.x - (mouseX - width * 0.5);
                 const dy = p.y - (mouseY - height * 0.5);
                 const distSq = dx * dx + dy * dy;
-                if (distSq < 48000 && distSq > 15) {
+                if (distSq < 52000 && distSq > 15) {
                     const dist = Math.sqrt(distSq);
-                    const force = (1 - dist / 220) * 14;
+                    const force = (1 - dist / 230) * 15;
                     p.x += (dx / dist) * force + mouseSpeedX * 0.35;
                     p.y += (dy / dist) * force + mouseSpeedY * 0.35;
-                    p.rotYaw += mouseSpeed * 0.04;
-                    p.rotPitch += mouseSpeed * 0.05;
+                    p.rotYaw += mouseSpeed * 0.045;
+                    p.rotPitch += mouseSpeed * 0.055;
                 }
 
-                // 物理交互 2: 长按引力坍缩奇点
-                if (isPointerDown && chargeRatio > 0.15) {
+                // 🌟 物理交互 2: 长按鼠标引力奇点 ——【樱花星系超强螺旋汇聚！】
+                if (isPointerDown) {
                     const pullDx = (pointerDownX - width * 0.5) - p.x;
                     const pullDy = (pointerDownY - height * 0.5) - p.y;
                     const pullDist = Math.hypot(pullDx, pullDy);
-                    if (pullDist < 420) {
-                        const pullStrength = (1 - pullDist / 420) * chargeRatio * 20;
-                        p.x += (pullDx / (pullDist || 1)) * pullStrength - (pullDy / (pullDist || 1)) * (pullStrength * 0.6);
-                        p.y += (pullDy / (pullDist || 1)) * pullStrength + (pullDx / (pullDist || 1)) * (pullStrength * 0.6);
-                        p.rotYaw += 0.15;
+                    if (pullDist < 750) {
+                        // 向心拉力 + 切向极速自旋飓风力
+                        const pullFactor = Math.min(32, 750 / (pullDist + 35)) * (0.6 + chargeRatio * 1.5);
+                        p.x += (pullDx / (pullDist || 1)) * pullFactor * 1.1 - (pullDy / (pullDist || 1)) * (pullFactor * 0.85);
+                        p.y += (pullDy / (pullDist || 1)) * pullFactor * 1.1 + (pullDx / (pullDist || 1)) * (pullFactor * 0.85);
+                        p.rotYaw += 0.28;
+                        p.rotPitch += 0.22;
                     }
                 }
 
-                if (p.y > 700) p.y = -700;
-                if (p.x > 900) p.x = -900;
-                if (p.x < -900) p.x = 900;
+                // 边界连续循环，漫天花海永不停歇
+                if (p.y > 750) p.y = -750;
+                if (p.y < -750) p.y = 750;
+                if (p.x > 1000) p.x = -1000;
+                if (p.x < -1000) p.x = 1000;
 
                 const proj = project3D(p.x, p.y, p.z, width * 0.5, height * 0.5);
                 if (proj) {
-                    const depthAlpha = Math.max(0.2, Math.min(0.95, 1 - (proj.depth - 300) / 750));
+                    const depthAlpha = Math.max(0.18, Math.min(0.96, 1 - (proj.depth - 280) / 780));
                     ctx.save();
                     ctx.translate(proj.x, proj.y);
                     ctx.rotate(p.rotYaw);
                     ctx.scale(Math.cos(p.rotPitch) * proj.scale, proj.scale);
 
+                    // 绘制唯美双曲率、带微凹缺口的二次元赛博樱花花瓣
                     ctx.beginPath();
                     ctx.moveTo(0, 0);
-                    ctx.bezierCurveTo(-p.size * 0.7, -p.size * 1.15, -p.size * 1.35, -p.size * 0.2, 0, p.size * 1.25);
-                    ctx.bezierCurveTo(p.size * 1.35, -p.size * 0.2, p.size * 0.7, -p.size * 1.15, 0, 0);
+                    ctx.bezierCurveTo(-p.size * 0.75, -p.size * 1.2, -p.size * 1.35, -p.size * 0.2, -p.size * p.notch, p.size * 1.1);
+                    ctx.lineTo(0, p.size * 0.85); // 唯美花瓣尖端分叉微凹
+                    ctx.lineTo(p.size * p.notch, p.size * 1.1);
+                    ctx.bezierCurveTo(p.size * 1.35, -p.size * 0.2, p.size * 0.75, -p.size * 1.2, 0, 0);
 
-                    if (p.colorType < 0.72) {
+                    if (p.colorType < 0.75) {
                         ctx.fillStyle = `rgba(255, 117, 140, ${depthAlpha * 0.85})`;
                         ctx.strokeStyle = `rgba(255, 184, 198, ${depthAlpha * 0.95})`;
                     } else {
