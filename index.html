@@ -1073,14 +1073,14 @@
         .terminal-modal {
             position: fixed;
             inset: 0;
-            background: rgba(3, 4, 8, 0.82);
+            background: rgba(3, 4, 8, 0.85);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            z-index: 200;
+            z-index: 300;
             display: none;
             align-items: center;
             justify-content: center;
-            padding: 24px;
+            padding: 20px;
         }
         .terminal-modal.open {
             display: flex;
@@ -1088,40 +1088,80 @@
         .terminal-window {
             width: 100%;
             max-width: 800px;
-            height: 500px;
+            height: 520px;
+            max-height: 85vh;
             background: #050811;
             border: 1px solid var(--cyan);
-            border-radius: 12px;
-            box-shadow: 0 0 48px rgba(0, 240, 255, 0.25), 0 24px 64px rgba(0, 0, 0, 0.9);
+            border-radius: 14px;
+            box-shadow: 0 0 48px rgba(0, 240, 255, 0.25), 0 24px 64px rgba(0, 0, 0, 0.95);
             display: flex;
             flex-direction: column;
             overflow: hidden;
             font-family: var(--font-mono);
+            position: relative;
+            z-index: 310;
         }
         .terminal-topbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 10px 16px;
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.04);
             border-bottom: 1px solid var(--border-dim);
             font-size: 0.72rem;
             color: var(--text-dim);
-            letter-spacing: 0.1em;
+            letter-spacing: 0.08em;
+            gap: 10px;
+        }
+        .term-title-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .term-close-btn {
+            background: rgba(255, 117, 140, 0.16);
+            border: 1px solid rgba(255, 117, 140, 0.45);
+            color: #ff758c;
+            border-radius: 8px;
+            padding: 5px 12px;
+            font-size: 0.74rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: var(--font-mono);
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+            pointer-events: auto !important;
+        }
+        .term-close-btn:hover, .term-close-btn:active {
+            background: rgba(255, 117, 140, 0.4);
+            color: #ffffff;
+            border-color: #ff758c;
+            box-shadow: 0 0 12px rgba(255, 117, 140, 0.5);
+            transform: scale(1.05);
         }
         .terminal-dots {
             display: flex;
-            gap: 6px;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
         }
         .term-dot {
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
+            cursor: pointer;
         }
-        .term-dot.red { background: #ef4444; cursor: pointer; }
-        .term-dot.yellow { background: #f59e0b; }
-        .term-dot.green { background: #10b981; }
-
+        .term-dot.red {
+            background: #ef4444;
+            box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+            padding: 4px;
+            margin: -4px;
+        }
+        .term-dot.yellow { background: #eab308; }
+        .term-dot.green { background: #22c55e; }
         .terminal-body {
             flex: 1;
             padding: 16px;
@@ -2371,7 +2411,7 @@
             <div class="music-playlist-drawer" id="music-playlist-drawer"></div>
         </div>
         <!-- 核心音频元素 (preload="none" 确保0字节启动负担) -->
-        <audio id="global-bgm-audio" src="audio/track_01.mp3" preload="metadata"></audio>
+        <audio id="global-bgm-audio" src="audio/track_01.mp3" preload="auto" playsinline webkit-playsinline></audio>
     </div>
 
     <!-- 页面内容层 -->
@@ -2941,8 +2981,8 @@
                     <span class="term-dot yellow"></span>
                     <span class="term-dot green"></span>
                 </div>
-                <span>SHERLOCK_CORE_TERMINAL // v2.8.0 · CYBER_ANIME_LINK</span>
-                <span>ESC to close</span>
+                <span class="term-title-text">SHERLOCK_CORE_TERMINAL // v2.8.0 · CYBER_ANIME_LINK</span>
+                <button class="term-close-btn" id="term-close-btn" title="关闭终端 (ESC)">✕ 退出终端</button>
             </div>
             <div class="terminal-body" id="term-body">
                 <div class="term-line-output cyan">================================================================</div>
@@ -3068,31 +3108,34 @@
             const label = document.getElementById('audio-btn-label');
 
             if (!isAudioPlaying) {
-                // 空间氛围和弦 (C Minor 9th + 赛博泛音)
-                const freqs = [130.81, 155.56, 196.00, 233.08, 293.66, 392.00];
-                synthOscs = freqs.map((freq, i) => {
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-                    const filter = audioCtx.createBiquadFilter();
+                // 移动端不启动低频振荡器嗡鸣，避免手机扬声器发出低频电流杂音干扰 BGM 歌曲
+                const isMobileCheck = /Android|iPhone|iPad|Mobile/i.test(navigator.userAgent) || window.innerWidth <= 768;
+                if (!isMobileCheck) {
+                    const freqs = [130.81, 155.56, 196.00, 233.08, 293.66, 392.00];
+                    synthOscs = freqs.map((freq, i) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        const filter = audioCtx.createBiquadFilter();
 
-                    osc.type = i % 2 === 0 ? 'sine' : 'triangle';
-                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                        osc.type = i % 2 === 0 ? 'sine' : 'triangle';
+                        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
 
-                    filter.type = 'lowpass';
-                    filter.frequency.setValueAtTime(500, audioCtx.currentTime);
+                        filter.type = 'lowpass';
+                        filter.frequency.setValueAtTime(500, audioCtx.currentTime);
 
-                    gain.gain.setValueAtTime(0.012, audioCtx.currentTime);
+                        gain.gain.setValueAtTime(0.012, audioCtx.currentTime);
 
-                    osc.connect(filter);
-                    filter.connect(gain);
-                    gain.connect(masterGain);
-                    osc.start();
-                    return { osc, gain };
-                });
+                        osc.connect(filter);
+                        filter.connect(gain);
+                        gain.connect(masterGain);
+                        osc.start();
+                        return { osc, gain };
+                    });
+                }
 
                 isAudioPlaying = true;
-                btn.classList.add('active');
-                label.textContent = 'AUDIO: ON';
+                if (btn) btn.classList.add('active');
+                if (label) label.textContent = 'AUDIO: ON';
                 playChime([523, 659, 784, 1046]);
             } else {
                 synthOscs.forEach(o => {
@@ -3316,9 +3359,22 @@
             playUiBeep(700, 0.05);
         }
 
-        document.getElementById('terminal-trigger-btn').addEventListener('click', openTerminal);
-        document.getElementById('hero-terminal-btn').addEventListener('click', openTerminal);
-        document.getElementById('term-close-dot').addEventListener('click', closeTerminal);
+        const termTriggerBtn = document.getElementById('terminal-trigger-btn');
+        if (termTriggerBtn) termTriggerBtn.addEventListener('click', openTerminal);
+        const heroTermBtn = document.getElementById('hero-terminal-btn');
+        if (heroTermBtn) heroTermBtn.addEventListener('click', openTerminal);
+        
+        const termCloseDot = document.getElementById('term-close-dot');
+        if (termCloseDot) termCloseDot.addEventListener('click', closeTerminal);
+        const termCloseBtn = document.getElementById('term-close-btn');
+        if (termCloseBtn) termCloseBtn.addEventListener('click', closeTerminal);
+        
+        // 彻底解决手机端点击进入终端后无法退出的问题：点击遮罩背景即可立刻退出
+        if (termModal) {
+            termModal.addEventListener('click', (e) => {
+                if (e.target === termModal) closeTerminal();
+            });
+        }
 
         window.addEventListener('keydown', (e) => {
             if (e.key === '`' || e.key === '~') {
@@ -4341,7 +4397,9 @@
         let isLoopSingle = false;
 
         const bgmAudio = document.getElementById('global-bgm-audio');
-        if (bgmAudio) bgmAudio.volume = 0.25; // 默认温和音量 25%
+        const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(navigator.userAgent) || window.innerWidth <= 768;
+        // 手机端音量默认设为 1.0 (通过手机物理按键调节)，电脑端设为 0.35 避免炸耳
+        if (bgmAudio) bgmAudio.volume = isMobileDevice ? 1.0 : 0.35;
 
         // Hero CloudPlayer DOM 元素
         const heroCloudPlayer = document.getElementById('hero-cloud-player');
@@ -4467,66 +4525,60 @@
             renderPlaylists();
         }
 
+        // 纯净安全的歌曲播放函数 (针对移动端完美穿透 Autoplay 拦截)
+        function safeExecutePlay() {
+            if (!bgmAudio) return;
+            // 恢复可能处于挂起状态的 Web Audio 节点
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume().catch(() => {});
+            }
+            const promise = bgmAudio.play();
+            if (promise !== undefined) {
+                promise.then(() => {
+                    isBgmPlaying = true;
+                    syncMusicUI();
+                }).catch(err => {
+                    console.warn('Playback requires user gesture:', err);
+                    isBgmPlaying = false;
+                    syncMusicUI();
+                });
+            }
+        }
+
         // 载入并播放曲目
         function loadAndPlay(index, autoPlay = true) {
             bgmIndex = (index + bgmPlaylist.length) % bgmPlaylist.length;
             const track = bgmPlaylist[bgmIndex];
             if (bgmAudio) {
-                bgmAudio.src = track.src;
+                if (!bgmAudio.src.endsWith(track.src)) {
+                    bgmAudio.src = track.src;
+                    bgmAudio.load();
+                }
                 syncMusicUI();
                 if (autoPlay) {
-                    bgmAudio.play().then(() => {
-                        isBgmPlaying = true;
-                        syncMusicUI();
-                    }).catch(err => {
-                        console.log('Autoplay policy caught:', err);
-                        isBgmPlaying = false;
-                        syncMusicUI();
-                    });
+                    safeExecutePlay();
                 }
             }
         }
 
-        // 默认初始化装载并全力尝试自动起播第 1 首曲目
+        // 默认初始化装载第 1 首曲目
         if (bgmAudio) {
             bgmAudio.src = bgmPlaylist[0].src;
-            loadAndPlay(0, true); // 直接尝试起播！
-        }
-
-        // 页面首次任意用户交互（点击、触摸、滚轮、按键）触发全站音频（BGM + 环境声景）智能无缝起奏
-        let hasAwakenedAudio = false;
-        function autoAwakenAudioOnFirstGesture() {
-            if (hasAwakenedAudio) return;
-            hasAwakenedAudio = true;
-            
-            // 1. 唤醒并播放 BGM 音乐盒
-            if (bgmAudio && bgmAudio.paused) {
-                bgmAudio.play().then(() => {
+            syncMusicUI();
+            // PC 端若允许则自动播放，手机端由用户点击直达触发
+            const autoPlayPromise = bgmAudio.play();
+            if (autoPlayPromise !== undefined) {
+                autoPlayPromise.then(() => {
                     isBgmPlaying = true;
                     syncMusicUI();
-                }).catch(err => {
-                    console.log('Gesture play caught, reloading:', err);
-                    loadAndPlay(bgmIndex, true);
+                }).catch(() => {
+                    isBgmPlaying = false;
+                    syncMusicUI();
                 });
             }
-            
-            // 2. 唤醒 Web Audio 环境声景
-            initAudio();
-            if (audioCtx && audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-            if (!isAudioPlaying) {
-                toggleAmbientAudio();
-            }
         }
-        
-        // 监听多源首个手势（点击页面任何区域、滚动、触摸、按键均立即起播）
-        ['pointerdown', 'click', 'touchstart', 'keydown', 'wheel'].forEach(evt => {
-            window.addEventListener(evt, autoAwakenAudioOnFirstGesture, { once: true, passive: true });
-        });
 
-
-        // 播放/暂停总控
+        // 播放/暂停总控 (点击即播，无任何额外拦截)
         function togglePlayPause() {
             if (!bgmAudio) return;
             if (!bgmAudio.src || bgmAudio.src === '' || bgmAudio.src === window.location.href) {
@@ -4534,13 +4586,7 @@
                 return;
             }
             if (bgmAudio.paused) {
-                bgmAudio.play().then(() => {
-                    isBgmPlaying = true;
-                    syncMusicUI();
-                }).catch(err => {
-                    console.log('Play err, retrying with load:', err);
-                    loadAndPlay(bgmIndex, true);
-                });
+                safeExecutePlay();
             } else {
                 bgmAudio.pause();
                 isBgmPlaying = false;
