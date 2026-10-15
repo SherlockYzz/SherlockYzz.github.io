@@ -1890,6 +1890,7 @@
 
             <!-- ================= HERO 英雄区 (现代 Bento 架构 · 参考 XinghuisamaBlogs) ================= -->
                         <!-- ================= 全景纯净 HERO 英雄区 (无黑框遮挡 · 3D 画布全景展现) ================= -->
+                        <!-- ================= 全景纯净 HERO 英雄区 (左右均衡排布 · 长方形音乐盒胶囊 · 3D画布全景展现) ================= -->
             <section class="hero-section" id="hero">
                 <!-- 🌟 顶部超显眼 3D 动力学交互模式切换坞 (1-5 键一目了然) -->
                 <div class="top-visual-dock-wrapper">
@@ -1899,27 +1900,27 @@
                             <span>3D 视觉引擎交互切换</span>
                         </div>
                         <div class="dock-btn-group">
-                            <button class="dock-mode-btn selected" data-mode="0">
+                            <button class="dock-mode-btn mode-opt selected" data-mode="0" title="切换模式 1: 量子引力核心">
                                 <span>🌌</span>
                                 <span>量子核心</span>
                                 <span class="dock-shortcut-badge">1</span>
                             </button>
-                            <button class="dock-mode-btn" data-mode="1">
+                            <button class="dock-mode-btn mode-opt" data-mode="1" title="切换模式 2: 赛博空间网格">
                                 <span>🌐</span>
                                 <span>赛博网格</span>
                                 <span class="dock-shortcut-badge">2</span>
                             </button>
-                            <button class="dock-mode-btn" data-mode="2">
+                            <button class="dock-mode-btn mode-opt" data-mode="2" title="切换模式 3: 超维拓扑流线">
                                 <span>💫</span>
                                 <span>拓扑流线</span>
                                 <span class="dock-shortcut-badge">3</span>
                             </button>
-                            <button class="dock-mode-btn" data-mode="3">
+                            <button class="dock-mode-btn mode-opt" data-mode="3" title="切换模式 4: 矩阵数字雨">
                                 <span>💻</span>
                                 <span>矩阵代码</span>
                                 <span class="dock-shortcut-badge">4</span>
                             </button>
-                            <button class="dock-mode-btn sakura-mode" data-mode="4">
+                            <button class="dock-mode-btn mode-opt sakura-mode" data-mode="4" title="切换模式 5: 赛博樱花散华">
                                 <span>🌸</span>
                                 <span>樱花散华</span>
                                 <span class="dock-shortcut-badge">5</span>
@@ -1928,128 +1929,165 @@
                     </div>
                 </div>
 
-                <!-- 纯透 HUD 文本区 (完全无黑框背景！3D 樱花粒子全屏无死角流淌) -->
-                <div class="hero-frameless-layout">
-                    <div class="hero-tag-row" style="margin-bottom: 8px;">
-                        <div class="hero-tag">CODE, RESEARCH &amp; AIGC EXPLORER</div>
-                        <div class="anime-motto-tag">
-                            <span>✨</span>
-                            <span>アルゴリズムと二次元の美学</span>
-                        </div>
-                    </div>
-
-                    <div class="profile-header-group">
-                        <div class="profile-avatar-box">
-                            <!-- GitHub 真实头像，本地离线+线上双重保障 -->
-                            <img src="avatar.png" onerror="this.src='https://avatars.githubusercontent.com/u/283559275?v=4'" alt="SherlockYzz (折木柯南)" class="profile-avatar-img">
-                            <span class="avatar-status-dot" title="Online"></span>
-                        </div>
-                        <div class="profile-title-group">
-                            <h1 class="hero-title">
-                                SHERLOCK YZZ<span class="cn-name">折木柯南</span>
-                            </h1>
-                            <div class="profile-role-line">
-                                <span class="role-badge">博主 · UP 主</span>
-                                <span class="role-subtext">HENU 计算机系在读 · 科研萌新 · 探索二次元与智能交互美学</span>
+                <!-- 左右均衡主结构行 (左侧个人信息 + 右侧长方形音乐盒胶囊) -->
+                <div class="hero-main-row">
+                    
+                    <!-- 左侧：纯透个人信息展示 (完全无黑框背景！3D 樱花粒子全屏无死角流淌) -->
+                    <div class="hero-left-info">
+                        <div class="hero-tag-row" style="margin-bottom: 4px;">
+                            <div class="hero-tag">CODE, RESEARCH &amp; AIGC EXPLORER</div>
+                            <div class="anime-motto-tag">
+                                <span>✨</span>
+                                <span>アルゴリズムと二次元の美学</span>
                             </div>
                         </div>
-                    </div>
 
-                    <p class="hero-subtitle-clean">
-                        你好，我是一位正在探索代码、科研以及 AIGC 创作的 19 岁大学生，也是一位热爱二次元与生活的技术探索者。<br>
-                        <span style="display:inline-block; margin-top:6px; color:#ffffff; font-weight:700;">我们生而眺望，自星海尽处回响！</span> · 
-                        <span style="color:var(--cyan); font-family:var(--font-mono); font-weight:600; letter-spacing:0.05em;">El Psy Congroo！</span>
-                    </p>
-
-                    <!-- 终端打字机名言栏 (微光浮空，无厚重黑框) -->
-                    <div class="terminal-callout" style="max-width: 580px; margin: 6px 0 10px 0;">
-                        <span class="term-prompt">&gt;</span>
-                        <span class="term-text" id="typewriter-target">少年何妨梦摘星，敢挽桑弓射玉衡。</span>
-                        <span class="cursor-blink"></span>
-                    </div>
-
-                    <!-- 核心标签栏 (清透胶囊) -->
-                    <div class="hero-badges" style="margin-bottom: 8px;">
-                        <div class="badge-pill">
-                            <span class="badge-dot" style="background: var(--cyan); box-shadow:0 0 8px var(--cyan);"></span>
-                            <span>河南大学 HENU 本科在读</span>
-                        </div>
-                        <div class="badge-pill">
-                            <span class="badge-dot" style="background: var(--violet); box-shadow:0 0 8px var(--violet);"></span>
-                            <span>C++ / JS / Python 算法储备</span>
-                        </div>
-                        <div class="badge-pill">
-                            <span class="badge-dot" style="background: var(--sakura); box-shadow:0 0 8px var(--sakura);"></span>
-                            <span>Live2D / 3D WebGL 视觉探索</span>
-                        </div>
-                        <div class="badge-pill">
-                            <span class="badge-dot" style="background: var(--green); box-shadow:0 0 8px var(--green);"></span>
-                            <span>B 站 UP 主 · 科研萌新</span>
-                        </div>
-                    </div>
-
-                    <!-- 🌟 紧凑精巧 Hi-Fi 浮空音乐盒 (极简通透，绝不挡住右侧3D核心与漫天樱花) -->
-                    <div class="hero-compact-music-bar" id="hero-cloud-player">
-                        <div class="mini-disc-vinyl" id="hero-vinyl-disc" title="点击播放/暂停">
-                            <div class="mini-disc-center">
-                                <span class="mini-disc-hole"></span>
+                        <div class="profile-header-group">
+                            <div class="profile-avatar-box">
+                                <!-- GitHub 真实头像，本地离线+线上双重保障 -->
+                                <img src="avatar.png" onerror="this.src='https://avatars.githubusercontent.com/u/283559275?v=4'" alt="SherlockYzz (折木柯南)" class="profile-avatar-img">
+                                <span class="avatar-status-dot" title="Online"></span>
+                            </div>
+                            <div class="profile-title-group">
+                                <h1 class="hero-title">
+                                    SHERLOCK YZZ<span class="cn-name">折木柯南</span>
+                                </h1>
+                                <div class="profile-role-line">
+                                    <span class="role-badge">博主 · UP 主</span>
+                                    <span class="role-subtext">HENU 计算机系在读 · 科研萌新 · 探索二次元与智能交互美学</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="mini-player-info">
-                            <div class="mini-song-name" id="hero-song-title">月声尽，心灯明</div>
-                            <div class="mini-song-tag" id="hero-song-tag">《鸣潮》心月狐主题曲</div>
+
+                        <p class="hero-subtitle-clean">
+                            你好，我是一位正在探索代码、科研以及 AIGC 创作的 19 岁大学生，也是一位热爱二次元与生活的技术探索者。<br>
+                            <span style="display:inline-block; margin-top:4px; color:#ffffff; font-weight:700;">我们生而眺望，自星海尽处回响！</span> · 
+                            <span style="color:var(--cyan); font-family:var(--font-mono); font-weight:600; letter-spacing:0.05em;">El Psy Congroo！</span>
+                        </p>
+
+                        <!-- 终端打字机名言栏 -->
+                        <div class="terminal-callout" style="max-width: 580px; margin: 4px 0 6px 0;">
+                            <span class="term-prompt">&gt;</span>
+                            <span class="term-text" id="typewriter-target">少年何妨梦摘星，敢挽桑弓射玉衡。</span>
+                            <span class="cursor-blink"></span>
                         </div>
-                        <div class="mini-controls-group">
-                            <button class="mini-sub-btn" id="hero-prev-btn" title="上一首">⏮</button>
-                            <button class="mini-play-btn" id="hero-play-btn" title="点击一键起播">
-                                <span id="hero-play-icon">▶</span>
+
+                        <!-- 核心标签栏 -->
+                        <div class="hero-badges" style="margin-bottom: 6px;">
+                            <div class="badge-pill">
+                                <span class="badge-dot" style="background: var(--cyan); box-shadow:0 0 8px var(--cyan);"></span>
+                                <span>河南大学 HENU 本科在读</span>
+                            </div>
+                            <div class="badge-pill">
+                                <span class="badge-dot" style="background: var(--violet); box-shadow:0 0 8px var(--violet);"></span>
+                                <span>C++ / JS / Python 算法储备</span>
+                            </div>
+                            <div class="badge-pill">
+                                <span class="badge-dot" style="background: var(--sakura); box-shadow:0 0 8px var(--sakura);"></span>
+                                <span>Live2D / 3D WebGL 视觉探索</span>
+                            </div>
+                            <div class="badge-pill">
+                                <span class="badge-dot" style="background: var(--green); box-shadow:0 0 8px var(--green);"></span>
+                                <span>B 站 UP 主 · 科研萌新</span>
+                            </div>
+                        </div>
+
+                        <!-- 交互动作按钮 -->
+                        <div class="hero-actions" style="margin-top: 6px;">
+                            <a href="#projects" class="btn-primary">
+                                <span>浏览工程项目 / Projects ↓</span>
+                            </a>
+                            <button class="btn-secondary" id="hero-terminal-btn">
+                                <span>控制台 [~]</span>
                             </button>
-                            <button class="mini-sub-btn" id="hero-next-btn" title="下一首">⏭</button>
-                            <button class="mini-playlist-btn" id="hero-list-btn" title="点播 10 首曲目">歌单 📋</button>
+                            <button class="btn-secondary" id="hero-sakura-btn" style="border-color: rgba(255, 117, 140, 0.4); color: var(--sakura);">
+                                <span>🌸 樱花散华</span>
+                            </button>
+                            <a href="https://github.com/SherlockYzz" target="_blank" class="btn-secondary">
+                                <span>GitHub ↗</span>
+                            </a>
                         </div>
-
-                        <!-- 浮动下拉 10 首曲目抽屉 (展开时不撑大主界面) -->
-                        <div class="mini-playlist-dropdown" id="hero-playlist-drawer"></div>
                     </div>
 
-                    <!-- 交互动作按钮 -->
-                    <div class="hero-actions" style="margin-top: 10px;">
-                        <a href="#projects" class="btn-primary">
-                            <span>浏览工程项目 / Projects ↓</span>
-                        </a>
-                        <button class="btn-secondary" id="hero-terminal-btn">
-                            <span>控制台 [~]</span>
-                        </button>
-                        <button class="btn-secondary" id="hero-sakura-btn" style="border-color: rgba(255, 117, 140, 0.4); color: var(--sakura);">
-                            <span>🌸 樱花散华</span>
-                        </button>
-                        <a href="https://github.com/SherlockYzz" target="_blank" class="btn-secondary">
-                            <span>GitHub ↗</span>
-                        </a>
+                    <!-- 🌟 右侧：大小适中、长方形胶囊形状的精美音乐盒 (位置匀称，绝不遮挡3D核心) -->
+                    <div class="hero-right-player-slot">
+                        <div class="hero-capsule-music-box" id="hero-cloud-player">
+                            <div class="capsule-top-row">
+                                <div class="capsule-badge">
+                                    <span class="capsule-pulse-dot"></span>
+                                    <span>CLOUD MUSIC JUKEBOX</span>
+                                </div>
+                                <span class="capsule-counter" id="hero-track-counter">1 / 10 TRACKS</span>
+                            </div>
+
+                            <div class="capsule-content-row">
+                                <div class="capsule-disc-vinyl" id="hero-vinyl-disc" title="点击播放/暂停">
+                                    <div class="disc-center-label">
+                                        <span class="disc-hole"></span>
+                                    </div>
+                                </div>
+
+                                <div class="capsule-meta-box">
+                                    <div class="capsule-song-tag" id="hero-song-tag">《鸣潮》心月狐主题曲</div>
+                                    <div class="capsule-song-title" id="hero-song-title">月声尽，心灯明</div>
+                                    <div class="capsule-progress-box">
+                                        <div class="capsule-time-row">
+                                            <span id="hero-cur-time">00:00</span>
+                                            <span id="hero-dur-time">03:48</span>
+                                        </div>
+                                        <div class="capsule-progress-bg" id="hero-progress-bg">
+                                            <div class="capsule-progress-fill" id="hero-progress-fill"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="capsule-ctrl-group">
+                                    <button class="capsule-ctrl-btn" id="hero-prev-btn" title="上一首">⏮</button>
+                                    <button class="capsule-play-btn" id="hero-play-btn" title="点击一键起播">
+                                        <span id="hero-play-icon">▶</span>
+                                    </button>
+                                    <button class="capsule-ctrl-btn" id="hero-next-btn" title="下一首">⏭</button>
+                                    <button class="capsule-list-btn" id="hero-list-btn" title="点播10首曲目">歌单 📋</button>
+                                </div>
+                            </div>
+
+                            <div class="capsule-bottom-row">
+                                <div class="capsule-vol-box">
+                                    <span class="vol-icon" id="hero-mute-icon" title="静音切换">🔊</span>
+                                    <input type="range" class="vol-slider" id="hero-vol-slider" min="0" max="1" step="0.01" value="0.25">
+                                </div>
+                                <span class="capsule-hint">✨ 进站点击即可畅听</span>
+                            </div>
+
+                            <div class="capsule-playlist-dropdown" id="hero-playlist-drawer"></div>
+                        </div>
                     </div>
+
                 </div>
 
-                <!-- 歌词 / 励志台词流光跑马灯 (LyricBar) -->
-                <div class="hero-lyric-bar" style="margin-top: 28px;">
+                <!-- 🌟 彻底修复 Bug 2: 跑马灯视口隔离！文字绝对不可能越界碰撞或遮盖标签 -->
+                <div class="hero-lyric-bar" style="margin-top: 26px;">
                     <div class="lyric-bar-label">✦ QUOTES &amp; CREED</div>
-                    <div class="lyric-bar-track">
-                        <span class="lyric-marquee-item">The game is on.</span>
-                        <span class="lyric-marquee-sep">✦</span>
-                        <span class="lyric-marquee-item">生命因为有限所以宝贵，因为有限所以才要不懈努力。</span>
-                        <span class="lyric-marquee-sep">✦</span>
-                        <span class="lyric-marquee-item">除去所有不可能的，剩下的即使再不可思议，也是真相。</span>
-                        <span class="lyric-marquee-sep">✦</span>
-                        <span class="lyric-marquee-item">我们生而眺望，自星海尽处回响！</span>
-                        <span class="lyric-marquee-sep">✦</span>
-                        <span class="lyric-marquee-item">El Psy Congroo！</span>
-                        <span class="lyric-marquee-sep">✦</span>
-                        <span class="lyric-marquee-item">少年何妨梦摘星，敢挽桑弓射玉衡。</span>
-                        <span class="lyric-marquee-sep">✦</span>
-                        <span class="lyric-marquee-item">アルゴリズムと二次元の美学。</span>
-                        <span class="lyric-marquee-sep">✦</span>
-                        <span class="lyric-marquee-item">The game is on.</span>
-                        <span class="lyric-marquee-sep">✦</span>
-                        <span class="lyric-marquee-item">生命因为有限所以宝贵，因为有限所以才要不懈努力。</span>
+                    <div class="lyric-marquee-viewport">
+                        <div class="lyric-bar-track">
+                            <span class="lyric-marquee-item">The game is on.</span>
+                            <span class="lyric-marquee-sep">✦</span>
+                            <span class="lyric-marquee-item">生命因为有限所以宝贵，因为有限所以才要不懈努力。</span>
+                            <span class="lyric-marquee-sep">✦</span>
+                            <span class="lyric-marquee-item">除去所有不可能的，剩下的即使再不可思议，也是真相。</span>
+                            <span class="lyric-marquee-sep">✦</span>
+                            <span class="lyric-marquee-item">我们生而眺望，自星海尽处回响！</span>
+                            <span class="lyric-marquee-sep">✦</span>
+                            <span class="lyric-marquee-item">El Psy Congroo！</span>
+                            <span class="lyric-marquee-sep">✦</span>
+                            <span class="lyric-marquee-item">少年何妨梦摘星，敢挽桑弓射玉衡。</span>
+                            <span class="lyric-marquee-sep">✦</span>
+                            <span class="lyric-marquee-item">アルゴリズムと二次元の美学。</span>
+                            <span class="lyric-marquee-sep">✦</span>
+                            <span class="lyric-marquee-item">The game is on.</span>
+                            <span class="lyric-marquee-sep">✦</span>
+                            <span class="lyric-marquee-item">生命因为有限所以宝贵，因为有限所以才要不懈努力。</span>
+                        </div>
                     </div>
                 </div>
 
@@ -3034,17 +3072,22 @@
             chargeRatio = 0;
         });
 
+                // ================= 3D 视觉模式切换总控制器 (彻底修复 12345 切换) =================
         let previousMode = 0;
         function switchVisualMode(modeIndex) {
             if (currentMode !== 4) {
                 previousMode = currentMode;
             }
             currentMode = modeIndex;
-            document.querySelectorAll('.mode-opt').forEach((btn, idx) => {
-                if (idx === modeIndex) btn.classList.add('selected');
+
+            // 1. 同步更新所有顶部模式切换坞与备用按钮的激活态
+            document.querySelectorAll('.dock-mode-btn, .mode-opt').forEach((btn) => {
+                const m = parseInt(btn.getAttribute('data-mode'), 10);
+                if (m === modeIndex) btn.classList.add('selected');
                 else btn.classList.remove('selected');
             });
 
+            // 2. 联动更新首屏樱花模式切换按钮
             const heroSakuraBtn = document.getElementById('hero-sakura-btn');
             if (heroSakuraBtn) {
                 if (modeIndex === 4) {
@@ -3057,11 +3100,20 @@
                     heroSakuraBtn.style.color = 'var(--sakura)';
                 }
             }
-            playSciFiAudio(720 + modeIndex * 120, 0.08, 'sine', false);
+
+            // 3. 模式切换声效与小幅相机呼吸
+            playSciFiAudio(600 + modeIndex * 140, 0.08, 'sine', false);
+            screenShake = Math.max(screenShake, 3.5);
         }
 
-        document.querySelectorAll('.mode-opt').forEach((btn, idx) => {
-            btn.addEventListener('click', () => switchVisualMode(idx));
+        // 全局绑定模式按钮点击事件 (覆盖 .dock-mode-btn 和 .mode-opt)
+        document.querySelectorAll('.dock-mode-btn, .mode-opt').forEach((btn) => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const m = parseInt(btn.getAttribute('data-mode'), 10);
+                if (!isNaN(m)) switchVisualMode(m);
+            });
         });
 
         const heroSakuraToggle = document.getElementById('hero-sakura-btn');
@@ -3075,10 +3127,16 @@
             });
         }
 
+        // 键盘 1-5 键位全局毫秒级监听
         window.addEventListener('keydown', (e) => {
-            if (termModal.classList.contains('open')) return;
+            if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+            const termEl = document.getElementById('terminal-modal');
+            if (termEl && termEl.classList.contains('open')) return;
+
             if (['1', '2', '3', '4', '5'].includes(e.key)) {
-                switchVisualMode(parseInt(e.key, 10) - 1);
+                e.preventDefault();
+                const m = parseInt(e.key, 10) - 1;
+                switchVisualMode(m);
             }
         });
 
