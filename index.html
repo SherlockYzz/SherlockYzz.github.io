@@ -1332,6 +1332,575 @@
             text-overflow: ellipsis;
             max-width: 220px;
         }
+
+        /* ================= BENTO HERO 布局系统 (参考 XinghuisamaBlogs) ================= */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-top: 100px;
+            padding-bottom: 60px;
+            position: relative;
+        }
+
+        .hero-bento-row {
+            display: grid;
+            grid-template-columns: 7fr 5fr;
+            gap: 28px;
+            align-items: stretch;
+            width: 100%;
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 1024px) {
+            .hero-bento-row {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+        }
+
+        /* 左侧 Profile 卡片 */
+        .hero-profile-card {
+            background: rgba(10, 15, 30, 0.72);
+            border: 1px solid rgba(0, 240, 255, 0.22);
+            border-radius: 24px;
+            padding: clamp(24px, 3.2vw, 36px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 24px rgba(0, 240, 255, 0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .hero-profile-card:hover {
+            border-color: rgba(0, 240, 255, 0.45);
+            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.6), 0 0 32px rgba(0, 240, 255, 0.18);
+        }
+
+        .profile-header-group {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 16px;
+        }
+        .profile-avatar-box {
+            position: relative;
+            width: 72px;
+            height: 72px;
+            border-radius: 20px;
+            padding: 3px;
+            background: linear-gradient(135deg, var(--cyan), var(--sakura));
+            box-shadow: 0 0 16px rgba(0, 240, 255, 0.35);
+            flex-shrink: 0;
+        }
+        .profile-avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 17px;
+            object-cover: cover;
+            display: block;
+            background: #0b1120;
+        }
+        .avatar-status-dot {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 16px;
+            height: 16px;
+            background: #10b981;
+            border: 3px solid #0a0f1e;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #10b981;
+        }
+        .profile-title-group {
+            flex: 1;
+            min-width: 0;
+        }
+        .profile-role-line {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+        .role-badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--cyan);
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            padding: 2px 8px;
+            border-radius: 12px;
+            letter-spacing: 0.05em;
+        }
+        .role-subtext {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            letter-spacing: 0.02em;
+        }
+
+        /* 右侧 CloudPlayer 大尺寸毛玻璃音乐盒卡片 */
+        .hero-cloud-player-card {
+            background: rgba(13, 20, 42, 0.78);
+            border: 1.5px solid rgba(0, 240, 255, 0.38);
+            border-radius: 24px;
+            padding: clamp(22px, 2.8vw, 32px);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.65), 0 0 32px rgba(0, 240, 255, 0.16);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .hero-cloud-player-card:hover {
+            border-color: var(--cyan);
+            box-shadow: 0 24px 56px rgba(0, 0, 0, 0.75), 0 0 40px rgba(0, 240, 255, 0.28);
+            transform: translateY(-2px);
+        }
+
+        .player-glow-blob {
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.25) 0%, rgba(255, 117, 140, 0.15) 50%, transparent 80%);
+            filter: blur(30px);
+            pointer-events: none;
+        }
+
+        .player-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 2;
+        }
+        .player-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 240, 255, 0.12);
+            border: 1px solid rgba(0, 240, 255, 0.4);
+            color: var(--cyan);
+            font-size: 0.72rem;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 20px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .player-pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--cyan);
+            box-shadow: 0 0 10px var(--cyan);
+            animation: pulse-ring 1.8s infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.9); opacity: 0.8; }
+            50% { transform: scale(1.3); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.8; }
+        }
+        .player-track-counter {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: #94a3b8;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        /* 唱片与歌曲信息区 */
+        .player-main-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 2;
+        }
+        .player-disc-wrap {
+            width: 82px;
+            height: 82px;
+            flex-shrink: 0;
+            cursor: pointer;
+            position: relative;
+        }
+        .player-disc-vinyl {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle, #0b1120 30%, #00f0ff 31%, #020617 33%, #1e293b 80%, #00f0ff 100%);
+            border: 2.5px solid rgba(0, 240, 255, 0.6);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 16px rgba(0, 240, 255, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: transform 0.2s ease;
+        }
+        .player-disc-vinyl.spinning {
+            animation: disc-rotate 5s linear infinite;
+        }
+        @keyframes disc-rotate {
+            100% { transform: rotate(360deg); }
+        }
+        .disc-center-label {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--cyan), var(--sakura));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+        }
+        .disc-hole {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #020617;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .player-meta-box {
+            flex: 1;
+            min-width: 0;
+        }
+        .player-song-tag {
+            font-size: 0.72rem;
+            color: var(--sakura);
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .player-song-title {
+            font-size: clamp(1.2rem, 1.8vw, 1.45rem);
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.2;
+            margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+        }
+        .player-play-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            color: var(--cyan);
+            font-weight: 600;
+        }
+
+        /* 动态打字机歌词栏 */
+        .player-lyric-box {
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 8px 14px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-height: 38px;
+            position: relative;
+            z-index: 2;
+        }
+        .lyric-icon {
+            color: var(--sakura);
+            font-size: 0.9rem;
+            animation: bounce-note 1.2s infinite alternate;
+        }
+        @keyframes bounce-note {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-3px); }
+        }
+        .lyric-text {
+            font-size: 0.82rem;
+            color: #cbd5e1;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            letter-spacing: 0.03em;
+        }
+
+        /* 进度条与时间 */
+        .player-progress-area {
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 2;
+        }
+        .player-time-row {
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        .player-progress-bar-bg {
+            width: 100%;
+            height: 7px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.4);
+        }
+        .player-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--cyan), var(--sakura));
+            border-radius: 6px;
+            position: relative;
+            box-shadow: 0 0 12px var(--cyan);
+            transition: width 0.1s linear;
+        }
+
+        /* 控制按钮主行 (大尺寸显眼 Play 键) */
+        .player-controls-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 2;
+        }
+        .player-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: #cbd5e1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .player-btn:hover {
+            color: #ffffff;
+            transform: scale(1.12);
+        }
+        .player-sub-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            font-size: 0.95rem;
+        }
+        .player-sub-btn:hover {
+            border-color: var(--cyan);
+            background: rgba(0, 240, 255, 0.15);
+        }
+        .player-big-play-btn {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00f0ff 0%, #6366f1 100%);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: #030712;
+            font-size: 1.35rem;
+            font-weight: 900;
+            box-shadow: 0 0 24px rgba(0, 240, 255, 0.5), 0 4px 14px rgba(0, 0, 0, 0.4);
+            animation: play-pulse 2.4s infinite;
+        }
+        @keyframes play-pulse {
+            0% { box-shadow: 0 0 20px rgba(0, 240, 255, 0.4); }
+            50% { box-shadow: 0 0 32px rgba(0, 240, 255, 0.7), 0 0 12px var(--sakura); }
+            100% { box-shadow: 0 0 20px rgba(0, 240, 255, 0.4); }
+        }
+        .player-big-play-btn:hover {
+            transform: scale(1.16);
+            box-shadow: 0 0 36px rgba(0, 240, 255, 0.8);
+        }
+        .player-list-btn {
+            padding: 6px 14px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--cyan);
+            letter-spacing: 0.05em;
+        }
+        .player-list-btn:hover {
+            background: rgba(0, 240, 255, 0.2);
+            border-color: var(--cyan);
+        }
+
+        /* 底部音量调节与提示 */
+        .player-bottom-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 12px;
+            position: relative;
+            z-index: 2;
+        }
+        .player-vol-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .vol-icon {
+            font-size: 0.85rem;
+            color: var(--cyan);
+            cursor: pointer;
+        }
+        .vol-slider {
+            width: 80px;
+            height: 4px;
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+        }
+        .vol-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--cyan);
+            box-shadow: 0 0 8px var(--cyan);
+            cursor: pointer;
+        }
+        .player-prompt-hint {
+            font-size: 0.7rem;
+            color: #94a3b8;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+
+        /* 10 首曲目抽屉列表 */
+        .player-playlist-drawer {
+            max-height: 0;
+            overflow-y: auto;
+            transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), margin-top 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 0;
+            position: relative;
+            z-index: 2;
+        }
+        .player-playlist-drawer.open {
+            max-height: 220px;
+            margin-top: 14px;
+            padding-top: 10px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.15);
+        }
+        .player-playlist-drawer::-webkit-scrollbar {
+            width: 4px;
+        }
+        .player-playlist-drawer::-webkit-scrollbar-thumb {
+            background: var(--cyan);
+            border-radius: 2px;
+        }
+        .drawer-song-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .drawer-song-item:hover {
+            background: rgba(0, 240, 255, 0.12);
+            border-color: rgba(0, 240, 255, 0.35);
+            transform: translateX(4px);
+        }
+        .drawer-song-item.active {
+            background: rgba(0, 240, 255, 0.2);
+            border-color: var(--cyan);
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+        }
+        .drawer-song-title {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+        .drawer-song-artist {
+            font-size: 0.68rem;
+            color: #94a3b8;
+        }
+
+        /* ================= 歌词/名言流光跑马灯 (LyricBar) ================= */
+        .hero-lyric-bar {
+            width: 100%;
+            background: rgba(10, 15, 30, 0.65);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 30px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 16px rgba(0, 240, 255, 0.08);
+            backdrop-filter: blur(16px);
+            margin-bottom: 24px;
+        }
+        .lyric-bar-label {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: var(--cyan);
+            letter-spacing: 0.15em;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .lyric-bar-track {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            white-space: nowrap;
+            animation: marquee 38s linear infinite;
+        }
+        .lyric-bar-track:hover {
+            animation-play-state: paused;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .lyric-marquee-item {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            letter-spacing: 0.04em;
+        }
+        .lyric-marquee-sep {
+            color: var(--sakura);
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
     </style>
 </head>
 <body>
@@ -1463,67 +2032,185 @@
     <main class="content-layer">
         <div class="page-container">
 
-            <!-- ================= HERO 英雄区 ================= -->
+            <!-- ================= HERO 英雄区 (现代 Bento 架构 · 参考 XinghuisamaBlogs) ================= -->
             <section class="hero-section" id="hero">
-                <div class="hero-tag-row">
-                    <div class="hero-tag">CODE, RESEARCH &amp; AIGC EXPLORER</div>
-                    <div class="anime-motto-tag">
-                        <span>✨</span>
-                        <span>アルゴリズムと二次元の美学</span>
+                <!-- 第一行：个人信息卡片 (7fr) + 大尺寸毛玻璃音乐盒 (5fr) -->
+                <div class="hero-bento-row">
+                    
+                    <!-- 左侧 7fr: Profile Card 个人形象与极客介绍卡片 -->
+                    <div class="hero-profile-card interactive-card">
+                        <div class="hero-tag-row">
+                            <div class="hero-tag">CODE, RESEARCH &amp; AIGC EXPLORER</div>
+                            <div class="anime-motto-tag">
+                                <span>✨</span>
+                                <span>アルゴリズムと二次元の美学</span>
+                            </div>
+                        </div>
+
+                        <div class="profile-header-group">
+                            <div class="profile-avatar-box">
+                                <img src="https://avatars.githubusercontent.com/u/108399580?v=4" alt="SherlockYzz Avatar" class="profile-avatar-img" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=SherlockYzz'">
+                                <span class="avatar-status-dot" title="Online"></span>
+                            </div>
+                            <div class="profile-title-group">
+                                <h1 class="hero-title" style="margin-bottom:0;">
+                                    SHERLOCK YZZ<span class="cn-name">折木柯南</span>
+                                </h1>
+                                <div class="profile-role-line">
+                                    <span class="role-badge">博主 · UP 主</span>
+                                    <span class="role-subtext">HENU 计算机系本科在读 · 科研萌新 · 探索二次元与智能交互美学</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="hero-subtitle" style="margin-top: 14px;">
+                            你好，我是一位正在探索代码、科研以及 AIGC 创作的 19 岁大学生，也是一位热爱二次元与生活的技术探索者。<br>
+                            <span style="display:inline-block; margin-top:6px; color:#ffffff; font-weight:600;">我们生而眺望，自星海尽处回响！</span> · 
+                            <span style="color:var(--cyan); font-family:var(--font-mono); font-weight:600; letter-spacing:0.05em;">El Psy Congroo！</span>
+                        </p>
+
+                        <!-- 终端打字机名言栏 -->
+                        <div class="terminal-callout">
+                            <span class="term-prompt">&gt;</span>
+                            <span class="term-text" id="typewriter-target">少年何妨梦摘星，敢挽桑弓射玉衡。</span>
+                            <span class="cursor-blink"></span>
+                        </div>
+
+                        <!-- 核心标签栏 -->
+                        <div class="hero-badges">
+                            <div class="badge-pill">
+                                <span class="badge-dot" style="background: var(--cyan); box-shadow:0 0 8px var(--cyan);"></span>
+                                <span>河南大学 HENU 本科在读</span>
+                            </div>
+                            <div class="badge-pill">
+                                <span class="badge-dot" style="background: var(--violet); box-shadow:0 0 8px var(--violet);"></span>
+                                <span>C++ / JS / Python 算法储备</span>
+                            </div>
+                            <div class="badge-pill">
+                                <span class="badge-dot" style="background: var(--sakura); box-shadow:0 0 8px var(--sakura);"></span>
+                                <span>Live2D / 3D WebGL 视觉探索</span>
+                            </div>
+                            <div class="badge-pill">
+                                <span class="badge-dot" style="background: var(--green); box-shadow:0 0 8px var(--green);"></span>
+                                <span>B 站 UP 主 · 科研萌新</span>
+                            </div>
+                        </div>
+
+                        <!-- 交互动作按钮 -->
+                        <div class="hero-actions">
+                            <a href="#projects" class="btn-primary">
+                                <span>浏览工程项目 / Projects ↓</span>
+                            </a>
+                            <button class="btn-secondary" id="hero-terminal-btn">
+                                <span>控制台 [~]</span>
+                            </button>
+                            <button class="btn-secondary" id="hero-sakura-btn" style="border-color: rgba(255, 117, 140, 0.4); color: var(--sakura);">
+                                <span>🌸 樱花散华</span>
+                            </button>
+                            <a href="https://github.com/SherlockYzz" target="_blank" class="btn-secondary">
+                                <span>GitHub ↗</span>
+                            </a>
+                        </div>
                     </div>
+
+                    <!-- 右侧 5fr: 大尺寸二次元毛玻璃音乐盒卡片 (CloudPlayer · 显眼明朗) -->
+                    <div class="hero-cloud-player-card interactive-card" id="hero-cloud-player">
+                        <div class="player-glow-blob"></div>
+
+                        <div class="player-card-header">
+                            <div class="player-badge">
+                                <span class="player-pulse-dot"></span>
+                                <span>CLOUD MUSIC JUKEBOX</span>
+                            </div>
+                            <span class="player-track-counter" id="hero-track-counter">1 / 10 TRACKS</span>
+                        </div>
+
+                        <!-- 黑胶唱片与歌曲信息行 -->
+                        <div class="player-main-info">
+                            <div class="player-disc-wrap" id="hero-disc-wrap" title="点击一键播放/暂停">
+                                <div class="player-disc-vinyl" id="hero-vinyl-disc">
+                                    <div class="disc-center-label">
+                                        <span class="disc-hole"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="player-meta-box">
+                                <div class="player-song-tag" id="hero-song-tag">《鸣潮》心月狐主题曲</div>
+                                <h3 class="player-song-title" id="hero-song-title">月声尽，心灯明</h3>
+                                <div class="player-play-status" id="hero-play-status">
+                                    <span class="status-icon">▶</span>
+                                    <span class="status-text">点击中央大键即刻启奏</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 动态歌词/名言展示条 -->
+                        <div class="player-lyric-box">
+                            <span class="lyric-icon">♫</span>
+                            <span class="lyric-text" id="hero-lyric-text">「月声尽，心灯明，踏遍万水千山长夜有光」</span>
+                        </div>
+
+                        <!-- 进度条与时间 -->
+                        <div class="player-progress-area">
+                            <div class="player-time-row">
+                                <span id="hero-cur-time">00:00</span>
+                                <span id="hero-dur-time">03:48</span>
+                            </div>
+                            <div class="player-progress-bar-bg" id="hero-progress-bg">
+                                <div class="player-progress-fill" id="hero-progress-fill"></div>
+                            </div>
+                        </div>
+
+                        <!-- 核心大按键播放控制栏 (大号 52px 播放按键，极为醒目) -->
+                        <div class="player-controls-row">
+                            <button class="player-btn player-sub-btn" id="hero-prev-btn" title="上一首">⏮</button>
+                            <button class="player-btn player-big-play-btn" id="hero-play-btn" title="一键播放/暂停">
+                                <span id="hero-play-icon">▶</span>
+                            </button>
+                            <button class="player-btn player-sub-btn" id="hero-next-btn" title="下一首">⏭</button>
+                            <button class="player-btn player-sub-btn" id="hero-loop-btn" title="单曲循环 / 列表循环">🔁</button>
+                            <button class="player-btn player-list-btn" id="hero-list-btn" title="展开 10 首曲目歌单">歌单 📋</button>
+                        </div>
+
+                        <!-- 底部音量调节与提示 -->
+                        <div class="player-bottom-bar">
+                            <div class="player-vol-box">
+                                <span class="vol-icon" id="hero-mute-icon" title="静音切换">🔊</span>
+                                <input type="range" class="vol-slider" id="hero-vol-slider" min="0" max="1" step="0.01" value="0.25" title="音量调节">
+                            </div>
+                            <span class="player-prompt-hint">✨ 进站点击即可畅听</span>
+                        </div>
+
+                        <!-- 内嵌 10 首曲目抽屉面板 -->
+                        <div class="player-playlist-drawer" id="hero-playlist-drawer"></div>
+                    </div>
+
                 </div>
 
-                <h1 class="hero-title">
-                    SHERLOCK YZZ<span class="cn-name">折木柯南</span>
-                </h1>
-
-                <p class="hero-subtitle">
-                    你好，我是一位正在探索代码、科研以及 AIGC 创作的 19 岁大学生，也是一位热爱二次元与生活的技术探索者。<br>
-                    <span style="display:inline-block; margin-top:8px; color:#ffffff; font-weight:600;">我们生而眺望，自星海尽处回响！</span><br>
-                    <span style="display:inline-block; color:var(--cyan); font-family:var(--font-mono); font-weight:600; font-size:1.05em; letter-spacing:0.05em;">El Psy Congroo！</span>
-                </p>
-
-                <!-- 终端命令提示条 -->
-                <div class="terminal-callout">
-                    <span class="term-prompt">&gt;</span>
-                    <span class="term-text" id="typewriter-target">少年何妨梦摘星，敢挽桑弓射玉衡。</span>
-                    <span class="cursor-blink"></span>
-                </div>
-
-                <!-- 核心标签栏 -->
-                <div class="hero-badges">
-                    <div class="badge-pill">
-                        <span class="badge-dot" style="background: var(--cyan); box-shadow:0 0 8px var(--cyan);"></span>
-                        <span>河南大学 HENU · 计算机系本科在读</span>
+                <!-- 歌词 / 励志台词流光跑马灯 (LyricBar) -->
+                <div class="hero-lyric-bar">
+                    <div class="lyric-bar-label">✦ QUOTES &amp; CREED</div>
+                    <div class="lyric-bar-track">
+                        <span class="lyric-marquee-item">The game is on.</span>
+                        <span class="lyric-marquee-sep">✦</span>
+                        <span class="lyric-marquee-item">生命因为有限所以宝贵，因为有限所以才要不懈努力。</span>
+                        <span class="lyric-marquee-sep">✦</span>
+                        <span class="lyric-marquee-item">除去所有不可能的，剩下的即使再不可思议，也是真相。</span>
+                        <span class="lyric-marquee-sep">✦</span>
+                        <span class="lyric-marquee-item">我们生而眺望，自星海尽处回响！</span>
+                        <span class="lyric-marquee-sep">✦</span>
+                        <span class="lyric-marquee-item">El Psy Congroo！</span>
+                        <span class="lyric-marquee-sep">✦</span>
+                        <span class="lyric-marquee-item">少年何妨梦摘星，敢挽桑弓射玉衡。</span>
+                        <span class="lyric-marquee-sep">✦</span>
+                        <span class="lyric-marquee-item">アルゴリズムと二次元の美学。</span>
+                        <span class="lyric-marquee-sep">✦</span>
+                        <span class="lyric-marquee-item">The game is on.</span>
+                        <span class="lyric-marquee-sep">✦</span>
+                        <span class="lyric-marquee-item">生命因为有限所以宝贵，因为有限所以才要不懈努力。</span>
+                        <span class="lyric-marquee-sep">✦</span>
+                        <span class="lyric-marquee-item">真相永远只有一个。</span>
                     </div>
-                    <div class="badge-pill">
-                        <span class="badge-dot" style="background: var(--violet); box-shadow:0 0 8px var(--violet);"></span>
-                        <span>C++ / JS / Python · 探索代码世界中</span>
-                    </div>
-                    <div class="badge-pill">
-                        <span class="badge-dot" style="background: var(--sakura); box-shadow:0 0 8px var(--sakura);"></span>
-                        <span>AIGC · 视频与动漫短片生成探索</span>
-                    </div>
-                    <div class="badge-pill">
-                        <span class="badge-dot" style="background: var(--green); box-shadow:0 0 8px var(--green);"></span>
-                        <span>B 站 UP 主 · 科研萌新</span>
-                    </div>
-                </div>
-
-                <!-- 交互动作按钮 -->
-                <div class="hero-actions">
-                    <a href="#projects" class="btn-primary">
-                        <span>浏览工程项目 / Projects ↓</span>
-                    </a>
-                    <button class="btn-secondary" id="hero-terminal-btn">
-                        <span>唤起终端控制台 [~]</span>
-                    </button>
-                    <button class="btn-secondary" id="hero-sakura-btn" style="border-color: rgba(255, 117, 140, 0.4); color: var(--sakura);">
-                        <span>🌸 切换赛博樱花模式</span>
-                    </button>
-                    <a href="https://github.com/SherlockYzz" target="_blank" class="btn-secondary">
-                        <span>GitHub 主页 ↗</span>
-                    </a>
                 </div>
 
                 <div class="scroll-hint">
@@ -2299,14 +2986,14 @@
             }
         });
 
-        // ================= 6. 3D 多模式动力学生成艺术引擎 (含 SAKURA 模式) =================
+                // ================= 6. 3D 多模式动力学天花板级视效引擎 (粒子+樱花常驻共生、超新星引力核爆、光刃流体) =================
         const canvas = document.getElementById('viewport-canvas');
         const ctx = canvas.getContext('2d');
         const fxCanvas = document.getElementById('fx-canvas');
         const fxCtx = fxCanvas.getContext('2d');
 
         let width = 0, height = 0, dpr = 1;
-        let currentMode = 0; // 0: Core, 1: Grid, 2: Ribbon, 3: Matrix, 4: Sakura
+        let currentMode = 0; // 0: Core, 1: Grid, 2: Ribbon, 3: Matrix, 4: Sakura (所有模式皆有常驻三维樱花与粒子)
 
         function resizeCanvas() {
             width = window.innerWidth;
@@ -2324,26 +3011,67 @@
         window.addEventListener('resize', resizeCanvas, { passive: true });
         resizeCanvas();
 
+        // 视口相机震颤动力学 (Screen Shake)
+        let screenShake = 0;
+
+        // 鼠标姿态与遥测
         let mouseX = width * 0.5, mouseY = height * 0.5;
+        let prevMouseX = width * 0.5, prevMouseY = height * 0.5;
+        let mouseSpeedX = 0, mouseSpeedY = 0;
         let targetRotX = 0.2, targetRotY = 0.3;
         let rotX = 0.2, rotY = 0.3;
+
+        // 长按引力坍缩奇点与超新星蓄力状态
         let isPointerDown = false;
+        let pointerDownTime = 0;
+        let pointerDownX = width * 0.5, pointerDownY = height * 0.5;
+        let chargeRatio = 0;
+
+        // 粒子动力学对象池
         let shockwaves = [];
         let sparks = [];
+        let mouseTrail = []; // 光标流体霓虹光刃轨迹
 
-        // 鼠标遥测与光标火花流光
         const coordsEl = document.getElementById('telemetry-coords');
         const fpsEl = document.getElementById('telemetry-fps');
         let frameCounter = 0, lastFpsUpdate = performance.now();
 
-        let prevMouseX = width * 0.5, prevMouseY = height * 0.5;
-        let mouseSpeedX = 0, mouseSpeedY = 0;
+        // 原生 Web Audio 高能科幻冲击波/引力音效发生器 (0加载负担)
+        function playSciFiAudio(freq, duration, type = 'sine', isBoom = false) {
+            try {
+                const actx = window.audioCtx || (window.AudioContext ? new (window.AudioContext || window.webkitAudioContext)() : null);
+                if (!actx || actx.state === 'suspended') return;
+                const osc = actx.createOscillator();
+                const gain = actx.createGain();
+                osc.type = type;
+                
+                if (isBoom) {
+                    osc.frequency.setValueAtTime(freq, actx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(35, actx.currentTime + duration);
+                    gain.gain.setValueAtTime(0.25, actx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + duration);
+                } else {
+                    osc.frequency.setValueAtTime(freq, actx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(freq * 0.35, actx.currentTime + duration);
+                    gain.gain.setValueAtTime(0.12, actx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + duration);
+                }
+                
+                osc.connect(gain);
+                gain.connect(actx.destination);
+                osc.start();
+                osc.stop(actx.currentTime + duration);
+            } catch (e) {
+                // 静默忽略
+            }
+        }
 
+        // 鼠标移动与光刃流体记录
         window.addEventListener('mousemove', (e) => {
-            mouseScreenX = e.clientX;
-            mouseScreenY = e.clientY;
             mouseX = e.clientX;
             mouseY = e.clientY;
+            mouseScreenX = e.clientX;
+            mouseScreenY = e.clientY;
             if (coordsEl) coordsEl.textContent = `[${Math.round(e.clientX)}, ${Math.round(e.clientY)}]`;
 
             mouseSpeedX = (e.clientX - prevMouseX) * 0.45;
@@ -2356,49 +3084,99 @@
             targetRotY = nx * 0.45;
             targetRotX = -ny * 0.35 + 0.15;
 
-            // 丝滑微光星尘与樱花流火拖尾
-            if (Math.random() > 0.3) {
+            // 记录平滑光刃拖尾节点
+            mouseTrail.push({
+                x: e.clientX,
+                y: e.clientY,
+                age: 1.0,
+                speed: Math.hypot(mouseSpeedX, mouseSpeedY)
+            });
+            if (mouseTrail.length > 22) mouseTrail.shift();
+
+            // 快速划动喷射星尘火花
+            if (Math.hypot(mouseSpeedX, mouseSpeedY) > 8 && Math.random() > 0.4) {
                 sparks.push({
                     x: e.clientX,
                     y: e.clientY,
-                    vx: (Math.random() - 0.5) * 1.8 - mouseSpeedX * 0.2,
-                    vy: (Math.random() - 0.5) * 1.8 - mouseSpeedY * 0.2 - 0.4,
+                    vx: (Math.random() - 0.5) * 3 - mouseSpeedX * 0.2,
+                    vy: (Math.random() - 0.5) * 3 - mouseSpeedY * 0.2 - 0.5,
                     life: 1.0,
-                    size: Math.random() * 2.8 + 1.2,
-                    color: currentMode === 4 ? (Math.random() > 0.3 ? '#ff758c' : '#ffb8c6') : (Math.random() > 0.5 ? '#00f0ff' : '#a855f7')
+                    size: Math.random() * 3 + 1.5,
+                    color: Math.random() > 0.5 ? '#00f0ff' : '#ff758c'
                 });
             }
         });
 
-        function spawnSparks(x, y, count = 16) {
+        // 喷射爆炸星尘
+        function spawnBlastSparks(x, y, count = 36, isSuper = false) {
             for (let i = 0; i < count; i++) {
-                const a = Math.random() * Math.PI * 2;
-                const spd = Math.random() * 4 + 1.5;
+                const a = (i / count) * Math.PI * 2 + (Math.random() - 0.5) * 0.5;
+                const spd = (isSuper ? 6 + Math.random() * 9 : 3 + Math.random() * 6);
                 sparks.push({
                     x: x,
                     y: y,
                     vx: Math.cos(a) * spd,
                     vy: Math.sin(a) * spd,
                     life: 1.0,
-                    size: Math.random() * 3 + 1.5,
-                    color: Math.random() > 0.4 ? '#ff758c' : '#00f0ff'
+                    size: isSuper ? Math.random() * 4.5 + 2 : Math.random() * 3 + 1.5,
+                    color: i % 3 === 0 ? '#ffffff' : (i % 2 === 0 ? '#00f0ff' : '#ff758c')
                 });
             }
         }
 
+        // 鼠标按下：触发点击冲击波，并开启引力坍缩蓄力
         window.addEventListener('pointerdown', (e) => {
             isPointerDown = true;
+            pointerDownTime = performance.now();
+            pointerDownX = e.clientX;
+            pointerDownY = e.clientY;
+            chargeRatio = 0;
+
+            // 触发高亮双重核爆光环
             shockwaves.push({
                 x: e.clientX,
                 y: e.clientY,
-                radius: 12,
-                maxRadius: Math.max(width, height) * 0.55,
-                opacity: 0.95
+                radius: 15,
+                maxRadius: Math.max(width, height) * 0.5,
+                opacity: 1.0,
+                colorMain: 'rgba(0, 240, 255, ',
+                colorHalo: 'rgba(255, 117, 140, ',
+                power: 28,
+                isSupernova: false
             });
-            spawnSparks(e.clientX, e.clientY, 24);
-            playUiBeep(420, 0.08);
+
+            // 画面强烈物理震颤
+            screenShake = Math.max(screenShake, 5.0);
+
+            // 喷射36颗高初速辐射星尘
+            spawnBlastSparks(e.clientX, e.clientY, 36, false);
+
+            // 播放清脆科幻脉冲音效
+            playSciFiAudio(580, 0.12, 'sine', false);
         });
-        window.addEventListener('pointerup', () => isPointerDown = false);
+
+        // 鼠标松开：若蓄力达到引力奇点，则引爆全屏超新星大爆炸！
+        window.addEventListener('pointerup', (e) => {
+            const holdTime = performance.now() - pointerDownTime;
+            if (isPointerDown && holdTime > 260) {
+                screenShake = 12.0;
+                shockwaves.push({
+                    x: e.clientX,
+                    y: e.clientY,
+                    radius: 20,
+                    maxRadius: Math.max(width, height) * 0.95,
+                    opacity: 1.0,
+                    colorMain: 'rgba(255, 255, 255, ',
+                    colorHalo: 'rgba(255, 117, 140, ',
+                    power: 65,
+                    isSupernova: true
+                });
+                spawnBlastSparks(e.clientX, e.clientY, 72, true);
+                playSciFiAudio(220, 0.45, 'triangle', true);
+            }
+            isPointerDown = false;
+            chargeRatio = 0;
+        });
 
         let previousMode = 0;
         function switchVisualMode(modeIndex) {
@@ -2411,28 +3189,25 @@
                 else btn.classList.remove('selected');
             });
 
-            // 动态联动首屏樱花/赛博双向切换按钮的文字与样式
             const heroSakuraBtn = document.getElementById('hero-sakura-btn');
             if (heroSakuraBtn) {
                 if (modeIndex === 4) {
-                    heroSakuraBtn.innerHTML = '<span>🌌 切回赛博核心模式</span>';
+                    heroSakuraBtn.innerHTML = '<span>🌌 聚焦赛博核心模式</span>';
                     heroSakuraBtn.style.borderColor = 'rgba(0, 240, 255, 0.45)';
                     heroSakuraBtn.style.color = 'var(--cyan)';
                 } else {
-                    heroSakuraBtn.innerHTML = '<span>🌸 切换赛博樱花模式</span>';
+                    heroSakuraBtn.innerHTML = '<span>🌸 增强赛博樱花散华</span>';
                     heroSakuraBtn.style.borderColor = 'rgba(255, 117, 140, 0.4)';
                     heroSakuraBtn.style.color = 'var(--sakura)';
                 }
             }
-
-            playUiBeep(600 + modeIndex * 140, 0.06);
+            playSciFiAudio(720 + modeIndex * 120, 0.08, 'sine', false);
         }
 
         document.querySelectorAll('.mode-opt').forEach((btn, idx) => {
             btn.addEventListener('click', () => switchVisualMode(idx));
         });
 
-        // 按钮支持双向无缝切换：樱花模式与赛博核心模式自由来回切换
         const heroSakuraToggle = document.getElementById('hero-sakura-btn');
         if (heroSakuraToggle) {
             heroSakuraToggle.addEventListener('click', () => {
@@ -2451,13 +3226,13 @@
             }
         });
 
-        // ---------- MODE 0: 量子引力核心与粒子云 ----------
-        const CORE_PARTICLE_COUNT = 720;
+        // ---------- 1. 量子引力粒子云模型 (Core Particles) ----------
+        const CORE_PARTICLE_COUNT = 650;
         const coreParticles = [];
         for (let i = 0; i < CORE_PARTICLE_COUNT; i++) {
             const theta = Math.random() * Math.PI * 2;
             const phi = Math.acos(Math.random() * 2 - 1);
-            const radius = 90 + Math.pow(Math.random(), 2.2) * 360;
+            const radius = 90 + Math.pow(Math.random(), 2.2) * 380;
             coreParticles.push({
                 x: radius * Math.sin(phi) * Math.cos(theta),
                 y: radius * Math.sin(phi) * Math.sin(theta),
@@ -2465,40 +3240,48 @@
                 baseRadius: radius,
                 angle: theta,
                 speed: (0.002 + Math.random() * 0.004) * (Math.random() > 0.5 ? 1 : -1),
-                size: 1 + Math.random() * 2.2,
-                colorType: Math.random()
+                size: 1 + Math.random() * 2.4,
+                colorType: Math.random(),
+                blastVx: 0,
+                blastVy: 0,
+                blastVz: 0
             });
         }
 
-        // ---------- MODE 3: 矩阵数字雨 ----------
+        // ---------- 2. 矩阵数字雨模型 ----------
         const matrixCols = Math.floor(window.innerWidth / 20) + 10;
         const matrixDrops = [];
         for (let i = 0; i < matrixCols; i++) {
             matrixDrops[i] = Math.floor(Math.random() * -50);
         }
-        const matrixChars = '0123456789ABCDEFSHERLOCKAGENT01アイウエオカキクケコサシスセソタチツテト🌸';
+        const matrixChars = '0123456789ABCDEFSHERLOCKAGENT01アイウエオカキクケコサシスセソタチツテト🌸✨⚡';
 
-        // ---------- MODE 4: 赛博樱花散华 (SAKURA CYBER DRIFT) ----------
-        const SAKURA_COUNT = 240;
+        // ---------- 3. 全局常驻3D赛博樱花散华模型 (Sakura Petals) ----------
+        const SAKURA_COUNT = 280;
         const sakuraPetals = [];
         for (let i = 0; i < SAKURA_COUNT; i++) {
             sakuraPetals.push({
-                x: (Math.random() - 0.5) * 1600,
-                y: (Math.random() - 0.5) * 1200,
-                z: (Math.random() - 0.5) * 800,
-                vx: 0.6 + Math.random() * 1.2,
-                vy: 0.8 + Math.random() * 1.5,
+                x: (Math.random() - 0.5) * 1800,
+                y: (Math.random() - 0.5) * 1400,
+                z: (Math.random() - 0.5) * 900,
+                vx: 0.8 + Math.random() * 1.4,
+                vy: 0.9 + Math.random() * 1.6,
+                vz: (Math.random() - 0.5) * 0.5,
+                blastVx: 0,
+                blastVy: 0,
+                blastVz: 0,
                 rotPitch: Math.random() * Math.PI * 2,
                 rotYaw: Math.random() * Math.PI * 2,
                 rotRoll: Math.random() * Math.PI * 2,
                 pitchSpeed: 0.02 + Math.random() * 0.03,
                 yawSpeed: 0.01 + Math.random() * 0.02,
-                size: 6 + Math.random() * 8,
-                colorType: Math.random() // pink or cyan-tinted sakura
+                size: 7 + Math.random() * 9,
+                colorType: Math.random()
             });
         }
 
-        function project3D(x, y, z, cx, cy, fov = 680) {
+        // 3D 投影变换与景深缩放函数
+        function project3D(x, y, z, cx, cy, fov = 700) {
             const rotCosX = Math.cos(rotX);
             const rotSinX = Math.sin(rotX);
             const rotCosY = Math.cos(rotY);
@@ -2525,13 +3308,14 @@
         let lastFrameTime = performance.now();
         let startTime = performance.now();
 
+        // ================= 主渲染循环动力学 (Main 60FPS Loop) =================
         function mainRenderLoop(now) {
             requestAnimationFrame(mainRenderLoop);
             const dt = (now - lastFrameTime) * 0.001;
             lastFrameTime = now;
             const t = (now - startTime) * 0.00085;
 
-            // 实时 FPS 监控
+            // 实时 FPS 遥测计算
             frameCounter++;
             if (now - lastFpsUpdate > 500) {
                 const currentFps = (frameCounter * 1000 / (now - lastFpsUpdate)).toFixed(1);
@@ -2540,19 +3324,45 @@
                 lastFpsUpdate = now;
             }
 
+            // 柔和阻尼跟踪相机旋转
             rotX += (targetRotX - rotX) * 0.05;
             rotY += (targetRotY - rotY) * 0.05;
 
-            ctx.clearRect(0, 0, width, height);
+            // 相机震颤衰减与位置计算
+            let shakeOffsetX = 0, shakeOffsetY = 0;
+            if (screenShake > 0.05) {
+                shakeOffsetX = (Math.random() - 0.5) * screenShake;
+                shakeOffsetY = (Math.random() - 0.5) * screenShake;
+                screenShake *= 0.88;
+            }
 
-            const cx = width > 1024 ? width * 0.62 : width * 0.5;
+            // 清理主图层与特效图层
+            ctx.clearRect(0, 0, width, height);
+            fxCtx.clearRect(0, 0, width, height);
+
+            ctx.save();
+            ctx.translate(shakeOffsetX, shakeOffsetY);
+
+            const cx = (width > 1024 ? width * 0.62 : width * 0.5);
             const cy = height * 0.5;
 
-            // ================= 模式 0: 量子引力核心与粒子云 =================
+            // 检测音乐播放器是否在播放，注入节拍呼吸律动
+            let beatPulse = 1.0;
+            if (typeof isBgmPlaying !== 'undefined' && isBgmPlaying) {
+                beatPulse = 1.0 + Math.sin(now * 0.006) * 0.12;
+            }
+
+            // 引力奇点蓄力进度计算
+            if (isPointerDown) {
+                const holdDuration = now - pointerDownTime;
+                chargeRatio = Math.min(1.0, holdDuration / 600);
+            }
+
+            // ================= 模式 0: 量子引力核心与全息粒子云 =================
             if (currentMode === 0) {
-                const coreGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 280);
-                coreGrad.addColorStop(0, 'rgba(0, 240, 255, 0.12)');
-                coreGrad.addColorStop(0.4, 'rgba(168, 85, 247, 0.05)');
+                const coreGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 320 * beatPulse);
+                coreGrad.addColorStop(0, 'rgba(0, 240, 255, 0.16)');
+                coreGrad.addColorStop(0.35, 'rgba(168, 85, 247, 0.08)');
                 coreGrad.addColorStop(1, 'transparent');
                 ctx.fillStyle = coreGrad;
                 ctx.fillRect(0, 0, width, height);
@@ -2562,9 +3372,21 @@
                     const p = coreParticles[i];
                     p.angle += p.speed;
 
-                    const curX = p.baseRadius * Math.cos(p.angle);
-                    const curY = p.baseRadius * Math.sin(p.angle) * 0.75 + Math.sin(p.angle * 3 + t) * 20;
-                    const curZ = p.z + Math.cos(p.angle * 2 + t * 0.5) * 25;
+                    // 冲击波对粒子的爆发扩散衰减
+                    p.blastVx *= 0.92;
+                    p.blastVy *= 0.92;
+                    p.blastVz *= 0.92;
+
+                    // 长按奇点向心拉扯
+                    if (isPointerDown && chargeRatio > 0.2) {
+                        const pullFactor = chargeRatio * 0.06;
+                        p.blastVx += (pointerDownX - cx - p.x) * pullFactor * 0.05;
+                        p.blastVy += (pointerDownY - cy - p.y) * pullFactor * 0.05;
+                    }
+
+                    const curX = p.baseRadius * Math.cos(p.angle) * beatPulse + p.blastVx;
+                    const curY = p.baseRadius * Math.sin(p.angle) * 0.75 * beatPulse + Math.sin(p.angle * 3 + t) * 25 + p.blastVy;
+                    const curZ = p.z + Math.cos(p.angle * 2 + t * 0.5) * 30 + p.blastVz;
 
                     const proj = project3D(curX, curY, curZ, cx, cy);
                     if (proj) {
@@ -2578,17 +3400,18 @@
                     }
                 }
 
-                const connectionDist = 58;
+                // 邻近量子流线交织
+                const connectionDist = 56;
                 ctx.lineWidth = 0.65;
                 for (let i = 0; i < projectedPts.length; i += 2) {
                     const p1 = projectedPts[i];
-                    for (let j = i + 1; j < Math.min(i + 14, projectedPts.length); j++) {
+                    for (let j = i + 1; j < Math.min(i + 12, projectedPts.length); j++) {
                         const p2 = projectedPts[j];
                         const dx = p1.x - p2.x;
                         const dy = p1.y - p2.y;
                         const dist = Math.sqrt(dx * dx + dy * dy);
                         if (dist < connectionDist) {
-                            const alpha = (1 - dist / connectionDist) * 0.22;
+                            const alpha = (1 - dist / connectionDist) * 0.24;
                             ctx.strokeStyle = `rgba(0, 240, 255, ${alpha})`;
                             ctx.beginPath();
                             ctx.moveTo(p1.x, p1.y);
@@ -2598,254 +3421,277 @@
                     }
                 }
 
+                // 绘制量子发光粒子
                 for (let i = 0; i < projectedPts.length; i++) {
                     const pt = projectedPts[i];
                     const depthAlpha = Math.max(0.15, Math.min(1, 1 - (pt.depth - 350) / 700));
                     ctx.beginPath();
-                    ctx.arc(pt.x, pt.y, Math.max(0.7, pt.size), 0, Math.PI * 2);
+                    ctx.arc(pt.x, pt.y, Math.max(0.8, pt.size), 0, Math.PI * 2);
 
                     if (pt.colorType < 0.5) {
                         ctx.fillStyle = `rgba(0, 240, 255, ${depthAlpha * 0.9})`;
                     } else if (pt.colorType < 0.8) {
                         ctx.fillStyle = `rgba(168, 85, 247, ${depthAlpha * 0.85})`;
                     } else {
-                        ctx.fillStyle = `rgba(255, 255, 255, ${depthAlpha * 0.75})`;
+                        ctx.fillStyle = `rgba(255, 117, 140, ${depthAlpha * 0.9})`;
                     }
                     ctx.fill();
                 }
             }
 
-            // ================= 模式 1: 赛博空间网格地平线 (Cyber Grid) =================
+            // ================= 模式 1: 赛博空间曲面网格 =================
             else if (currentMode === 1) {
-                const gridRows = 28;
-                const gridCols = 36;
-                const cellW = 55;
-                const cellH = 55;
-
+                const gridCols = 32, gridRows = 24, cellW = 42, cellH = 42;
                 ctx.save();
                 for (let r = 0; r < gridRows; r++) {
                     ctx.beginPath();
                     let started = false;
-                    for (let c = 0; c <= gridCols; c++) {
+                    for (let c = 0; c < gridCols; c++) {
                         const gx = (c - gridCols / 2) * cellW;
                         const gz = (r - gridRows / 2) * cellH;
-                        const gy = 180 + Math.sin(c * 0.35 + t * 2) * 25 + Math.cos(r * 0.4 - t * 1.5) * 20;
-
+                        const gy = 180 + Math.sin(c * 0.35 + t * 2) * 28 + Math.cos(r * 0.4 - t * 1.5) * 22;
                         const proj = project3D(gx, gy, gz, cx, cy + 40);
                         if (proj) {
-                            if (!started) {
-                                ctx.moveTo(proj.x, proj.y);
-                                started = true;
-                            } else {
-                                ctx.lineTo(proj.x, proj.y);
-                            }
+                            if (!started) { ctx.moveTo(proj.x, proj.y); started = true; }
+                            else { ctx.lineTo(proj.x, proj.y); }
                         }
                     }
-                    const ratio = r / gridRows;
-                    ctx.strokeStyle = `rgba(0, 240, 255, ${0.08 + ratio * 0.45})`;
-                    ctx.lineWidth = 0.85;
-                    ctx.stroke();
-                }
-
-                for (let c = 0; c <= gridCols; c += 2) {
-                    ctx.beginPath();
-                    let started = false;
-                    for (let r = 0; r < gridRows; r++) {
-                        const gx = (c - gridCols / 2) * cellW;
-                        const gz = (r - gridRows / 2) * cellH;
-                        const gy = 180 + Math.sin(c * 0.35 + t * 2) * 25 + Math.cos(r * 0.4 - t * 1.5) * 20;
-
-                        const proj = project3D(gx, gy, gz, cx, cy + 40);
-                        if (proj) {
-                            if (!started) {
-                                ctx.moveTo(proj.x, proj.y);
-                                started = true;
-                            } else {
-                                ctx.lineTo(proj.x, proj.y);
-                            }
-                        }
-                    }
-                    ctx.strokeStyle = 'rgba(168, 85, 247, 0.22)';
-                    ctx.lineWidth = 0.75;
+                    ctx.strokeStyle = 'rgba(168, 85, 247, 0.26)';
+                    ctx.lineWidth = 0.8;
                     ctx.stroke();
                 }
                 ctx.restore();
             }
 
-            // ================= 模式 2: 超维拓扑流线组 (3D Ribbon) =================
+            // ================= 模式 2: 超维拓扑流线组 =================
             else if (currentMode === 2) {
-                const streamCount = 56;
-                const ptsPerStream = 80;
-                const waveA = Math.sin(t * 0.42);
-                const waveB = Math.cos(t * 0.31);
-
+                const streamCount = 56, ptsPerStream = 80;
                 for (let i = 0; i < streamCount; i++) {
                     const v = (i / streamCount) * Math.PI * 2;
                     ctx.beginPath();
                     let started = false;
-
                     for (let j = 0; j <= ptsPerStream; j++) {
                         const u = (j / ptsPerStream) * Math.PI * 2;
-                        const rMain = 195 + waveA * 60 + Math.sin(u * 2 + t) * 45;
-                        const rCross = 80 + waveB * 35 + Math.cos(v * 3 - t * 0.8) * 28;
-
+                        const rMain = 195 + Math.sin(t * 0.42) * 60 + Math.sin(u * 2 + t) * 45;
+                        const rCross = 80 + Math.cos(t * 0.31) * 35 + Math.cos(v * 3 - t * 0.8) * 28;
                         const twist = u * 2 + v + t * 0.6;
                         const px = (rMain + rCross * Math.cos(twist)) * Math.cos(u + t * 0.16);
                         const py = (rMain + rCross * Math.cos(twist)) * Math.sin(u + t * 0.16) * 0.8 + Math.sin(u * 3 + t) * 35;
                         const pz = rCross * Math.sin(twist) * 2.2 + Math.cos(u * 2 + t * 0.5) * 60;
-
                         const proj = project3D(px, py, pz, cx, cy);
                         if (proj) {
-                            if (!started) {
-                                ctx.moveTo(proj.x, proj.y);
-                                started = true;
-                            } else {
-                                ctx.lineTo(proj.x, proj.y);
-                            }
+                            if (!started) { ctx.moveTo(proj.x, proj.y); started = true; }
+                            else { ctx.lineTo(proj.x, proj.y); }
                         }
                     }
-
                     const ratio = i / streamCount;
-                    if (ratio < 0.45) {
-                        ctx.strokeStyle = 'rgba(0, 240, 255, 0.35)';
-                    } else if (ratio < 0.75) {
-                        ctx.strokeStyle = 'rgba(168, 85, 247, 0.3)';
-                    } else {
-                        ctx.strokeStyle = 'rgba(255, 117, 140, 0.28)';
-                    }
+                    ctx.strokeStyle = ratio < 0.5 ? 'rgba(0, 240, 255, 0.35)' : 'rgba(255, 117, 140, 0.32)';
                     ctx.lineWidth = 0.95;
                     ctx.stroke();
                 }
             }
 
-            // ================= 模式 3: 矩阵数字雨 (Matrix Rain) =================
+            // ================= 模式 3: 矩阵数字雨 =================
             else if (currentMode === 3) {
-                ctx.fillStyle = 'rgba(3, 4, 8, 0.12)';
+                ctx.fillStyle = 'rgba(3, 4, 8, 0.14)';
                 ctx.fillRect(0, 0, width, height);
-
                 ctx.font = '13px JetBrains Mono, monospace';
                 for (let i = 0; i < matrixDrops.length; i++) {
                     const char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
                     const x = i * 22;
                     const y = matrixDrops[i] * 20;
-
                     ctx.fillStyle = '#ffffff';
                     ctx.fillText(char, x, y);
-
-                    ctx.fillStyle = 'rgba(0, 240, 255, 0.75)';
+                    ctx.fillStyle = 'rgba(0, 240, 255, 0.8)';
                     ctx.fillText(char, x, y - 20);
-
-                    if (y > height && Math.random() > 0.975) {
-                        matrixDrops[i] = 0;
-                    }
+                    if (y > height && Math.random() > 0.975) matrixDrops[i] = 0;
                     matrixDrops[i]++;
                 }
             }
 
-            // ================= 模式 4: 赛博樱花散华 (Sakura Cyber Drift) =================
-            else if (currentMode === 4) {
-                const mouseSpeed = Math.hypot(mouseSpeedX, mouseSpeedY);
-                for (let i = 0; i < sakuraPetals.length; i++) {
-                    const p = sakuraPetals[i];
-                    p.x += p.vx + Math.sin(t + i) * 0.4;
-                    p.y += p.vy;
-                    p.rotPitch += p.pitchSpeed;
-                    p.rotYaw += p.yawSpeed;
+            // ================= 4. 全局常驻三维赛博樱花散华与物理引擎 (Ambient 3D Sakura) =================
+            const mouseSpeed = Math.hypot(mouseSpeedX, mouseSpeedY);
+            const activeSakuraLimit = currentMode === 4 ? sakuraPetals.length : Math.floor(sakuraPetals.length * 0.85);
 
-                    // 1. 鼠标动态风压与旋转流体相互作用
-                    const dx = p.x - (mouseX - width * 0.5);
-                    const dy = p.y - (mouseY - height * 0.5);
-                    const distSq = dx * dx + dy * dy;
-                    if (distSq < 36000 && distSq > 10) {
-                        const dist = Math.sqrt(distSq);
-                        const force = (1 - dist / 190) * 10;
-                        p.x += (dx / dist) * force + mouseSpeedX * 0.35;
-                        p.y += (dy / dist) * force + mouseSpeedY * 0.35;
-                        p.rotYaw += mouseSpeed * 0.035;
-                        p.rotPitch += mouseSpeed * 0.04;
+            for (let i = 0; i < activeSakuraLimit; i++) {
+                const p = sakuraPetals[i];
+
+                p.blastVx *= 0.93;
+                p.blastVy *= 0.93;
+                p.blastVz *= 0.93;
+
+                p.x += p.vx + Math.sin(t + i) * 0.5 + p.blastVx;
+                p.y += p.vy + p.blastVy;
+                p.z += p.vz + p.blastVz;
+                p.rotPitch += p.pitchSpeed;
+                p.rotYaw += p.yawSpeed;
+
+                // 物理交互 1: 鼠标气动流体风洞
+                const dx = p.x - (mouseX - width * 0.5);
+                const dy = p.y - (mouseY - height * 0.5);
+                const distSq = dx * dx + dy * dy;
+                if (distSq < 48000 && distSq > 15) {
+                    const dist = Math.sqrt(distSq);
+                    const force = (1 - dist / 220) * 14;
+                    p.x += (dx / dist) * force + mouseSpeedX * 0.35;
+                    p.y += (dy / dist) * force + mouseSpeedY * 0.35;
+                    p.rotYaw += mouseSpeed * 0.04;
+                    p.rotPitch += mouseSpeed * 0.05;
+                }
+
+                // 物理交互 2: 长按引力坍缩奇点
+                if (isPointerDown && chargeRatio > 0.15) {
+                    const pullDx = (pointerDownX - width * 0.5) - p.x;
+                    const pullDy = (pointerDownY - height * 0.5) - p.y;
+                    const pullDist = Math.hypot(pullDx, pullDy);
+                    if (pullDist < 420) {
+                        const pullStrength = (1 - pullDist / 420) * chargeRatio * 20;
+                        p.x += (pullDx / (pullDist || 1)) * pullStrength - (pullDy / (pullDist || 1)) * (pullStrength * 0.6);
+                        p.y += (pullDy / (pullDist || 1)) * pullStrength + (pullDx / (pullDist || 1)) * (pullStrength * 0.6);
+                        p.rotYaw += 0.15;
                     }
+                }
 
-                    // 2. 点击冲击波环剧烈散华震荡
-                    for (let sIdx = 0; sIdx < shockwaves.length; sIdx++) {
-                        const sw = shockwaves[sIdx];
-                        const swDx = (p.x + width * 0.5) - sw.x;
-                        const swDy = (p.y + height * 0.5) - sw.y;
-                        const swDist = Math.hypot(swDx, swDy);
-                        if (Math.abs(swDist - sw.radius) < 70) {
-                            const blast = (1 - Math.abs(swDist - sw.radius) / 70) * 22 * sw.opacity;
-                            p.x += (swDx / (swDist || 1)) * blast;
-                            p.y += (swDy / (swDist || 1)) * blast;
-                            p.rotPitch += 0.3;
-                            p.rotYaw += 0.25;
-                        }
+                if (p.y > 700) p.y = -700;
+                if (p.x > 900) p.x = -900;
+                if (p.x < -900) p.x = 900;
+
+                const proj = project3D(p.x, p.y, p.z, width * 0.5, height * 0.5);
+                if (proj) {
+                    const depthAlpha = Math.max(0.2, Math.min(0.95, 1 - (proj.depth - 300) / 750));
+                    ctx.save();
+                    ctx.translate(proj.x, proj.y);
+                    ctx.rotate(p.rotYaw);
+                    ctx.scale(Math.cos(p.rotPitch) * proj.scale, proj.scale);
+
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.bezierCurveTo(-p.size * 0.7, -p.size * 1.15, -p.size * 1.35, -p.size * 0.2, 0, p.size * 1.25);
+                    ctx.bezierCurveTo(p.size * 1.35, -p.size * 0.2, p.size * 0.7, -p.size * 1.15, 0, 0);
+
+                    if (p.colorType < 0.72) {
+                        ctx.fillStyle = `rgba(255, 117, 140, ${depthAlpha * 0.85})`;
+                        ctx.strokeStyle = `rgba(255, 184, 198, ${depthAlpha * 0.95})`;
+                    } else {
+                        ctx.fillStyle = `rgba(0, 240, 255, ${depthAlpha * 0.8})`;
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${depthAlpha * 0.9})`;
                     }
-
-                    // 边界回环
-                    if (p.y > 600) p.y = -600;
-                    if (p.x > 800) p.x = -800;
-
-                    const proj = project3D(p.x, p.y, p.z, width * 0.5, height * 0.5);
-                    if (proj) {
-                        const depthAlpha = Math.max(0.2, Math.min(0.9, 1 - (proj.depth - 300) / 750));
-                        ctx.save();
-                        ctx.translate(proj.x, proj.y);
-                        ctx.rotate(p.rotYaw);
-                        ctx.scale(Math.cos(p.rotPitch) * proj.scale, proj.scale);
-
-                        // 绘制具有半透明渐变的赛博霓虹樱花花瓣
-                        ctx.beginPath();
-                        ctx.moveTo(0, 0);
-                        ctx.bezierCurveTo(-p.size * 0.7, -p.size * 1.1, -p.size * 1.3, -p.size * 0.2, 0, p.size * 1.2);
-                        ctx.bezierCurveTo(p.size * 1.3, -p.size * 0.2, p.size * 0.7, -p.size * 1.1, 0, 0);
-
-                        if (p.colorType < 0.75) {
-                            ctx.fillStyle = `rgba(255, 117, 140, ${depthAlpha * 0.8})`;
-                            ctx.strokeStyle = `rgba(255, 184, 198, ${depthAlpha * 0.9})`;
-                        } else {
-                            ctx.fillStyle = `rgba(0, 240, 255, ${depthAlpha * 0.75})`;
-                            ctx.strokeStyle = `rgba(255, 255, 255, ${depthAlpha * 0.85})`;
-                        }
-                        ctx.lineWidth = 0.8;
-                        ctx.fill();
-                        ctx.stroke();
-                        ctx.restore();
-                    }
+                    ctx.lineWidth = 0.85;
+                    ctx.fill();
+                    ctx.stroke();
+                    ctx.restore();
                 }
             }
 
-            // ================= 渲染冲击波环 (Shockwaves) =================
+            // ================= 5. 超能核爆级双环光晕冲击波 (High-Energy Shockwaves) =================
             for (let i = shockwaves.length - 1; i >= 0; i--) {
                 const sw = shockwaves[i];
-                sw.radius += (sw.maxRadius - sw.radius) * 0.08;
-                sw.opacity *= 0.94;
+                sw.radius += (sw.maxRadius - sw.radius) * (sw.isSupernova ? 0.095 : 0.08);
+                sw.opacity *= (sw.isSupernova ? 0.95 : 0.92);
 
+                for (let j = 0; j < sakuraPetals.length; j++) {
+                    const p = sakuraPetals[j];
+                    const swDx = (p.x + width * 0.5) - sw.x;
+                    const swDy = (p.y + height * 0.5) - sw.y;
+                    const swDist = Math.hypot(swDx, swDy);
+                    if (Math.abs(swDist - sw.radius) < 85) {
+                        const blast = (1 - Math.abs(swDist - sw.radius) / 85) * sw.power * sw.opacity;
+                        p.blastVx += (swDx / (swDist || 1)) * blast;
+                        p.blastVy += (swDy / (swDist || 1)) * blast;
+                        p.rotPitch += 0.45;
+                        p.rotYaw += 0.35;
+                    }
+                }
+
+                for (let k = 0; k < coreParticles.length; k++) {
+                    const cp = coreParticles[k];
+                    const cDx = (cp.x + cx) - sw.x;
+                    const cDy = (cp.y + cy) - sw.y;
+                    const cDist = Math.hypot(cDx, cDy);
+                    if (Math.abs(cDist - sw.radius) < 80) {
+                        const cBlast = (1 - Math.abs(cDist - sw.radius) / 80) * (sw.power * 0.75) * sw.opacity;
+                        cp.blastVx += (cDx / (cDist || 1)) * cBlast;
+                        cp.blastVy += (cDy / (cDist || 1)) * cBlast;
+                    }
+                }
+
+                // 内核主高光环
                 ctx.beginPath();
                 ctx.arc(sw.x, sw.y, sw.radius, 0, Math.PI * 2);
-                ctx.strokeStyle = `rgba(0, 240, 255, ${sw.opacity})`;
-                ctx.lineWidth = 1.5;
+                ctx.strokeStyle = `${sw.colorMain}${sw.opacity * 0.95})`;
+                ctx.lineWidth = sw.isSupernova ? 5.5 : 3.5;
+                ctx.shadowColor = sw.isSupernova ? '#ff758c' : '#00f0ff';
+                ctx.shadowBlur = sw.isSupernova ? 24 : 16;
                 ctx.stroke();
+
+                // 次级色散霓虹粉光环
+                ctx.beginPath();
+                ctx.arc(sw.x, sw.y, Math.max(1, sw.radius - 8), 0, Math.PI * 2);
+                ctx.strokeStyle = `${sw.colorHalo}${sw.opacity * 0.7})`;
+                ctx.lineWidth = sw.isSupernova ? 3.0 : 1.8;
+                ctx.stroke();
+                ctx.shadowBlur = 0;
 
                 if (sw.opacity < 0.02) {
                     shockwaves.splice(i, 1);
                 }
             }
 
-            // ================= 渲染鼠标光标流光火花 (FX Canvas) =================
-            fxCtx.clearRect(0, 0, width, height);
+            ctx.restore();
+
+            // ================= 6. 特效图层渲染 =================
+            if (mouseTrail.length > 2) {
+                fxCtx.beginPath();
+                for (let i = 0; i < mouseTrail.length; i++) {
+                    const pt = mouseTrail[i];
+                    pt.age *= 0.88;
+                    if (i === 0) fxCtx.moveTo(pt.x, pt.y);
+                    else fxCtx.lineTo(pt.x, pt.y);
+                }
+                fxCtx.strokeStyle = 'rgba(0, 240, 255, 0.45)';
+                fxCtx.lineWidth = 3.2;
+                fxCtx.lineCap = 'round';
+                fxCtx.lineJoin = 'round';
+                fxCtx.stroke();
+            }
+
+            if (isPointerDown && chargeRatio > 0.08) {
+                const sRadius = 25 + chargeRatio * 35;
+                fxCtx.save();
+                fxCtx.translate(pointerDownX, pointerDownY);
+                fxCtx.rotate(now * 0.005);
+
+                fxCtx.beginPath();
+                fxCtx.arc(0, 0, sRadius, 0, Math.PI * 2);
+                fxCtx.strokeStyle = `rgba(255, 117, 140, ${chargeRatio * 0.85})`;
+                fxCtx.lineWidth = 2.5;
+                fxCtx.stroke();
+
+                fxCtx.beginPath();
+                fxCtx.arc(0, 0, sRadius * 0.45, 0, Math.PI * 2);
+                fxCtx.fillStyle = `rgba(0, 240, 255, ${chargeRatio * 0.7})`;
+                fxCtx.shadowColor = '#00f0ff';
+                fxCtx.shadowBlur = 18;
+                fxCtx.fill();
+                fxCtx.restore();
+            }
+
             for (let i = sparks.length - 1; i >= 0; i--) {
                 const s = sparks[i];
                 s.x += s.vx;
                 s.y += s.vy;
-                s.life *= 0.93;
+                s.vx *= 0.95;
+                s.vy *= 0.95;
+                s.life *= 0.92;
 
                 fxCtx.beginPath();
-                fxCtx.arc(s.x, s.y, s.size * s.life, 0, Math.PI * 2);
+                fxCtx.arc(s.x, s.y, Math.max(0.5, s.size * s.life), 0, Math.PI * 2);
                 fxCtx.fillStyle = s.color;
                 fxCtx.globalAlpha = s.life;
                 fxCtx.fill();
                 fxCtx.globalAlpha = 1.0;
 
-                if (s.life < 0.05) {
+                if (s.life < 0.04) {
                     sparks.splice(i, 1);
                 }
             }
@@ -2868,31 +3714,55 @@
             });
         });
 
-        // ================= 8. 二次元毛玻璃音乐盒控制器 (BGM Jukebox - 10 Tracks) =================
+                // ================= 8. 二次元毛玻璃音乐盒控制器 (Hero CloudPlayer + 悬浮胶囊 双端深度联动) =================
         const bgmPlaylist = [
-            { title: "月声尽，心灯明", artist: "《鸣潮》心月狐主题曲", src: "audio/track_01.mp3" },
-            { title: "奇迹 (キセキ)", artist: "《擅长捉弄的高木同学》回忆曲", src: "audio/track_02.mp3" },
-            { title: "天ノ弱", artist: "《鸣潮》达尼娅角色歌 · 伊藤美来", src: "audio/track_03.mp3" },
-            { title: "I Really Want to Stay at Your House", artist: "《赛博朋克：边缘行者》插曲", src: "audio/track_04.mp3" },
-            { title: "不凡", artist: "《凡人修仙传》动画主题曲 · 王铮亮", src: "audio/track_05.mp3" },
-            { title: "君色シグナル", artist: "《路人女主的养成方法》OP1", src: "audio/track_06.mp3" },
-            { title: "One more time, One more chance", artist: "《秒速5厘米》主题曲 · 山崎将义", src: "audio/track_07.mp3" },
-            { title: "GATE OF STEINER", artist: "《命运石之门》插曲", src: "audio/track_08.mp3" },
-            { title: "優しさの理由", artist: "《冰菓》OP1 · ChouCho", src: "audio/track_09.mp3" },
-            { title: "ユキトキ", artist: "《我的青春恋爱物语果然有问题》OP1", src: "audio/track_10.mp3" }
+            { title: "月声尽，心灯明", artist: "《鸣潮》心月狐主题曲", src: "audio/track_01.mp3", lyric: "「月声尽，心灯明，踏遍万水千山长夜有光」" },
+            { title: "奇迹 (キセキ)", artist: "《擅长捉弄的高木同学》回忆曲", src: "audio/track_02.mp3", lyric: "「明日、今日よりも好きになれる，溢れる想いが止まらない」" },
+            { title: "天ノ弱", artist: "《鸣潮》达尼娅角色歌 · 伊藤美来", src: "audio/track_03.mp3", lyric: "「僕がずっと前から思ってる事を話そうか，愛したっていいじゃないか」" },
+            { title: "I Really Want to Stay at Your House", artist: "《赛博朋克：边缘行者》插曲", src: "audio/track_04.mp3", lyric: "「So get away, another way to feel what you didn't want yourself to know」" },
+            { title: "不凡", artist: "《凡人修仙传》动画主题曲 · 王铮亮", src: "audio/track_05.mp3", lyric: "「生来平庸，敢问浩瀚苍穹；凡人不凡，踏尽千重风浪」" },
+            { title: "君色シグナル", artist: "《路人女主的养成方法》OP1", src: "audio/track_06.mp3", lyric: "「走り出した 恋心，今でもまだ 夢の途中」" },
+            { title: "One more time, One more chance", artist: "《秒速5厘米》主题曲 · 山崎将义", src: "audio/track_07.mp3", lyric: "「いつでも捜しているよ，どっかに君の姿を」" },
+            { title: "GATE OF STEINER", artist: "《命运石之门》插曲", src: "audio/track_08.mp3", lyric: "「So there's no meaning in our world, if we can't find a way out」" },
+            { title: "優しさの理由", artist: "《冰菓》OP1 · ChouCho", src: "audio/track_09.mp3", lyric: "「君の声が届いたから，僕の胸に響いたから」" },
+            { title: "ユキトキ", artist: "《我的青春恋爱物语果然有问题》OP1", src: "audio/track_10.mp3", lyric: "「陽だまりに隠れた 咲かない花，君の手で触れて」" }
         ];
 
         let bgmIndex = 0;
         let isBgmPlaying = false;
         let isLoopSingle = false;
-        const bgmAudio = document.getElementById('global-bgm-audio');
-        if (bgmAudio) bgmAudio.volume = 0.25; // 默认柔和小音量 (25%)，绝不刺耳
 
+        const bgmAudio = document.getElementById('global-bgm-audio');
+        if (bgmAudio) bgmAudio.volume = 0.25; // 默认温和音量 25%
+
+        // Hero CloudPlayer DOM 元素
+        const heroCloudPlayer = document.getElementById('hero-cloud-player');
+        const heroVinylDisc = document.getElementById('hero-vinyl-disc');
+        const heroDiscWrap = document.getElementById('hero-disc-wrap');
+        const heroSongTitle = document.getElementById('hero-song-title');
+        const heroSongTag = document.getElementById('hero-song-tag');
+        const heroPlayStatus = document.getElementById('hero-play-status');
+        const heroPlayBtn = document.getElementById('hero-play-btn');
+        const heroPlayIcon = document.getElementById('hero-play-icon');
+        const heroPrevBtn = document.getElementById('hero-prev-btn');
+        const heroNextBtn = document.getElementById('hero-next-btn');
+        const heroLoopBtn = document.getElementById('hero-loop-btn');
+        const heroListBtn = document.getElementById('hero-list-btn');
+        const heroCurTime = document.getElementById('hero-cur-time');
+        const heroDurTime = document.getElementById('hero-dur-time');
+        const heroProgressBg = document.getElementById('hero-progress-bg');
+        const heroProgressFill = document.getElementById('hero-progress-fill');
+        const heroVolSlider = document.getElementById('hero-vol-slider');
+        const heroMuteIcon = document.getElementById('hero-mute-icon');
+        const heroLyricText = document.getElementById('hero-lyric-text');
+        const heroTrackCounter = document.getElementById('hero-track-counter');
+        const heroPlaylistDrawer = document.getElementById('hero-playlist-drawer');
+
+        // 悬浮迷你胶囊 DOM 元素
         const capsuleBtn = document.getElementById('music-capsule-btn');
         const capsuleName = document.getElementById('capsule-song-name');
         const musicModal = document.getElementById('music-card-modal');
         const musicCloseBtn = document.getElementById('music-modal-close');
-
         const musicDisplayTitle = document.getElementById('music-display-title');
         const musicDisplayArtist = document.getElementById('music-display-artist');
         const musicBigDisc = document.getElementById('music-big-disc');
@@ -2902,7 +3772,6 @@
         const musicLoopBtn = document.getElementById('music-loop-btn');
         const musicListToggleBtn = document.getElementById('music-list-toggle-btn');
         const musicDrawer = document.getElementById('music-playlist-drawer');
-
         const progressBg = document.getElementById('music-progress-bg');
         const progressFill = document.getElementById('music-progress-fill');
         const curTimeEl = document.getElementById('music-cur-time');
@@ -2917,29 +3786,66 @@
             return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
         }
 
-        function renderPlaylistDrawer() {
-            if (!musicDrawer) return;
-            musicDrawer.innerHTML = '';
-            bgmPlaylist.forEach((t, i) => {
-                const item = document.createElement('div');
-                item.className = 'playlist-item' + (i === bgmIndex ? ' active' : '');
-                item.innerHTML = `
-                    <span class="playlist-item-title">${i + 1}. ${t.title}</span>
-                    <span style="font-size:0.65rem; opacity:0.8;">${i === bgmIndex && isBgmPlaying ? '▶' : ''}</span>
-                `;
-                item.addEventListener('click', () => {
-                    loadAndPlay(i, true);
+        // 渲染 10 首曲目抽屉列表
+        function renderPlaylists() {
+            // 1. 渲染 Hero CloudPlayer 抽屉
+            if (heroPlaylistDrawer) {
+                heroPlaylistDrawer.innerHTML = '';
+                bgmPlaylist.forEach((t, i) => {
+                    const item = document.createElement('div');
+                    item.className = 'drawer-song-item' + (i === bgmIndex ? ' active' : '');
+                    item.innerHTML = `
+                        <div>
+                            <div class="drawer-song-title">${i + 1}. ${t.title}</div>
+                            <div class="drawer-song-artist">${t.artist}</div>
+                        </div>
+                        <span style="font-size:0.75rem; color:var(--cyan);">${i === bgmIndex && isBgmPlaying ? '▶' : ''}</span>
+                    `;
+                    item.addEventListener('click', () => loadAndPlay(i, true));
+                    heroPlaylistDrawer.appendChild(item);
                 });
-                musicDrawer.appendChild(item);
-            });
+            }
+
+            // 2. 渲染悬浮面板抽屉
+            if (musicDrawer) {
+                musicDrawer.innerHTML = '';
+                bgmPlaylist.forEach((t, i) => {
+                    const item = document.createElement('div');
+                    item.className = 'playlist-item' + (i === bgmIndex ? ' active' : '');
+                    item.innerHTML = `
+                        <span class="playlist-item-title">${i + 1}. ${t.title}</span>
+                        <span style="font-size:0.65rem; opacity:0.8;">${i === bgmIndex && isBgmPlaying ? '▶' : ''}</span>
+                    `;
+                    item.addEventListener('click', () => loadAndPlay(i, true));
+                    musicDrawer.appendChild(item);
+                });
+            }
         }
 
+        // 状态全界面精准同步
         function syncMusicUI() {
             const track = bgmPlaylist[bgmIndex];
+
+            // 1. 同步 Hero CloudPlayer
+            if (heroSongTitle) heroSongTitle.textContent = track.title;
+            if (heroSongTag) heroSongTag.textContent = track.artist;
+            if (heroLyricText) heroLyricText.textContent = track.lyric;
+            if (heroTrackCounter) heroTrackCounter.textContent = `${bgmIndex + 1} / ${bgmPlaylist.length} TRACKS`;
+            if (heroPlayIcon) heroPlayIcon.textContent = isBgmPlaying ? '⏸' : '▶';
+            if (heroVinylDisc) {
+                if (isBgmPlaying) heroVinylDisc.classList.add('spinning');
+                else heroVinylDisc.classList.remove('spinning');
+            }
+            if (heroPlayStatus) {
+                heroPlayStatus.innerHTML = isBgmPlaying ?
+                    `<span class="status-icon" style="color:#10b981;">●</span> <span class="status-text" style="color:#10b981;">正在播放</span>` :
+                    `<span class="status-icon">▶</span> <span class="status-text">点击中央大键即刻启奏</span>`;
+            }
+
+            // 2. 同步悬浮胶囊面板
             if (musicDisplayTitle) musicDisplayTitle.textContent = track.title;
             if (musicDisplayArtist) musicDisplayArtist.textContent = track.artist;
             if (capsuleName) capsuleName.textContent = `BGM: ${track.title}`;
-
             if (capsuleBtn) {
                 if (isBgmPlaying) capsuleBtn.classList.add('playing');
                 else capsuleBtn.classList.remove('playing');
@@ -2948,12 +3854,12 @@
                 if (isBgmPlaying) musicBigDisc.classList.add('spinning');
                 else musicBigDisc.classList.remove('spinning');
             }
-            if (musicPlayBtn) {
-                musicPlayBtn.textContent = isBgmPlaying ? '⏸' : '▶';
-            }
-            renderPlaylistDrawer();
+            if (musicPlayBtn) musicPlayBtn.textContent = isBgmPlaying ? '⏸' : '▶';
+
+            renderPlaylists();
         }
 
+        // 载入并播放曲目
         function loadAndPlay(index, autoPlay = true) {
             bgmIndex = (index + bgmPlaylist.length) % bgmPlaylist.length;
             const track = bgmPlaylist[bgmIndex];
@@ -2965,7 +3871,7 @@
                         isBgmPlaying = true;
                         syncMusicUI();
                     }).catch(err => {
-                        console.log('Autoplay prevented:', err);
+                        console.log('Autoplay policy caught:', err);
                         isBgmPlaying = false;
                         syncMusicUI();
                     });
@@ -2973,117 +3879,107 @@
             }
         }
 
-        // 初始装载第 1 首 (preload="none" 保证 0 字节启动)
+        // 默认初始化装载第 1 首 (preload="none" 保证 0 字节启动)
         if (bgmAudio) {
             loadAndPlay(0, false);
         }
 
-        // 胶囊主按钮：展开/收起面板，并若处于未播放状态则顺滑起播
+        // 播放/暂停总控
+        function togglePlayPause() {
+            if (!bgmAudio) return;
+            if (bgmAudio.paused) {
+                bgmAudio.play().then(() => {
+                    isBgmPlaying = true;
+                    syncMusicUI();
+                }).catch(err => console.log('Play err:', err));
+            } else {
+                bgmAudio.pause();
+                isBgmPlaying = false;
+                syncMusicUI();
+            }
+        }
+
+        // Hero 专属大键绑定
+        if (heroPlayBtn) heroPlayBtn.addEventListener('click', togglePlayPause);
+        if (heroDiscWrap) heroDiscWrap.addEventListener('click', togglePlayPause);
+        if (heroNextBtn) heroNextBtn.addEventListener('click', () => loadAndPlay(bgmIndex + 1, true));
+        if (heroPrevBtn) heroPrevBtn.addEventListener('click', () => loadAndPlay(bgmIndex - 1, true));
+        if (heroLoopBtn) {
+            heroLoopBtn.addEventListener('click', () => {
+                isLoopSingle = !isLoopSingle;
+                heroLoopBtn.style.color = isLoopSingle ? 'var(--cyan)' : '#cbd5e1';
+                heroLoopBtn.title = isLoopSingle ? '单曲循环' : '列表循环';
+                if (musicLoopBtn) {
+                    musicLoopBtn.style.color = isLoopSingle ? 'var(--cyan)' : '#cbd5e1';
+                    musicLoopBtn.title = isLoopSingle ? '单曲循环' : '列表循环';
+                }
+            });
+        }
+        if (heroListBtn) {
+            heroListBtn.addEventListener('click', () => {
+                if (heroPlaylistDrawer) heroPlaylistDrawer.classList.toggle('open');
+            });
+        }
+
+        // 悬浮面板按键绑定
         if (capsuleBtn) {
             capsuleBtn.addEventListener('click', (e) => {
                 if (musicModal) {
                     const willOpen = !musicModal.classList.contains('open');
                     musicModal.classList.toggle('open');
                     if (willOpen && bgmAudio && bgmAudio.paused) {
-                        bgmAudio.play().then(() => {
-                            isBgmPlaying = true;
-                            syncMusicUI();
-                        }).catch(err => console.log('BGM Play prevented/error:', err));
+                        togglePlayPause();
                     }
                 }
             });
         }
-
-        // 胶囊上的黑胶小唱片图标：支持极简一键即开即关（不展开卡片）
         const capsuleDiscIcon = document.getElementById('capsule-disc-icon');
         if (capsuleDiscIcon) {
             capsuleDiscIcon.addEventListener('click', (e) => {
                 e.stopPropagation();
-                if (!bgmAudio) return;
-                if (bgmAudio.paused) {
-                    bgmAudio.play().then(() => {
-                        isBgmPlaying = true;
-                        syncMusicUI();
-                    }).catch(err => console.log('BGM Play error:', err));
-                } else {
-                    bgmAudio.pause();
-                    isBgmPlaying = false;
-                    syncMusicUI();
-                }
+                togglePlayPause();
             });
         }
-
-        // 模态面板关闭按钮
         if (musicCloseBtn) {
             musicCloseBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 if (musicModal) musicModal.classList.remove('open');
             });
         }
-
-        // 模态大唱片封面点击也可以播放/暂停
-        if (musicBigDisc) {
-            musicBigDisc.addEventListener('click', () => {
-                if (!bgmAudio) return;
-                if (bgmAudio.paused) {
-                    bgmAudio.play().then(() => {
-                        isBgmPlaying = true;
-                        syncMusicUI();
-                    }).catch(e => console.log('Play err:', e));
-                } else {
-                    bgmAudio.pause();
-                    isBgmPlaying = false;
-                    syncMusicUI();
-                }
-            });
-        }
-
-        // 模态中央播放/暂停大按键
-        if (musicPlayBtn) {
-            musicPlayBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                if (!bgmAudio) return;
-                if (bgmAudio.paused) {
-                    bgmAudio.play().then(() => {
-                        isBgmPlaying = true;
-                        syncMusicUI();
-                    }).catch(e => console.log('Play err:', e));
-                } else {
-                    bgmAudio.pause();
-                    isBgmPlaying = false;
-                    syncMusicUI();
-                }
-            });
-        }
-
-        if (musicNextBtn) {
-            musicNextBtn.addEventListener('click', () => loadAndPlay(bgmIndex + 1, true));
-        }
-        if (musicPrevBtn) {
-            musicPrevBtn.addEventListener('click', () => loadAndPlay(bgmIndex - 1, true));
-        }
-
+        if (musicBigDisc) musicBigDisc.addEventListener('click', togglePlayPause);
+        if (musicPlayBtn) musicPlayBtn.addEventListener('click', togglePlayPause);
+        if (musicNextBtn) musicNextBtn.addEventListener('click', () => loadAndPlay(bgmIndex + 1, true));
+        if (musicPrevBtn) musicPrevBtn.addEventListener('click', () => loadAndPlay(bgmIndex - 1, true));
         if (musicLoopBtn) {
             musicLoopBtn.addEventListener('click', () => {
                 isLoopSingle = !isLoopSingle;
                 musicLoopBtn.style.color = isLoopSingle ? 'var(--cyan)' : '#cbd5e1';
-                musicLoopBtn.title = isLoopSingle ? '单曲循环' : '列表循环';
+                if (heroLoopBtn) heroLoopBtn.style.color = isLoopSingle ? 'var(--cyan)' : '#cbd5e1';
             });
         }
-
         if (musicListToggleBtn) {
             musicListToggleBtn.addEventListener('click', () => {
                 if (musicDrawer) musicDrawer.classList.toggle('open');
             });
         }
 
+        // 音频时间与进度同步
         if (bgmAudio) {
             bgmAudio.addEventListener('timeupdate', () => {
                 if (bgmAudio.duration) {
                     const pct = (bgmAudio.currentTime / bgmAudio.duration) * 100;
+                    const curStr = formatAudioTime(bgmAudio.currentTime);
+                    const durStr = formatAudioTime(bgmAudio.duration);
+
+                    // Hero 同步
+                    if (heroProgressFill) heroProgressFill.style.width = pct + '%';
+                    if (heroCurTime) heroCurTime.textContent = curStr;
+                    if (heroDurTime) heroDurTime.textContent = durStr;
+
+                    // 悬浮板同步
                     if (progressFill) progressFill.style.width = pct + '%';
-                    if (curTimeEl) curTimeEl.textContent = formatAudioTime(bgmAudio.currentTime);
-                    if (durTimeEl) durTimeEl.textContent = formatAudioTime(bgmAudio.duration);
+                    if (curTimeEl) curTimeEl.textContent = curStr;
+                    if (durTimeEl) durTimeEl.textContent = durStr;
                 }
             });
 
@@ -3097,39 +3993,60 @@
             });
         }
 
-        if (progressBg) {
-            progressBg.addEventListener('click', (e) => {
-                if (!bgmAudio || !bgmAudio.duration) return;
-                const rect = progressBg.getBoundingClientRect();
-                const clickX = e.clientX - rect.left;
-                const pct = Math.max(0, Math.min(1, clickX / rect.width));
-                bgmAudio.currentTime = pct * bgmAudio.duration;
-            });
+        // 进度条拖拽/点击寻址
+        function handleSeekClick(bgEl, e) {
+            if (!bgmAudio || !bgmAudio.duration) return;
+            const rect = bgEl.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const pct = Math.max(0, Math.min(1, clickX / rect.width));
+            bgmAudio.currentTime = pct * bgmAudio.duration;
         }
+        if (heroProgressBg) heroProgressBg.addEventListener('click', (e) => handleSeekClick(heroProgressBg, e));
+        if (progressBg) progressBg.addEventListener('click', (e) => handleSeekClick(progressBg, e));
 
-        if (volSlider) {
-            volSlider.addEventListener('input', (e) => {
-                if (!bgmAudio) return;
-                const v = parseFloat(e.target.value);
-                bgmAudio.volume = v;
-                if (muteIcon) muteIcon.textContent = v === 0 ? '🔇' : (v < 0.5 ? '🔉' : '🔊');
-            });
+        // 音量调节联动
+        function handleVolumeChange(v) {
+            if (!bgmAudio) return;
+            bgmAudio.volume = v;
+            const icon = v === 0 ? '🔇' : (v < 0.5 ? '🔉' : '🔊');
+            if (heroMuteIcon) heroMuteIcon.textContent = icon;
+            if (muteIcon) muteIcon.textContent = icon;
+            if (heroVolSlider) heroVolSlider.value = v;
+            if (volSlider) volSlider.value = v;
         }
+        if (heroVolSlider) heroVolSlider.addEventListener('input', (e) => handleVolumeChange(parseFloat(e.target.value)));
+        if (volSlider) volSlider.addEventListener('input', (e) => handleVolumeChange(parseFloat(e.target.value)));
 
-        if (muteIcon) {
-            muteIcon.addEventListener('click', () => {
-                if (!bgmAudio) return;
-                if (bgmAudio.volume > 0) {
-                    bgmAudio.volume = 0;
-                    if (volSlider) volSlider.value = 0;
-                    muteIcon.textContent = '🔇';
-                } else {
-                    bgmAudio.volume = 0.25;
-                    if (volSlider) volSlider.value = 0.25;
-                    muteIcon.textContent = '🔉';
-                }
-            });
+        // 静音切换
+        function toggleMute() {
+            if (!bgmAudio) return;
+            if (bgmAudio.volume > 0) handleVolumeChange(0);
+            else handleVolumeChange(0.25);
         }
+        if (heroMuteIcon) heroMuteIcon.addEventListener('click', toggleMute);
+        if (muteIcon) muteIcon.addEventListener('click', toggleMute);
+
+        // 🌟 进站一键即播优化：用户初次点击页面任何区域，即顺畅自启轻柔音乐
+        let userHasInteracted = false;
+        function handleFirstGesture() {
+            if (userHasInteracted) return;
+            userHasInteracted = true;
+            if (bgmAudio && bgmAudio.paused) {
+                bgmAudio.play().then(() => {
+                    isBgmPlaying = true;
+                    syncMusicUI();
+                }).catch(e => {});
+            }
+        }
+        window.addEventListener('click', handleFirstGesture, { once: true });
+
+        // 空格键快捷播放/暂停
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+                e.preventDefault();
+                togglePlayPause();
+            }
+        });
     </script>
 </body>
 </html>
