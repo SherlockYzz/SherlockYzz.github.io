@@ -840,50 +840,69 @@
                 font-size: 0.7rem;
             }
 
-            /* 顶部 3D 模式切换坞移动端横向滑轨 (Horizontal Cyber Pill Scroll) */
+            .hero-section {
+                min-height: auto !important;
+                padding-top: 68px !important;
+                padding-bottom: 30px !important;
+                justify-content: flex-start !important;
+            }
+
+            /* 顶部 3D 模式切换坞移动端横向滑轨 (100% 显眼自适应横滑) */
             .top-visual-dock-wrapper {
-                margin-bottom: 14px;
-                position: relative;
-                width: 100%;
-                overflow: hidden;
-                -webkit-mask-image: linear-gradient(to right, transparent, black 16px, black calc(100% - 16px), transparent);
-                mask-image: linear-gradient(to right, transparent, black 16px, black calc(100% - 16px), transparent);
+                margin: 8px 0 16px 0 !important;
+                position: relative !important;
+                width: 100% !important;
+                display: flex !important;
+                justify-content: flex-start !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch !important;
+                scrollbar-width: none !important;
+                -ms-overflow-style: none !important;
+                padding: 2px 0 !important;
+            }
+            .top-visual-dock-wrapper::-webkit-scrollbar {
+                display: none !important;
             }
             .top-visual-dock {
-                padding: 3px 12px;
-                gap: 6px;
-                border-radius: 24px;
-                max-width: 100%;
-                overflow-x: auto;
-                overflow-y: hidden;
-                flex-wrap: nowrap;
-                white-space: nowrap;
-                justify-content: flex-start;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: none;
-                height: 38px;
-                box-sizing: border-box;
+                padding: 4px 8px !important;
+                gap: 6px !important;
+                border-radius: 24px !important;
+                max-width: none !important;
+                width: max-content !important;
+                overflow: visible !important;
+                flex-wrap: nowrap !important;
+                white-space: nowrap !important;
+                justify-content: flex-start !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                scrollbar-width: none !important;
+                height: 40px !important;
+                box-sizing: border-box !important;
+                margin: 0 auto !important;
             }
             .top-visual-dock::-webkit-scrollbar {
-                display: none;
+                display: none !important;
             }
             .dock-tag-label {
-                display: none; /* 手机端隐藏标签文字 */
+                display: none !important; /* 手机端隐藏标签文字 */
             }
             .dock-btn-group {
-                gap: 6px;
-                flex-wrap: nowrap;
-                display: flex;
+                gap: 6px !important;
+                flex-wrap: nowrap !important;
+                display: inline-flex !important;
             }
             .dock-mode-btn {
-                padding: 4px 10px;
-                font-size: 0.72rem;
-                gap: 4px;
-                flex-shrink: 0;
-                white-space: nowrap;
+                padding: 5px 11px !important;
+                font-size: 0.74rem !important;
+                gap: 4px !important;
+                flex-shrink: 0 !important;
+                white-space: nowrap !important;
+                touch-action: manipulation !important;
+                min-height: 32px !important;
+                border-radius: 18px !important;
             }
             .dock-shortcut-badge {
-                display: none; /* 手机无物理按键，隐藏数字 1-5 */
+                display: none !important; /* 手机无物理按键，隐藏数字 1-5 */
             }
 
             /* 首屏 Bento 网格与胶囊音乐盒自适应 */
@@ -932,6 +951,20 @@
                 width: 36px;
                 height: 36px;
                 font-size: 1rem;
+            }
+
+            /* 手机端中间音乐盒歌单列表：在卡片内/下方自适应展开，宽度 100%，绝不出界 */
+            .capsule-playlist-dropdown {
+                width: 100% !important;
+                position: relative !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                margin-top: 12px !important;
+                max-height: 220px !important;
+                box-sizing: border-box !important;
+                border-radius: 16px !important;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.6) !important;
             }
 
             /* 跑马灯视口约束 */
@@ -2609,8 +2642,8 @@
         <!-- 飞行雪绒活体挂件舞台 -->
         <div class="companion-avatar-box" id="companion-avatar" title="点击与飞行雪绒互动">
             <img id="aemeath-pet-img" 
-                 src="../图片/sinlatansen_ameath_1000x1000_HD.gif" 
-                 onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='assets/sinlatansen_ameath_1000x1000_HD.gif';}" 
+                 src="assets/sinlatansen_ameath_1000x1000_HD.gif" 
+                 onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='../图片/sinlatansen_ameath_1000x1000_HD.gif';}" 
                  alt="飞行雪绒" />
             <div class="aemeath-resonance-ring"></div>
         </div>
@@ -2667,7 +2700,7 @@
             <div class="music-playlist-drawer" id="music-playlist-drawer"></div>
         </div>
         <!-- 核心音频元素 (preload="none" 确保0字节启动负担) -->
-        <audio id="global-bgm-audio" src="audio/track_01.mp3" preload="auto" playsinline webkit-playsinline></audio>
+        <audio id="global-bgm-audio" src="audio/track_01.mp3" preload="metadata" playsinline webkit-playsinline></audio>
     </div>
 
     <!-- 页面内容层 -->
@@ -4270,8 +4303,8 @@
         }
         const matrixChars = '0123456789ABCDEFSHERLOCKAGENT01アイウエオカキクケコサシスセソタチツテト🌸✨⚡';
 
-                // ---------- 3. 全局常驻三维赛博樱花散华模型 (升级至 560 瓣高密度浪漫花海) ----------
-        const SAKURA_COUNT = 560;
+                // ---------- 3. 全局常驻三维赛博樱花散华模型 (升级至 560 瓣高密度浪漫花海，移动端自适应调优) ----------
+        const SAKURA_COUNT = (typeof window !== 'undefined' && window.innerWidth <= 768) ? 220 : 560;
         const sakuraPetals = [];
         for (let i = 0; i < SAKURA_COUNT; i++) {
             sakuraPetals.push({
@@ -4900,16 +4933,16 @@
 
                 // ================= 8. 二次元毛玻璃音乐盒控制器 (Hero CloudPlayer + 悬浮胶囊 双端深度联动) =================
         const bgmPlaylist = [
-            { title: "月声尽，心灯明", artist: "《鸣潮》心月狐主题曲", src: "audio/track_01.mp3", lyric: "「月声尽，心灯明，踏遍万水千山长夜有光」" },
-            { title: "I Really Want to Stay at Your House", artist: "《赛博朋克：边缘行者》插曲", src: "audio/track_04.mp3", lyric: "「So get away, another way to feel what you didn't want yourself to know」" },
-            { title: "One more time, One more chance", artist: "《秒速5厘米》主题曲 · 山崎将义", src: "audio/track_07.mp3", lyric: "「いつでも捜しているよ，どっかに君の姿を」" },
-            { title: "GATE OF STEINER", artist: "《命运石之门》插曲", src: "audio/track_08.mp3", lyric: "「So there's no meaning in our world, if we can't find a way out」" },
-            { title: "優しさの理由", artist: "《冰菓》OP1 · ChouCho", src: "audio/track_09.mp3", lyric: "「君の声が届いたから，僕の胸に響いたから」" },
-            { title: "ユキトキ", artist: "《我的青春恋爱物语果然有问题》OP1", src: "audio/track_10.mp3", lyric: "「陽だまりに隠れた 咲かない花，君の手で触れて」" },
-            { title: "奇迹 (キセキ)", artist: "《擅长捉弄的高木同学》回忆曲", src: "audio/track_02.mp3", lyric: "「明日、今日よりも好きになれる，溢れる想いが止まらない」" },
-            { title: "天ノ弱", artist: "《鸣潮》达尼娅角色歌 · 伊藤美来", src: "audio/track_03.mp3", lyric: "「僕がずっと前から思ってる事を話そうか，愛したっていいじゃないか」" },
-            { title: "不凡", artist: "《凡人修仙传》动画主题曲 · 王铮亮", src: "audio/track_05.mp3", lyric: "「生来平庸，敢问浩瀚苍穹；凡人不凡，踏尽千重风浪」" },
-            { title: "君色シグナル", artist: "《路人女主的养成方法》OP1", src: "audio/track_06.mp3", lyric: "「走り出した 恋心，今でもまだ 夢の途中」" }
+            { title: "月声尽，心灯明", artist: "《鸣潮》心月狐主题曲", src: "audio/track_01.mp3", duration: "03:48", lyric: "「月声尽，心灯明，踏遍万水千山长夜有光」" },
+            { title: "I Really Want to Stay at Your House", artist: "《赛博朋克：边缘行者》插曲", src: "audio/track_04.mp3", duration: "04:06", lyric: "「So get away, another way to feel what you didn't want yourself to know」" },
+            { title: "One more time, One more chance", artist: "《秒速5厘米》主题曲 · 山崎将义", src: "audio/track_07.mp3", duration: "05:34", lyric: "「いつでも捜しているよ，どっかに君の姿を」" },
+            { title: "GATE OF STEINER", artist: "《命运石之门》插曲", src: "audio/track_08.mp3", duration: "04:12", lyric: "「So there's no meaning in our world, if we can't find a way out」" },
+            { title: "優しさの理由", artist: "《冰菓》OP1 · ChouCho", src: "audio/track_09.mp3", duration: "04:13", lyric: "「君の声が届いたから，僕の胸に響いたから」" },
+            { title: "ユキトキ", artist: "《我的青春恋爱物语果然有问题》OP1", src: "audio/track_10.mp3", duration: "04:29", lyric: "「陽だまりに隠れた 咲かない花，君の手で触れて」" },
+            { title: "奇迹 (キセキ)", artist: "《擅长捉弄的高木同学》回忆曲", src: "audio/track_02.mp3", duration: "01:36", lyric: "「明日、今日よりも好きになれる，溢れる想いが止まらない」" },
+            { title: "天ノ弱", artist: "《鸣潮》达尼娅角色歌 · 伊藤美来", src: "audio/track_03.mp3", duration: "03:32", lyric: "「僕がずっと前から思ってる事を話そうか，愛したっていいじゃないか」" },
+            { title: "不凡", artist: "《凡人修仙传》动画主题曲 · 王铮亮", src: "audio/track_05.mp3", duration: "03:33", lyric: "「生来平庸，敢问浩瀚苍穹；凡人不凡，踏尽千重风浪」" },
+            { title: "君色シグナル", artist: "《路人女主的养成方法》OP1", src: "audio/track_06.mp3", duration: "04:45", lyric: "「走り出した 恋心，今でもまだ 夢の途中」" }
         ];
 
         let bgmIndex = 0;
@@ -4984,13 +5017,16 @@
                     const item = document.createElement('div');
                     item.className = 'drawer-song-item' + (i === bgmIndex ? ' active' : '');
                     item.innerHTML = `
-                        <div>
-                            <div class="drawer-song-title">${i + 1}. ${t.title}</div>
-                            <div class="drawer-song-artist">${t.artist}</div>
+                        <div style="min-width:0; flex:1; padding-right:8px;">
+                            <div class="drawer-song-title" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${i + 1}. ${t.title}</div>
+                            <div class="drawer-song-artist" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${t.artist}</div>
                         </div>
-                        <span style="display:inline-flex; align-items:center; color:var(--cyan);">${i === bgmIndex && isBgmPlaying ? CYBER_SVG_PLAY : ''}</span>
+                        <span style="font-family:var(--font-mono); font-size:0.75rem; color:${i === bgmIndex ? 'var(--cyan)' : '#64748b'}; flex-shrink:0;">${t.duration || ''}</span>
                     `;
-                    item.addEventListener('click', () => loadAndPlay(i, true));
+                    item.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        loadAndPlay(i, true);
+                    });
                     heroPlaylistDrawer.appendChild(item);
                 });
             }
@@ -5003,9 +5039,12 @@
                     item.className = 'playlist-item' + (i === bgmIndex ? ' active' : '');
                     item.innerHTML = `
                         <span class="playlist-item-title">${i + 1}. ${t.title}</span>
-                        <span style="display:inline-flex; align-items:center; opacity:0.85;">${i === bgmIndex && isBgmPlaying ? CYBER_SVG_PLAY : ''}</span>
+                        <span style="display:inline-flex; align-items:center; opacity:0.85; font-size:0.75rem; color:#64748b;">${t.duration || ''}</span>
                     `;
-                    item.addEventListener('click', () => loadAndPlay(i, true));
+                    item.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        loadAndPlay(i, true);
+                    });
                     musicDrawer.appendChild(item);
                 });
             }
@@ -5042,34 +5081,43 @@
             renderPlaylists();
         }
 
-        // 纯净安全的歌曲播放函数 (针对移动端完美穿透 Autoplay 拦截)
+        // 纯净安全的歌曲播放函数 (针对移动端与全平台异步防重入/防抖机制)
+        let pendingPlayPromise = null;
         function safeExecutePlay() {
             if (!bgmAudio) return;
             // 恢复可能处于挂起状态的 Web Audio 节点
             if (audioCtx && audioCtx.state === 'suspended') {
                 audioCtx.resume().catch(() => {});
             }
+            isBgmPlaying = true;
+            syncMusicUI();
+
             const promise = bgmAudio.play();
             if (promise !== undefined) {
+                pendingPlayPromise = promise;
                 promise.then(() => {
+                    pendingPlayPromise = null;
                     isBgmPlaying = true;
                     syncMusicUI();
                 }).catch(err => {
-                    console.warn('Playback requires user gesture:', err);
+                    pendingPlayPromise = null;
+                    if (err.name === 'AbortError') return;
+                    console.warn('Playback requires user gesture or stream interrupted:', err);
                     isBgmPlaying = false;
                     syncMusicUI();
                 });
             }
         }
 
-        // 载入并播放曲目
+        // 载入并播放曲目 (毫秒级平滑切歌，彻底杜绝移动端中断卡死)
         function loadAndPlay(index, autoPlay = true) {
             bgmIndex = (index + bgmPlaylist.length) % bgmPlaylist.length;
             const track = bgmPlaylist[bgmIndex];
             if (bgmAudio) {
-                if (!bgmAudio.src.endsWith(track.src)) {
+                const isSameTrack = bgmAudio.src && bgmAudio.src.endsWith(track.src);
+                if (!isSameTrack) {
+                    try { bgmAudio.pause(); } catch(e) {}
                     bgmAudio.src = track.src;
-                    bgmAudio.load();
                 }
                 syncMusicUI();
                 if (autoPlay) {
@@ -5194,9 +5242,26 @@
             bgmAudio.addEventListener('ended', () => {
                 if (isLoopSingle) {
                     bgmAudio.currentTime = 0;
-                    bgmAudio.play();
+                    safeExecutePlay();
                 } else {
                     loadAndPlay(bgmIndex + 1, true);
+                }
+            });
+            bgmAudio.addEventListener('error', (e) => {
+                console.warn('Audio playback error:', e);
+                isBgmPlaying = false;
+                syncMusicUI();
+            });
+            bgmAudio.addEventListener('pause', () => {
+                if (isBgmPlaying) {
+                    isBgmPlaying = false;
+                    syncMusicUI();
+                }
+            });
+            bgmAudio.addEventListener('playing', () => {
+                if (!isBgmPlaying) {
+                    isBgmPlaying = true;
+                    syncMusicUI();
                 }
             });
         }
@@ -5234,19 +5299,24 @@
         if (heroMuteIcon) heroMuteIcon.addEventListener('click', toggleMute);
         if (muteIcon) muteIcon.addEventListener('click', toggleMute);
 
-        // 🌟 进站一键即播优化：用户初次点击页面任何区域，即顺畅自启轻柔音乐
+        // 🌟 进站一键即播优化：首次触控无感解锁音频，且绝不与具体音乐按钮产生竞争
         let userHasInteracted = false;
-        function handleFirstGesture() {
+        function handleFirstGesture(e) {
             if (userHasInteracted) return;
             userHasInteracted = true;
-            if (bgmAudio && bgmAudio.paused) {
-                bgmAudio.play().then(() => {
-                    isBgmPlaying = true;
-                    syncMusicUI();
-                }).catch(e => {});
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume().catch(() => {});
+            }
+            if (e && e.target && e.target.closest && e.target.closest('.capsule-ctrl-btn, .capsule-play-btn, .capsule-list-btn, .drawer-song-item, .music-ctrl-btn, #music-capsule-btn, .capsule-disc-vinyl, .playlist-item')) {
+                return;
+            }
+            if (bgmAudio && bgmAudio.paused && !isBgmPlaying) {
+                safeExecutePlay();
             }
         }
-        window.addEventListener('click', handleFirstGesture, { once: true });
+        ['click', 'touchstart'].forEach(evt => {
+            window.addEventListener(evt, handleFirstGesture, { once: true, passive: true });
+        });
 
         // 空格键快捷播放/暂停
         window.addEventListener('keydown', (e) => {
