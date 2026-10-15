@@ -2336,12 +2336,6 @@
         const fpsEl = document.getElementById('telemetry-fps');
         let frameCounter = 0, lastFpsUpdate = performance.now();
 
-        window.addEventListener('pointermove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            mouseScreenX = e.clientX;
-            mouseScreenY = e.clientY;
-
         let prevMouseX = width * 0.5, prevMouseY = height * 0.5;
         let mouseSpeedX = 0, mouseSpeedY = 0;
 
@@ -2439,13 +2433,16 @@
         });
 
         // 按钮支持双向无缝切换：樱花模式与赛博核心模式自由来回切换
-        document.getElementById('hero-sakura-btn').addEventListener('click', () => {
-            if (currentMode === 4) {
-                switchVisualMode(previousMode === 4 ? 0 : previousMode);
-            } else {
-                switchVisualMode(4);
-            }
-        });
+        const heroSakuraToggle = document.getElementById('hero-sakura-btn');
+        if (heroSakuraToggle) {
+            heroSakuraToggle.addEventListener('click', () => {
+                if (currentMode === 4) {
+                    switchVisualMode(previousMode === 4 ? 0 : previousMode);
+                } else {
+                    switchVisualMode(4);
+                }
+            });
+        }
 
         window.addEventListener('keydown', (e) => {
             if (termModal.classList.contains('open')) return;
@@ -2981,11 +2978,42 @@
             loadAndPlay(0, false);
         }
 
+        // 胶囊主按钮：展开/收起面板，并若处于未播放状态则顺滑起播
         if (capsuleBtn) {
             capsuleBtn.addEventListener('click', (e) => {
-                if (musicModal) musicModal.classList.toggle('open');
+                if (musicModal) {
+                    const willOpen = !musicModal.classList.contains('open');
+                    musicModal.classList.toggle('open');
+                    if (willOpen && bgmAudio && bgmAudio.paused) {
+                        bgmAudio.play().then(() => {
+                            isBgmPlaying = true;
+                            syncMusicUI();
+                        }).catch(err => console.log('BGM Play prevented/error:', err));
+                    }
+                }
             });
         }
+
+        // 胶囊上的黑胶小唱片图标：支持极简一键即开即关（不展开卡片）
+        const capsuleDiscIcon = document.getElementById('capsule-disc-icon');
+        if (capsuleDiscIcon) {
+            capsuleDiscIcon.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!bgmAudio) return;
+                if (bgmAudio.paused) {
+                    bgmAudio.play().then(() => {
+                        isBgmPlaying = true;
+                        syncMusicUI();
+                    }).catch(err => console.log('BGM Play error:', err));
+                } else {
+                    bgmAudio.pause();
+                    isBgmPlaying = false;
+                    syncMusicUI();
+                }
+            });
+        }
+
+        // 模态面板关闭按钮
         if (musicCloseBtn) {
             musicCloseBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -2993,8 +3021,27 @@
             });
         }
 
+        // 模态大唱片封面点击也可以播放/暂停
+        if (musicBigDisc) {
+            musicBigDisc.addEventListener('click', () => {
+                if (!bgmAudio) return;
+                if (bgmAudio.paused) {
+                    bgmAudio.play().then(() => {
+                        isBgmPlaying = true;
+                        syncMusicUI();
+                    }).catch(e => console.log('Play err:', e));
+                } else {
+                    bgmAudio.pause();
+                    isBgmPlaying = false;
+                    syncMusicUI();
+                }
+            });
+        }
+
+        // 模态中央播放/暂停大按键
         if (musicPlayBtn) {
-            musicPlayBtn.addEventListener('click', () => {
+            musicPlayBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
                 if (!bgmAudio) return;
                 if (bgmAudio.paused) {
                     bgmAudio.play().then(() => {
