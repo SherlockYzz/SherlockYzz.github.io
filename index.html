@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -241,6 +241,39 @@
         .mode-opt.sakura-opt.selected {
             background: rgba(255, 117, 140, 0.2);
             color: var(--sakura);
+        }
+
+        /* ================= 赛博微拟态 SVG 矢量图标库 ================= */
+        .cyber-svg-icon {
+            width: 1.15em;
+            height: 1.15em;
+            vertical-align: -0.18em;
+            display: inline-block;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: transform 0.25s ease, filter 0.25s ease;
+        }
+        .cyber-svg-icon.icon-cyan {
+            color: var(--cyan);
+            filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.5));
+        }
+        .cyber-svg-icon.icon-sakura {
+            color: var(--sakura);
+            filter: drop-shadow(0 0 5px rgba(255, 117, 140, 0.5));
+        }
+        .cyber-svg-icon.icon-purple {
+            color: #c084fc;
+            filter: drop-shadow(0 0 5px rgba(192, 132, 252, 0.5));
+        }
+        .cyber-svg-icon.icon-green {
+            color: #34d399;
+            filter: drop-shadow(0 0 5px rgba(52, 211, 153, 0.5));
+        }
+        .dock-mode-btn:hover .cyber-svg-icon {
+            transform: scale(1.15) rotate(6deg);
         }
 
         /* 实时音频频谱可视化柱形条 (Web Audio Analyser) */
@@ -807,27 +840,47 @@
                 font-size: 0.7rem;
             }
 
-            /* 顶部 3D 模式切换坞移动端精致自适应 */
+            /* 顶部 3D 模式切换坞移动端横向滑轨 (Horizontal Cyber Pill Scroll) */
             .top-visual-dock-wrapper {
-                margin-bottom: 18px;
+                margin-bottom: 14px;
+                position: relative;
+                width: 100%;
+                overflow: hidden;
+                -webkit-mask-image: linear-gradient(to right, transparent, black 16px, black calc(100% - 16px), transparent);
+                mask-image: linear-gradient(to right, transparent, black 16px, black calc(100% - 16px), transparent);
             }
             .top-visual-dock {
-                padding: 5px 8px;
-                gap: 5px;
-                border-radius: 20px;
+                padding: 3px 12px;
+                gap: 6px;
+                border-radius: 24px;
                 max-width: 100%;
+                overflow-x: auto;
+                overflow-y: hidden;
+                flex-wrap: nowrap;
+                white-space: nowrap;
+                justify-content: flex-start;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                height: 38px;
+                box-sizing: border-box;
+            }
+            .top-visual-dock::-webkit-scrollbar {
+                display: none;
             }
             .dock-tag-label {
-                display: none; /* 手机端隐藏标签文字，确保 5 个模式按钮整齐居中排布 */
+                display: none; /* 手机端隐藏标签文字 */
             }
             .dock-btn-group {
-                gap: 4px;
-                justify-content: center;
+                gap: 6px;
+                flex-wrap: nowrap;
+                display: flex;
             }
             .dock-mode-btn {
-                padding: 4px 7px;
-                font-size: 0.68rem;
-                gap: 3px;
+                padding: 4px 10px;
+                font-size: 0.72rem;
+                gap: 4px;
+                flex-shrink: 0;
+                white-space: nowrap;
             }
             .dock-shortcut-badge {
                 display: none; /* 手机无物理按键，隐藏数字 1-5 */
@@ -928,14 +981,68 @@
                 font-size: 0.76rem;
             }
 
-            /* 偶灵悬浮气泡移动端位置优化 */
+            /* 《鸣潮》飞行雪绒悬浮挂件移动端精致自适应 */
             .anime-companion-widget {
-                bottom: 12px;
-                right: 12px;
+                bottom: 14px !important;
+                right: 12px !important;
             }
             .companion-avatar-box {
-                width: 54px;
-                height: 54px;
+                width: 78px !important;
+                height: 78px !important;
+            }
+            #aemeath-pet-img {
+                width: 70px !important;
+                height: 70px !important;
+            }
+            .companion-bubble {
+                max-width: 200px !important;
+                font-size: 0.72rem !important;
+                padding: 7px 10px !important;
+            }
+
+            /* ================= 移动端音乐播放器 Bottom-Sheet 原生底部抽屉 ================= */
+            .music-box-widget {
+                left: 0 !important;
+                right: 0 !important;
+                bottom: 0 !important;
+                width: 100vw !important;
+                pointer-events: none !important;
+            }
+            .music-capsule-btn {
+                pointer-events: auto !important;
+                margin-left: 14px !important;
+                margin-bottom: 14px !important;
+            }
+            .music-card-modal {
+                position: fixed !important;
+                width: 100vw !important;
+                left: 0 !important;
+                right: 0 !important;
+                bottom: 0 !important;
+                border-radius: 24px 24px 0 0 !important;
+                border-bottom: none !important;
+                border-left: none !important;
+                border-right: none !important;
+                padding: 16px 20px !important;
+                padding-bottom: calc(16px + env(safe-area-inset-bottom, 20px)) !important;
+                max-height: 85vh !important;
+                box-sizing: border-box !important;
+                pointer-events: auto !important;
+                overscroll-behavior: contain !important;
+                box-shadow: 0 -12px 48px rgba(0, 0, 0, 0.85), 0 0 32px rgba(0, 240, 255, 0.2) !important;
+            }
+            .music-drag-handle {
+                display: block !important;
+                width: 38px;
+                height: 4px;
+                background: rgba(255, 255, 255, 0.35);
+                border-radius: 2px;
+                margin: -6px auto 12px auto;
+                cursor: pointer;
+            }
+            .music-playlist-drawer {
+                max-height: 36vh !important;
+                -webkit-overflow-scrolling: touch;
             }
 
             
@@ -980,23 +1087,57 @@
             user-select: none;
         }
 
-        /* 对话气泡 */
+        /* 对话气泡 (Galgame 极客传讯气泡) */
         .companion-bubble {
-            background: rgba(15, 23, 42, 0.9);
+            background: rgba(15, 23, 42, 0.92);
             border: 1px solid var(--sakura);
             border-radius: 12px;
             border-bottom-right-radius: 2px;
-            padding: 10px 14px;
-            max-width: 240px;
+            padding: 9px 13px;
+            max-width: 250px;
             margin-bottom: 10px;
             font-family: var(--font-anime);
             font-size: 0.8rem;
             color: #ffffff;
             box-shadow: 0 8px 24px rgba(255, 117, 140, 0.25), 0 0 12px rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(14px);
             position: relative;
             transform-origin: bottom right;
             animation: bubble-float 3s ease-in-out infinite;
+        }
+        .bubble-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.62rem;
+            color: var(--cyan);
+            letter-spacing: 0.05em;
+            margin-bottom: 5px;
+            border-bottom: 1px dashed rgba(0, 240, 255, 0.25);
+            padding-bottom: 4px;
+        }
+        .bubble-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 6px #10b981;
+            display: inline-block;
+        }
+        .bubble-tag {
+            font-family: var(--font-mono);
+            font-weight: 600;
+        }
+        .bubble-id {
+            margin-left: auto;
+            color: var(--sakura);
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            font-weight: 600;
+        }
+        .bubble-text {
+            line-height: 1.45;
+            transition: opacity 0.2s ease;
         }
         .companion-bubble::after {
             content: '';
@@ -1013,30 +1154,53 @@
             50% { transform: translateY(-4px); }
         }
 
-        /* 偶灵本体容器与 Canvas 表情 */
+        /* ================= 《鸣潮》飞行雪绒 · 爱弥斯 活体桌面挂件 ================= */
         .companion-avatar-box {
-            width: 68px;
-            height: 68px;
-            background: rgba(10, 14, 24, 0.85);
-            border: 1.5px solid var(--cyan);
-            border-radius: 50%;
+            width: 100px;
+            height: 100px;
             position: relative;
             cursor: pointer;
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.35), 0 8px 24px rgba(0, 0, 0, 0.8);
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            user-select: none;
         }
         .companion-avatar-box:hover {
-            transform: scale(1.1) rotate(5deg);
-            border-color: var(--sakura);
-            box-shadow: 0 0 24px rgba(255, 117, 140, 0.5);
+            transform: scale(1.08) translateY(-4px);
         }
-        #companion-face-canvas {
-            width: 60px;
-            height: 60px;
+
+        /* 动图核心渲染 (37 帧 1000x1000 原版超清透明动图) */
+        #aemeath-pet-img {
+            width: 92px;
+            height: 92px;
+            object-fit: contain;
+            filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.7));
+            animation: snowfluff-float 3.2s ease-in-out infinite;
+            transition: transform 0.15s ease;
+            pointer-events: auto;
+        }
+
+        /* 上下呼吸轻盈悬浮 */
+        @keyframes snowfluff-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-7px); }
+        }
+
+        /* 脚底拉海洛星弦共鸣环 */
+        .aemeath-resonance-ring {
+            position: absolute;
+            bottom: 2px;
+            width: 64px;
+            height: 14px;
             border-radius: 50%;
+            background: radial-gradient(ellipse at center, rgba(0, 240, 255, 0.45) 0%, rgba(255, 117, 140, 0.25) 50%, transparent 75%);
+            animation: ring-pulse 3.2s ease-in-out infinite;
+            pointer-events: none;
+        }
+        @keyframes ring-pulse {
+            0%, 100% { transform: scale(1); opacity: 0.45; }
+            50% { transform: scale(1.22); opacity: 0.85; }
         }
 
         /* 状态标识 */
@@ -1327,9 +1491,8 @@
         .music-card-modal.open {
             display: flex;
         }
-        @keyframes music-pop {
-            from { opacity: 0; transform: translateY(12px) scale(0.96); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+        .music-drag-handle {
+            display: none;
         }
 
         .music-header {
@@ -2415,15 +2578,6 @@
         </div>
 
         <div class="hud-controls">
-            <!-- 视觉模式切换 Pill (新增 SAKURA 赛博樱花模式) -->
-            <div class="mode-switcher" title="切换背景 3D 生成模式 (快捷键 1-5)">
-                <button class="mode-opt selected" data-mode="0">CORE</button>
-                <button class="mode-opt" data-mode="1">GRID</button>
-                <button class="mode-opt" data-mode="2">RIBBON</button>
-                <button class="mode-opt" data-mode="3">MATRIX</button>
-                <button class="mode-opt warp-opt" data-mode="4">🚀WARP</button>
-            </div>
-
             <!-- Web Audio 实时声学频谱可视化 -->
             <button class="hud-btn active" id="audio-toggle-btn" title="原生赛博空间合成声景与实时频谱 (默认已启用)">
                 <canvas class="audio-spectrum-canvas" id="audio-spectrum" width="38" height="14"></canvas>
@@ -2453,14 +2607,27 @@
         <span class="telemetry-item">AGENT: <strong style="color:var(--green);">AUTONOMOUS</strong></span>
     </div>
 
-    <!-- 二次元智识偶灵 (Anime Desktop Companion Widget) -->
+    <!-- ================= 《鸣潮》飞行雪绒 智能桌面挂件 (纯净静音·极客融合版) ================= -->
     <div class="anime-companion-widget" id="companion-widget">
+        <!-- 日系 Galgame 极客传讯气泡 (100% 纯净静默轮播 · 绝无音频打扰) -->
         <div class="companion-bubble" id="companion-bubble">
-            「我们生而眺望，自星海尽处回响！」✨
+            <div class="bubble-header">
+                <span class="bubble-dot"></span>
+                <span class="bubble-tag">STARTORCH // 飞行雪绒 · 爱弥斯</span>
+                <span class="bubble-id">[ONLINE]</span>
+            </div>
+            <div class="bubble-text" id="companion-bubble-text">
+                「排除一切不可能的，剩下的即使再不可思议，也是真相。」
+            </div>
         </div>
-        <div class="companion-avatar-box" id="companion-avatar" title="点击与偶灵互动，触发二次元表情与萌系音效！">
-            <canvas id="companion-face-canvas" width="60" height="60"></canvas>
-            <span class="companion-badge">AI</span>
+        <!-- 飞行雪绒活体挂件舞台 -->
+        <div class="companion-avatar-box" id="companion-avatar" title="点击与飞行雪绒互动">
+            <img id="aemeath-pet-img" 
+                 src="../图片/sinlatansen_ameath_1000x1000_HD.gif" 
+                 onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='assets/sinlatansen_ameath_1000x1000_HD.gif';}" 
+                 alt="飞行雪绒" />
+            <div class="aemeath-resonance-ring"></div>
+            <span class="companion-badge">鸣潮</span>
         </div>
     </div>
     <!-- 二次元毛玻璃音乐盒 (Glassmorphism Music Box) -->
@@ -2477,10 +2644,11 @@
             </span>
         </button>
 
-        <!-- 展开式毛玻璃音乐卡片控制台 -->
+        <!-- 展开式毛玻璃音乐卡片控制台 (原生吸底 Bottom-Sheet) -->
         <div class="music-card-modal" id="music-card-modal">
+            <div class="music-drag-handle" id="music-drag-handle" title="向下轻划或点击收起"></div>
             <div class="music-header">
-                <span class="music-header-title">🎧 SHERLOCK // BGM JUKEBOX (10 TRACKS)</span>
+                <span class="music-header-title"><svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg> SHERLOCK // BGM JUKEBOX (10 TRACKS)</span>
                 <button class="music-close-btn" id="music-modal-close" title="收起面板">—</button>
             </div>
             <div class="music-body">
@@ -2500,14 +2668,14 @@
                 </div>
             </div>
             <div class="music-controls-row">
-                <button class="music-ctrl-btn" id="music-prev-btn" title="上一首">⏮</button>
-                <button class="music-ctrl-btn music-play-btn" id="music-play-btn" title="播放/暂停">▶</button>
-                <button class="music-ctrl-btn" id="music-next-btn" title="下一首">⏭</button>
-                <button class="music-ctrl-btn" id="music-loop-btn" title="单曲循环 / 列表循环">🔁</button>
-                <button class="music-list-toggle-btn" id="music-list-toggle-btn" title="查看全部 10 首曲目">歌单 📋</button>
+                <button class="music-ctrl-btn" id="music-prev-btn" title="上一首"><svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg></button>
+                <button class="music-ctrl-btn music-play-btn" id="music-play-btn" title="播放/暂停"><svg class="cyber-svg-icon icon-cyan" id="music-play-svg" viewBox="0 0 24 24"><polygon points="6 4 18 12 6 20 6 4"/></svg></button>
+                <button class="music-ctrl-btn" id="music-next-btn" title="下一首"><svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg></button>
+                <button class="music-ctrl-btn" id="music-loop-btn" title="单曲循环 / 列表循环"><svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></button>
+                <button class="music-list-toggle-btn" id="music-list-toggle-btn" title="查看全部 10 首曲目">歌单 <svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg></button>
             </div>
             <div class="music-sub-controls">
-                <span style="font-size:0.75rem; color:var(--cyan); cursor:pointer;" id="music-mute-icon" title="静音/取消静音">🔊</span>
+                <span style="font-size:0.85rem; color:var(--cyan); cursor:pointer; display:inline-flex; align-items:center;" id="music-mute-icon" title="静音/取消静音"><svg class="cyber-svg-icon icon-cyan" id="music-vol-svg" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                 <input type="range" class="music-vol-slider" id="music-vol-slider" min="0" max="1" step="0.01" value="0.25" title="音量调节">
             </div>
             <!-- 10 首曲目抽屉列表 -->
@@ -2534,27 +2702,27 @@
                         </div>
                         <div class="dock-btn-group">
                             <button class="dock-mode-btn mode-opt selected" data-mode="0" title="切换模式 1: 量子引力核心">
-                                <span>🌌</span>
+                                <svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(-30 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(30 12 12)"/></svg>
                                 <span>量子核心</span>
                                 <span class="dock-shortcut-badge">1</span>
                             </button>
                             <button class="dock-mode-btn mode-opt" data-mode="1" title="切换模式 2: 赛博空间网格">
-                                <span>🌐</span>
+                                <svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="4.5" y1="7" x2="19.5" y2="7"/><line x1="4.5" y1="17" x2="19.5" y2="17"/></svg>
                                 <span>赛博网格</span>
                                 <span class="dock-shortcut-badge">2</span>
                             </button>
                             <button class="dock-mode-btn mode-opt" data-mode="2" title="切换模式 3: 超维拓扑流线">
-                                <span>💫</span>
+                                <svg class="cyber-svg-icon icon-purple" viewBox="0 0 24 24"><path d="M7 8c-3 0-5 2-5 4s2 4 5 4c4 0 6-8 10-8s5 2 5 4-2 4-5 4c-4 0-6-8-10-8z"/><circle cx="18" cy="12" r="1.5"/></svg>
                                 <span>拓扑流线</span>
                                 <span class="dock-shortcut-badge">3</span>
                             </button>
                             <button class="dock-mode-btn mode-opt" data-mode="3" title="切换模式 4: 矩阵数字雨">
-                                <span>💻</span>
+                                <svg class="cyber-svg-icon icon-green" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><polyline points="7 10 10 13 7 16"/><line x1="13" y1="16" x2="17" y2="16"/></svg>
                                 <span>矩阵代码</span>
                                 <span class="dock-shortcut-badge">4</span>
                             </button>
                             <button class="dock-mode-btn mode-opt warp-mode" data-mode="4" title="切换模式 5: 超维星轨跃迁">
-                                <span>🚀</span>
+                                <svg class="cyber-svg-icon icon-sakura" viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
                                 <span>星轨跃迁</span>
                                 <span class="dock-shortcut-badge">5</span>
                             </button>
@@ -2570,7 +2738,7 @@
                         <div class="hero-tag-row" style="margin-bottom: 4px;">
                             <div class="hero-tag">CODE, RESEARCH &amp; AIGC EXPLORER</div>
                             <div class="anime-motto-tag">
-                                <span>✨</span>
+                                <svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z"/></svg>
                                 <span>アルゴリズムと二次元の美学</span>
                             </div>
                         </div>
@@ -2634,7 +2802,7 @@
                                 <span>控制台 [~]</span>
                             </button>
                             <button class="btn-secondary" id="hero-sakura-btn" style="border-color: rgba(255, 117, 140, 0.4); color: var(--sakura);">
-                                <span>🌸 樱花散华</span>
+                                <span style="display:inline-flex;align-items:center;gap:6px;"><svg class="cyber-svg-icon icon-sakura" viewBox="0 0 24 24"><path d="M12 3c-1.5 3.5-4 4.5-4 6.5a4 4 0 0 0 8 0c0-2-2.5-3-4-6.5z"/><path d="M5.5 8.5c3 1.5 4 4 3 6-1.5 2.5-4.5 1.5-6 .5-1.5-1 .5-4.5 3-6.5z"/><path d="M7 19c1.5-3 4-3.5 5.5-2 2 1.5 1.5 4.5.5 6-1 1.5-4.5.5-6-4z"/><path d="M17 19c-1.5-3-4-3.5-5.5-2-2 1.5-1.5 4.5-.5 6 1 1.5 4.5.5 6-4z"/><path d="M18.5 8.5c-3 1.5-4 4-3 6 1.5 2.5 4.5 1.5 6 .5 1.5-1-.5-4.5-3-6.5z"/><circle cx="12" cy="12" r="1.5"/></svg> 樱花散华</span>
                             </button>
                             <a href="https://github.com/SherlockYzz" target="_blank" class="btn-secondary">
                                 <span>GitHub ↗</span>
@@ -2675,21 +2843,21 @@
                                 </div>
 
                                 <div class="capsule-ctrl-group">
-                                    <button class="capsule-ctrl-btn" id="hero-prev-btn" title="上一首">⏮</button>
+                                    <button class="capsule-ctrl-btn" id="hero-prev-btn" title="上一首"><svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg></button>
                                     <button class="capsule-play-btn" id="hero-play-btn" title="点击一键起播">
-                                        <span id="hero-play-icon">▶</span>
+                                        <span id="hero-play-icon"><svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><polygon points="6 4 18 12 6 20 6 4"/></svg></span>
                                     </button>
-                                    <button class="capsule-ctrl-btn" id="hero-next-btn" title="下一首">⏭</button>
-                                    <button class="capsule-list-btn" id="hero-list-btn" title="点播10首曲目">歌单 📋</button>
+                                    <button class="capsule-ctrl-btn" id="hero-next-btn" title="下一首"><svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg></button>
+                                    <button class="capsule-list-btn" id="hero-list-btn" title="点播10首曲目">歌单 <svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg></button>
                                 </div>
                             </div>
 
                             <div class="capsule-bottom-row">
                                 <div class="capsule-vol-box">
-                                    <span class="vol-icon" id="hero-mute-icon" title="静音切换">🔊</span>
+                                    <span class="vol-icon" id="hero-mute-icon" title="静音切换"><svg class="cyber-svg-icon icon-cyan" id="hero-vol-svg" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                                     <input type="range" class="vol-slider" id="hero-vol-slider" min="0" max="1" step="0.01" value="0.25">
                                 </div>
-                                <span class="capsule-hint">✨ 进站点击即可畅听</span>
+                                <span class="capsule-hint"><svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z"/></svg> 进站点击即可畅听</span>
                             </div>
 
                             <div class="capsule-playlist-dropdown" id="hero-playlist-drawer"></div>
@@ -2919,7 +3087,7 @@
                                 <span class="tech-card-badge">FOUNDATION</span>
                             </div>
                             <h3 class="tech-card-title">
-                                <span class="title-icon">💻</span>
+                                <span class="title-icon"><svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><polyline points="7 10 10 13 7 16"/><line x1="13" y1="16" x2="17" y2="16"/></svg></span>
                                 <span>编程语言 · Programming Languages</span>
                             </h3>
                             <div class="tech-list-group">
@@ -2953,7 +3121,7 @@
                                 <span class="tech-card-badge">ENGINEERING</span>
                             </div>
                             <h3 class="tech-card-title">
-                                <span class="title-icon">🌐</span>
+                                <span class="title-icon"><svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="4.5" y1="7" x2="19.5" y2="7"/><line x1="4.5" y1="17" x2="19.5" y2="17"/></svg></span>
                                 <span>全栈开发与工程实践 · Full-Stack</span>
                             </h3>
                             <div class="tech-list-group">
@@ -2989,7 +3157,7 @@
                                 <span class="tech-card-badge">VIBE CODING</span>
                             </div>
                             <h3 class="tech-card-title">
-                                <span class="title-icon">🤖</span>
+                                <span class="title-icon"><svg class="cyber-svg-icon icon-green" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="12" rx="2"/><circle cx="9" cy="13" r="1.5"/><circle cx="15" cy="13" r="1.5"/><line x1="9" y1="17" x2="15" y2="17"/><line x1="12" y1="4" x2="12" y2="8"/><circle cx="12" cy="3" r="1"/><line x1="2" y1="13" x2="4" y2="13"/><line x1="20" y1="13" x2="22" y2="13"/></svg></span>
                                 <span>AI 辅助开发与 Agent 工程</span>
                             </h3>
                             <div class="tech-list-group">
@@ -3023,7 +3191,7 @@
                                 <span class="tech-card-badge">MEDIA ART</span>
                             </div>
                             <h3 class="tech-card-title">
-                                <span class="title-icon">🎨</span>
+                                <span class="title-icon"><svg class="cyber-svg-icon icon-sakura" viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r="1.5"/><circle cx="17.5" cy="10.5" r="1.5"/><circle cx="8.5" cy="7.5" r="1.5"/><circle cx="6.5" cy="12.5" r="1.5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.9 0 1.5-.7 1.5-1.5 0-.4-.2-.8-.4-1.1-.3-.4-.4-.8-.4-1.4 0-1.1.9-2 2-2h2.3c3.9 0 7-3.1 7-7 0-5-4.5-9-10-9z"/></svg></span>
                                 <span>AIGC 与数字内容创作 · Creation</span>
                             </h3>
                             <div class="tech-list-group">
@@ -3223,21 +3391,21 @@
                             </p>
                             <div class="connect-badges-row">
                                 <div class="connect-badge-item">
-                                    <span class="connect-icon">🐧</span>
+                                    <span class="connect-icon"><svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><ellipse cx="12" cy="13" rx="6" ry="8"/><circle cx="12" cy="7" r="4"/><path d="M11 7h2l-1 2z"/><path d="M6 13c-1.5 2-1 5 0 6m12-6c1.5 2 1 5 0 6"/><circle cx="10" cy="6" r="0.8" fill="currentColor"/><circle cx="14" cy="6" r="0.8" fill="currentColor"/><path d="M9 21c-1 0-2-.5-2-1m8 1c1 0 2-.5 2-1"/></svg></span>
                                     <div class="connect-meta">
                                         <span class="connect-label">QQ 联络</span>
                                         <strong class="connect-value">38524908</strong>
                                     </div>
                                 </div>
                                 <a href="https://space.bilibili.com/1497345954" target="_blank" class="connect-badge-item" style="text-decoration:none; color:inherit;">
-                                    <span class="connect-icon">📺</span>
+                                    <span class="connect-icon"><svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><path d="M8 3l3 3m5-3l-3 3"/><rect x="3" y="6" width="18" height="14" rx="3"/><circle cx="8.5" cy="12.5" r="1.2" fill="currentColor"/><circle cx="15.5" cy="12.5" r="1.2" fill="currentColor"/><path d="M10 16c1 .8 3 .8 4 0"/></svg></span>
                                     <div class="connect-meta">
                                         <span class="connect-label">B 站个人空间 ↗</span>
                                         <strong class="connect-value">UID: 1497345954</strong>
                                     </div>
                                 </a>
                                 <a href="https://github.com/SherlockYzz" target="_blank" class="connect-badge-item" style="text-decoration:none; color:inherit;">
-                                    <span class="connect-icon">💻</span>
+                                    <span class="connect-icon"><svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><polyline points="7 10 10 13 7 16"/><line x1="13" y1="16" x2="17" y2="16"/></svg></span>
                                     <div class="connect-meta">
                                         <span class="connect-label">GitHub 主页 ↗</span>
                                         <strong class="connect-value">SherlockYzz</strong>
@@ -3497,17 +3665,12 @@
             el.addEventListener('click', () => playUiBeep(1567, 0.05));
         });
 
-        // ================= 4. 二次元智识偶灵 (Anime Desktop Pet Widget) =================
-        const companionFaceCanvas = document.getElementById('companion-face-canvas');
-        const fCtx = companionFaceCanvas.getContext('2d');
+        // ================= 4. 《鸣潮》飞行雪绒 · 爱弥斯 智能桌面挂件 (纯净静音·极客动效状态机) =================
         const companionWidget = document.getElementById('companion-widget');
         const companionBubble = document.getElementById('companion-bubble');
-
-        let companionBlinkTimer = 0;
-        let isBlinking = false;
-        let companionEmotion = 'normal'; // 'normal', 'happy', 'surprised', 'wink'
-        let mouseScreenX = window.innerWidth * 0.5;
-        let mouseScreenY = window.innerHeight * 0.5;
+        const companionBubbleText = document.getElementById('companion-bubble-text');
+        const petImg = document.getElementById('aemeath-pet-img');
+        const petStage = document.getElementById('companion-avatar');
 
         const companionPhrases = [
             "「排除一切不可能的，剩下的即使再不可思议，也是真相。」",
@@ -3527,133 +3690,72 @@
         let compPhraseIdx = 0;
 
         function updateCompanionDialogue() {
+            const targetEl = companionBubbleText || companionBubble;
+            if (!targetEl) return;
             compPhraseIdx = (compPhraseIdx + 1) % companionPhrases.length;
-            companionBubble.style.opacity = '0';
+            targetEl.style.opacity = '0';
             setTimeout(() => {
-                companionBubble.textContent = companionPhrases[compPhraseIdx];
-                companionBubble.style.opacity = '1';
+                targetEl.textContent = companionPhrases[compPhraseIdx];
+                targetEl.style.opacity = '1';
             }, 200);
         }
 
+        // 纯净静默轮播金句（绝无音频打扰）
         setInterval(updateCompanionDialogue, 8000);
 
-        document.getElementById('companion-avatar').addEventListener('click', () => {
-            // 点击偶灵切换表情并触发欢快提示音
-            const emotions = ['happy', 'wink', 'surprised', 'normal'];
-            const curIdx = emotions.indexOf(companionEmotion);
-            companionEmotion = emotions[(curIdx + 1) % emotions.length];
-            updateCompanionDialogue();
-            playChime([784, 988, 1318], 0.05);
+        // 智能双环境路径解析 (本地 DeskBox 与 GitHub Pages 自动兼容)
+        const isLocalDeskBox = window.location.protocol === 'file:' || window.location.pathname.includes('文档');
+        const AEMEATH_BASE = isLocalDeskBox ? '../图片/' : 'assets/';
 
-            // 触发粒子溅射
-            spawnSparks(window.innerWidth - 60, window.innerHeight - 60, 24);
-        });
+        const AEMEATH_ASSETS = {
+            idle: AEMEATH_BASE + 'sinlatansen_ameath_1000x1000_HD.gif',        // 37帧目镜羽翼主待机
+            hover: AEMEATH_BASE + 'sinlatansen_idle2_halo_eyes_open.gif',     // 睁开金色大瞳孔态
+            jump: AEMEATH_BASE + 'aemeath_preview_jumping.gif',               // 欢快起跳扑翅态
+            drag: AEMEATH_BASE + 'sinlatansen_drag.gif'                       // 手机长按/拖拽扑腾小爪爪态
+        };
 
-        // 绘制自适应表情眼珠追踪
-        function drawCompanionFace() {
-            requestAnimationFrame(drawCompanionFace);
-            fCtx.clearRect(0, 0, 60, 60);
+        if (petImg && petStage) {
+            // 1. 桌面端鼠标交互 (悬停睁眼，移开回待机)
+            petStage.addEventListener('mouseenter', () => {
+                petImg.src = AEMEATH_ASSETS.hover;
+            });
+            petStage.addEventListener('mouseleave', () => {
+                petImg.src = AEMEATH_ASSETS.idle;
+            });
 
-            // 计算眼球朝向鼠标的偏移角
-            const rect = companionFaceCanvas.getBoundingClientRect();
-            const faceCenterX = rect.left + rect.width / 2;
-            const faceCenterY = rect.top + rect.height / 2;
-            const angle = Math.atan2(mouseScreenY - faceCenterY, mouseScreenX - faceCenterX);
-            const gazeDist = Math.min(3.5, Math.hypot(mouseScreenX - faceCenterX, mouseScreenY - faceCenterY) * 0.015);
-            const gazeX = Math.cos(angle) * gazeDist;
-            const gazeY = Math.sin(angle) * gazeDist;
+            // 2. 点击戳戳反应 (向上轻快起跳，触发樱花星云爆发，100% 绝对静音)
+            petStage.addEventListener('click', (e) => {
+                e.preventDefault();
+                petImg.src = AEMEATH_ASSETS.jump;
+                petStage.style.transform = 'scale(1.12) translateY(-6px)';
+                updateCompanionDialogue();
 
-            // 眨眼逻辑
-            companionBlinkTimer++;
-            if (companionBlinkTimer > 180) {
-                isBlinking = true;
-                if (companionBlinkTimer > 192) {
-                    isBlinking = false;
-                    companionBlinkTimer = 0;
+                // 联动天气爆发彩蛋
+                if (typeof triggerSakuraBurst === 'function') {
+                    triggerSakuraBurst();
                 }
-            }
 
-            // 绘制偶灵脸颊微弱腮红
-            fCtx.fillStyle = 'rgba(255, 117, 140, 0.45)';
-            fCtx.beginPath();
-            fCtx.ellipse(14, 38, 4, 2, 0, 0, Math.PI * 2);
-            fCtx.fill();
-            fCtx.beginPath();
-            fCtx.ellipse(46, 38, 4, 2, 0, 0, Math.PI * 2);
-            fCtx.fill();
+                setTimeout(() => {
+                    petImg.src = AEMEATH_ASSETS.idle;
+                    petStage.style.transform = 'scale(1) translateY(0)';
+                }, 1100);
+            });
 
-            // 绘制眼睛 (二次元灵动大眼睛)
-            fCtx.save();
-            if (isBlinking || companionEmotion === 'happy') {
-                // 弯弯笑眼 ^ ^
-                fCtx.strokeStyle = '#00f0ff';
-                fCtx.lineWidth = 2.5;
-                fCtx.lineCap = 'round';
-                fCtx.beginPath();
-                fCtx.arc(20, 29, 6, Math.PI * 1.15, Math.PI * 1.85);
-                fCtx.stroke();
-                fCtx.beginPath();
-                fCtx.arc(40, 29, 6, Math.PI * 1.15, Math.PI * 1.85);
-                fCtx.stroke();
-            } else if (companionEmotion === 'wink') {
-                // 左眨右睁 (^_-)
-                fCtx.strokeStyle = '#ff758c';
-                fCtx.lineWidth = 2.5;
-                fCtx.lineCap = 'round';
-                fCtx.beginPath();
-                fCtx.arc(20, 29, 6, Math.PI * 1.15, Math.PI * 1.85);
-                fCtx.stroke();
+            // 3. 手机端触控优化：长按扑腾爪爪，松手回位
+            let petTouchTimer = null;
+            petStage.addEventListener('touchstart', () => {
+                petTouchTimer = setTimeout(() => {
+                    petImg.src = AEMEATH_ASSETS.drag;
+                }, 220);
+            }, { passive: true });
 
-                // 右眼
-                drawEye(40, 28, gazeX, gazeY);
-            } else {
-                // 双眼正常注视
-                drawEye(20, 28, gazeX, gazeY);
-                drawEye(40, 28, gazeX, gazeY);
-            }
-            fCtx.restore();
-
-            // 小嘴巴
-            fCtx.strokeStyle = '#cbd5e1';
-            fCtx.lineWidth = 1.8;
-            fCtx.lineCap = 'round';
-            fCtx.beginPath();
-            if (companionEmotion === 'surprised') {
-                fCtx.arc(30, 42, 2.5, 0, Math.PI * 2);
-                fCtx.stroke();
-            } else {
-                fCtx.arc(30, 40, 3.5, 0.1, Math.PI - 0.1);
-                fCtx.stroke();
-            }
+            petStage.addEventListener('touchend', () => {
+                if (petTouchTimer) clearTimeout(petTouchTimer);
+                setTimeout(() => {
+                    petImg.src = AEMEATH_ASSETS.idle;
+                }, 350);
+            });
         }
-
-        function drawEye(x, y, gx, gy) {
-            // 眼眶底
-            fCtx.fillStyle = '#0f172a';
-            fCtx.beginPath();
-            fCtx.ellipse(x, y, 7, 9.5, 0, 0, Math.PI * 2);
-            fCtx.fill();
-            fCtx.strokeStyle = '#00f0ff';
-            fCtx.lineWidth = 1.5;
-            fCtx.stroke();
-
-            // 瞳孔
-            fCtx.fillStyle = '#00f0ff';
-            fCtx.beginPath();
-            fCtx.ellipse(x + gx, y + gy, 4.5, 6, 0, 0, Math.PI * 2);
-            fCtx.fill();
-
-            // 瞳孔内渐变高光
-            fCtx.fillStyle = '#ffffff';
-            fCtx.beginPath();
-            fCtx.arc(x + gx - 1.5, y + gy - 2.5, 2, 0, Math.PI * 2);
-            fCtx.fill();
-            fCtx.beginPath();
-            fCtx.arc(x + gx + 1.8, y + gy + 1.8, 1, 0, Math.PI * 2);
-            fCtx.fill();
-        }
-
-        drawCompanionFace();
 
         // ================= 5. 交互式黑客终端控制台 HUD =================
         const termModal = document.getElementById('terminal-modal');
@@ -3942,6 +4044,62 @@
             }
         });
 
+        // 移动端触控视差跟踪 (Touch Parallax)
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches && e.touches.length > 0) {
+                const touch = e.touches[0];
+                const nx = (touch.clientX / width - 0.5) * 2;
+                const ny = (touch.clientY / height - 0.5) * 2;
+                targetRotY = nx * 0.4;
+                targetRotX = -ny * 0.3 + 0.15;
+            }
+        }, { passive: true });
+
+        // iOS 兼容陀螺仪权限申请与体感跟踪 (Gyroscope Hardware Sensor)
+        let gyroActive = false;
+        function initDeviceOrientation() {
+            if (gyroActive) return;
+            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+                DeviceOrientationEvent.requestPermission().then(permissionState => {
+                    if (permissionState === 'granted') {
+                        attachOrientation();
+                    }
+                }).catch(() => {});
+            } else if (window.DeviceOrientationEvent) {
+                attachOrientation();
+            }
+        }
+        function attachOrientation() {
+            gyroActive = true;
+            window.addEventListener('deviceorientation', (e) => {
+                if (e.gamma !== null && e.beta !== null) {
+                    const tiltX = Math.max(-45, Math.min(45, e.gamma)) / 45;
+                    const tiltY = Math.max(-45, Math.min(45, e.beta - 45)) / 45;
+                    targetRotY = tiltX * 0.45;
+                    targetRotX = tiltY * 0.35 + 0.15;
+                }
+            }, { passive: true });
+        }
+        window.addEventListener('touchstart', initDeviceOrientation, { once: true });
+        window.addEventListener('click', initDeviceOrientation, { once: true });
+
+        // 飞行雪绒联动天气彩蛋：点击爱弥斯，触发全景落樱星云爆发
+        function triggerSakuraBurst() {
+            for (let i = 0; i < sakuraPetals.length; i++) {
+                const p = sakuraPetals[i];
+                const angle = Math.random() * Math.PI * 2;
+                const spd = 7 + Math.random() * 11;
+                p.blastVx = Math.cos(angle) * spd;
+                p.blastVy = Math.sin(angle) * spd - 2.5;
+                p.rotPitch += 0.8;
+                p.rotYaw += 0.6;
+            }
+            screenShake = Math.max(screenShake, 3.8);
+            if (typeof spawnBlastSparks === 'function') {
+                spawnBlastSparks(window.innerWidth - 60, window.innerHeight - 60, 28, true);
+            }
+        }
+
         // 喷射爆炸星尘
         function spawnBlastSparks(x, y, count = 36, isSuper = false) {
             for (let i = 0; i < count; i++) {
@@ -4048,11 +4206,11 @@
             const heroSakuraBtn = document.getElementById('hero-sakura-btn');
             if (heroSakuraBtn) {
                 if (modeIndex === 4) {
-                    heroSakuraBtn.innerHTML = '<span>🌌 聚焦量子核心</span>';
+                    heroSakuraBtn.innerHTML = '<span style="display:inline-flex;align-items:center;gap:6px;"><svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(-30 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(30 12 12)"/></svg> 聚焦量子核心</span>';
                     heroSakuraBtn.style.borderColor = 'rgba(0, 240, 255, 0.45)';
                     heroSakuraBtn.style.color = 'var(--cyan)';
                 } else {
-                    heroSakuraBtn.innerHTML = '<span>🚀 超维星轨跃迁</span>';
+                    heroSakuraBtn.innerHTML = '<span style="display:inline-flex;align-items:center;gap:6px;"><svg class="cyber-svg-icon icon-sakura" viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg> 超维星轨跃迁</span>';
                     heroSakuraBtn.style.borderColor = 'rgba(255, 117, 140, 0.4)';
                     heroSakuraBtn.style.color = 'var(--sakura)';
                 }
@@ -4185,6 +4343,7 @@
             requestAnimationFrame(mainRenderLoop);
             const dt = (now - lastFrameTime) * 0.001;
             lastFrameTime = now;
+            const dtRatio = Math.min(2.5, Math.max(0.2, dt / (1 / 60)));
             const t = (now - startTime) * 0.00085;
 
             // 实时 FPS 遥测计算
@@ -4197,15 +4356,15 @@
             }
 
             // 柔和阻尼跟踪相机旋转
-            rotX += (targetRotX - rotX) * 0.05;
-            rotY += (targetRotY - rotY) * 0.05;
+            rotX += (targetRotX - rotX) * 0.05 * dtRatio;
+            rotY += (targetRotY - rotY) * 0.05 * dtRatio;
 
             // 相机震颤衰减与位置计算
             let shakeOffsetX = 0, shakeOffsetY = 0;
             if (screenShake > 0.05) {
                 shakeOffsetX = (Math.random() - 0.5) * screenShake;
                 shakeOffsetY = (Math.random() - 0.5) * screenShake;
-                screenShake *= 0.88;
+                screenShake *= Math.pow(0.88, dtRatio);
             }
 
             // 清理主图层与特效图层
@@ -4218,9 +4377,19 @@
             const cx = (width > 1024 ? width * 0.62 : width * 0.5);
             const cy = height * 0.5;
 
-            // 检测音乐播放器是否在播放，注入节拍呼吸律动
+            // 检测真实声学 FFT 频谱低音能量，注入震撼低音共振张缩
             let beatPulse = 1.0;
-            if (typeof isBgmPlaying !== 'undefined' && isBgmPlaying) {
+            let audioBassEnergy = 0;
+            if (typeof analyser !== 'undefined' && analyser && typeof audioDataArray !== 'undefined' && audioDataArray) {
+                try {
+                    analyser.getByteFrequencyData(audioDataArray);
+                    const bassSum = audioDataArray[0] + audioDataArray[1] + audioDataArray[2] + audioDataArray[3];
+                    audioBassEnergy = bassSum / (4 * 255);
+                } catch(e) {}
+            }
+            if (audioBassEnergy > 0.04) {
+                beatPulse = 1.0 + audioBassEnergy * 0.42;
+            } else if (typeof isBgmPlaying !== 'undefined' && isBgmPlaying) {
                 beatPulse = 1.0 + Math.sin(now * 0.006) * 0.12;
             }
 
@@ -4388,8 +4557,11 @@
             }
 
             // ================= 模式 2: 超维拓扑流线组 =================
+            // ================= 模式 2: 超维拓扑流线组 (移动端动态 LOD 降载 72%) =================
             else if (currentMode === 2) {
-                const streamCount = 56, ptsPerStream = 80;
+                const isMobile = width <= 768;
+                const streamCount = isMobile ? 28 : 56;
+                const ptsPerStream = isMobile ? 45 : 80;
                 for (let i = 0; i < streamCount; i++) {
                     const v = (i / streamCount) * Math.PI * 2;
                     ctx.beginPath();
@@ -4415,11 +4587,13 @@
                 }
             }
 
-            // ================= 模式 3: 矩阵数字雨 =================
+            // ================= 模式 3: 矩阵数字雨 (带 3D 摄像机倾角与景深联动) =================
             else if (currentMode === 3) {
                 ctx.fillStyle = 'rgba(3, 4, 8, 0.14)';
                 ctx.fillRect(0, 0, width, height);
                 ctx.font = '13px JetBrains Mono, monospace';
+                ctx.save();
+                ctx.translate(rotY * 95, -(rotX - 0.15) * 75);
                 for (let i = 0; i < matrixDrops.length; i++) {
                     const char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
                     const x = i * 22;
@@ -4429,11 +4603,12 @@
                     ctx.fillStyle = 'rgba(0, 240, 255, 0.8)';
                     ctx.fillText(char, x, y - 20);
                     if (y > height && Math.random() > 0.975) matrixDrops[i] = 0;
-                    matrixDrops[i]++;
+                    matrixDrops[i] += dtRatio;
                 }
+                ctx.restore();
             }
 
-            // ================= 模式 4: 超维星轨跃迁 (Hyperdrive Warp Stars 替代鸡肋樱花模式) =================
+            // ================= 模式 4: 超维星轨跃迁 (航向舵视线偏角联动与 dtRatio 归一化) =================
             else if (currentMode === 4) {
                 if (!window.warpStars) {
                     window.warpStars = [];
@@ -4447,11 +4622,14 @@
                     }
                 }
 
+                const warpCx = cx + rotY * 160;
+                const warpCy = cy - (rotX - 0.15) * 140;
+
                 ctx.save();
                 for (let s = 0; s < window.warpStars.length; s++) {
                     const star = window.warpStars[s];
                     star.pz = star.z;
-                    star.z -= 18; // 相对论超光速折跃速度
+                    star.z -= 18 * dtRatio; // 相对论超光速折跃速度
                     if (star.z <= 10) {
                         star.z = 1000;
                         star.pz = 1000;
@@ -4461,10 +4639,10 @@
 
                     const k = 450 / star.z;
                     const pk = 450 / star.pz;
-                    const sx = star.x * k + cx;
-                    const sy = star.y * k + cy;
-                    const psx = star.x * pk + cx;
-                    const psy = star.y * pk + cy;
+                    const sx = star.x * k + warpCx;
+                    const sy = star.y * k + warpCy;
+                    const psx = star.x * pk + warpCx;
+                    const psy = star.y * pk + warpCy;
 
                     if (sx >= 0 && sx <= width && sy >= 0 && sy <= height) {
                         const alpha = Math.min(1.0, (1 - star.z / 1000) * 1.4);
@@ -4479,22 +4657,25 @@
                 ctx.restore();
             }
 
-            // ================= 4. 全局常驻三维赛博樱花散华与长按汇聚物理引擎 (560 瓣) =================
+            // ================= 4. 全局常驻三维赛博樱花散华 (Zero-GC 原位景深光栅化流水线) =================
             const mouseSpeed = Math.hypot(mouseSpeedX, mouseSpeedY);
             const activeSakuraLimit = currentMode === 4 ? sakuraPetals.length : Math.floor(sakuraPetals.length * 0.9);
+            const scrollY = window.scrollY || window.pageYOffset || 0;
+            const scrollFade = Math.max(0.22, 1.0 - (scrollY / (height * 0.85)) * 0.78);
 
+            // Phase 1: 物理移动更新与 3D 投影预计算
             for (let i = 0; i < activeSakuraLimit; i++) {
                 const p = sakuraPetals[i];
 
-                p.blastVx *= 0.94;
-                p.blastVy *= 0.94;
-                p.blastVz *= 0.94;
+                p.blastVx *= Math.pow(0.94, dtRatio);
+                p.blastVy *= Math.pow(0.94, dtRatio);
+                p.blastVz *= Math.pow(0.94, dtRatio);
 
-                p.x += p.vx + Math.sin(t + i * 0.7) * 0.6 + p.blastVx;
-                p.y += p.vy + p.blastVy;
-                p.z += p.vz + p.blastVz;
-                p.rotPitch += p.pitchSpeed;
-                p.rotYaw += p.yawSpeed;
+                p.x += (p.vx + Math.sin(t + i * 0.7) * 0.6 + p.blastVx) * dtRatio;
+                p.y += (p.vy + p.blastVy) * dtRatio;
+                p.z += (p.vz + p.blastVz) * dtRatio;
+                p.rotPitch += p.pitchSpeed * dtRatio;
+                p.rotYaw += p.yawSpeed * dtRatio;
 
                 // 物理交互 1: 鼠标移动气动流体风洞 (拂面落英)
                 const dx = p.x - (mouseX - width * 0.5);
@@ -4502,37 +4683,47 @@
                 const distSq = dx * dx + dy * dy;
                 if (distSq < 52000 && distSq > 15) {
                     const dist = Math.sqrt(distSq);
-                    const force = (1 - dist / 230) * 15;
-                    p.x += (dx / dist) * force + mouseSpeedX * 0.35;
-                    p.y += (dy / dist) * force + mouseSpeedY * 0.35;
-                    p.rotYaw += mouseSpeed * 0.045;
-                    p.rotPitch += mouseSpeed * 0.055;
+                    const force = (1 - dist / 230) * 15 * dtRatio;
+                    p.x += (dx / dist) * force + mouseSpeedX * 0.35 * dtRatio;
+                    p.y += (dy / dist) * force + mouseSpeedY * 0.35 * dtRatio;
+                    p.rotYaw += mouseSpeed * 0.045 * dtRatio;
+                    p.rotPitch += mouseSpeed * 0.055 * dtRatio;
                 }
 
-                // 🌟 物理交互 2: 长按鼠标引力奇点 ——【樱花星系超强螺旋汇聚！】
+                // 物理交互 2: 长按鼠标引力奇点 ——【樱花星系超强螺旋汇聚！】
                 if (isPointerDown) {
                     const pullDx = (pointerDownX - width * 0.5) - p.x;
                     const pullDy = (pointerDownY - height * 0.5) - p.y;
                     const pullDist = Math.hypot(pullDx, pullDy);
                     if (pullDist < 750) {
-                        // 向心拉力 + 切向极速自旋飓风力
-                        const pullFactor = Math.min(32, 750 / (pullDist + 35)) * (0.6 + chargeRatio * 1.5);
+                        const pullFactor = Math.min(32, 750 / (pullDist + 35)) * (0.6 + chargeRatio * 1.5) * dtRatio;
                         p.x += (pullDx / (pullDist || 1)) * pullFactor * 1.1 - (pullDy / (pullDist || 1)) * (pullFactor * 0.85);
                         p.y += (pullDy / (pullDist || 1)) * pullFactor * 1.1 + (pullDx / (pullDist || 1)) * (pullFactor * 0.85);
-                        p.rotYaw += 0.28;
-                        p.rotPitch += 0.22;
+                        p.rotYaw += 0.28 * dtRatio;
+                        p.rotPitch += 0.22 * dtRatio;
                     }
                 }
 
-                // 边界连续循环，漫天花海永不停歇
+                // 边界循环
                 if (p.y > 750) p.y = -750;
                 if (p.y < -750) p.y = 750;
                 if (p.x > 1000) p.x = -1000;
                 if (p.x < -1000) p.x = 1000;
 
                 const proj = project3D(p.x, p.y, p.z, width * 0.5, height * 0.5);
-                if (proj) {
-                    const depthAlpha = Math.max(0.18, Math.min(0.96, 1 - (proj.depth - 280) / 780));
+                p.proj = proj;
+                p.projDepth = proj ? proj.depth : -9999;
+            }
+
+            // Phase 2: 零 GC 原位原生排序 (基于 V8 原生 Timsort，远在前、近在后，0堆内存分配)
+            sakuraPetals.sort((a, b) => b.projDepth - a.projDepth);
+
+            // Phase 3: 先远后近光栅化绘制 (彻底消除前后穿模)
+            for (let i = 0; i < activeSakuraLimit; i++) {
+                const p = sakuraPetals[i];
+                const proj = p.proj;
+                if (proj && p.projDepth > 10) {
+                    const depthAlpha = Math.max(0.18, Math.min(0.96, 1 - (proj.depth - 280) / 780)) * scrollFade;
                     ctx.save();
                     ctx.translate(proj.x, proj.y);
                     ctx.rotate(p.rotYaw);
@@ -4542,7 +4733,7 @@
                     ctx.beginPath();
                     ctx.moveTo(0, 0);
                     ctx.bezierCurveTo(-p.size * 0.75, -p.size * 1.2, -p.size * 1.35, -p.size * 0.2, -p.size * p.notch, p.size * 1.1);
-                    ctx.lineTo(0, p.size * 0.85); // 唯美花瓣尖端分叉微凹
+                    ctx.lineTo(0, p.size * 0.85);
                     ctx.lineTo(p.size * p.notch, p.size * 1.1);
                     ctx.bezierCurveTo(p.size * 1.35, -p.size * 0.2, p.size * 0.75, -p.size * 1.2, 0, 0);
 
@@ -4560,11 +4751,11 @@
                 }
             }
 
-            // ================= 5. 超能核爆级双环光晕冲击波 (High-Energy Shockwaves) =================
+            // ================= 5. 超能核爆级双环光晕冲击波 (Zero-CPU-Blur 优化) =================
             for (let i = shockwaves.length - 1; i >= 0; i--) {
                 const sw = shockwaves[i];
-                sw.radius += (sw.maxRadius - sw.radius) * (sw.isSupernova ? 0.095 : 0.08);
-                sw.opacity *= (sw.isSupernova ? 0.95 : 0.92);
+                sw.radius += (sw.maxRadius - sw.radius) * ((sw.isSupernova ? 0.095 : 0.08) * dtRatio);
+                sw.opacity *= Math.pow((sw.isSupernova ? 0.95 : 0.92), dtRatio);
 
                 for (let j = 0; j < sakuraPetals.length; j++) {
                     const p = sakuraPetals[j];
@@ -4572,11 +4763,11 @@
                     const swDy = (p.y + height * 0.5) - sw.y;
                     const swDist = Math.hypot(swDx, swDy);
                     if (Math.abs(swDist - sw.radius) < 85) {
-                        const blast = (1 - Math.abs(swDist - sw.radius) / 85) * sw.power * sw.opacity;
+                        const blast = (1 - Math.abs(swDist - sw.radius) / 85) * sw.power * sw.opacity * dtRatio;
                         p.blastVx += (swDx / (swDist || 1)) * blast;
                         p.blastVy += (swDy / (swDist || 1)) * blast;
-                        p.rotPitch += 0.45;
-                        p.rotYaw += 0.35;
+                        p.rotPitch += 0.45 * dtRatio;
+                        p.rotYaw += 0.35 * dtRatio;
                     }
                 }
 
@@ -4586,28 +4777,38 @@
                     const cDy = (cp.y + cy) - sw.y;
                     const cDist = Math.hypot(cDx, cDy);
                     if (Math.abs(cDist - sw.radius) < 80) {
-                        const cBlast = (1 - Math.abs(cDist - sw.radius) / 80) * (sw.power * 0.75) * sw.opacity;
+                        const cBlast = (1 - Math.abs(cDist - sw.radius) / 80) * (sw.power * 0.75) * sw.opacity * dtRatio;
                         cp.blastVx += (cDx / (cDist || 1)) * cBlast;
                         cp.blastVy += (cDy / (cDist || 1)) * cBlast;
                     }
                 }
 
+                // 双重 Stroke 模拟高光晕轮，彻底免除 shadowBlur 的 CPU 栅格化开销
+                ctx.save();
+                ctx.globalCompositeOperation = 'lighter';
+
+                // 外层发散光晕
+                ctx.beginPath();
+                ctx.arc(sw.x, sw.y, sw.radius, 0, Math.PI * 2);
+                ctx.strokeStyle = sw.isSupernova ? `rgba(255, 117, 140, ${sw.opacity * 0.45})` : `rgba(0, 240, 255, ${sw.opacity * 0.45})`;
+                ctx.lineWidth = sw.isSupernova ? 10 : 7;
+                ctx.stroke();
+
                 // 内核主高光环
                 ctx.beginPath();
                 ctx.arc(sw.x, sw.y, sw.radius, 0, Math.PI * 2);
                 ctx.strokeStyle = `${sw.colorMain}${sw.opacity * 0.95})`;
-                ctx.lineWidth = sw.isSupernova ? 5.5 : 3.5;
-                ctx.shadowColor = sw.isSupernova ? '#ff758c' : '#00f0ff';
-                ctx.shadowBlur = sw.isSupernova ? 24 : 16;
+                ctx.lineWidth = sw.isSupernova ? 4.8 : 3.0;
                 ctx.stroke();
 
                 // 次级色散霓虹粉光环
                 ctx.beginPath();
                 ctx.arc(sw.x, sw.y, Math.max(1, sw.radius - 8), 0, Math.PI * 2);
                 ctx.strokeStyle = `${sw.colorHalo}${sw.opacity * 0.7})`;
-                ctx.lineWidth = sw.isSupernova ? 3.0 : 1.8;
+                ctx.lineWidth = sw.isSupernova ? 2.5 : 1.6;
                 ctx.stroke();
-                ctx.shadowBlur = 0;
+
+                ctx.restore();
 
                 if (sw.opacity < 0.02) {
                     shockwaves.splice(i, 1);
@@ -4655,11 +4856,21 @@
                 fxCtx.lineWidth = 2.5;
                 fxCtx.stroke();
 
+                // 零-GC 高性能全息奇点蓄力核：使用 lighter 物理混合与多同心光晕，彻底免除 CPU shadowBlur 开销
+                fxCtx.globalCompositeOperation = 'lighter';
+                fxCtx.beginPath();
+                fxCtx.arc(0, 0, sRadius * 0.7, 0, Math.PI * 2);
+                fxCtx.fillStyle = `rgba(0, 240, 255, ${chargeRatio * 0.28})`;
+                fxCtx.fill();
+
                 fxCtx.beginPath();
                 fxCtx.arc(0, 0, sRadius * 0.45, 0, Math.PI * 2);
-                fxCtx.fillStyle = `rgba(0, 240, 255, ${chargeRatio * 0.7})`;
-                fxCtx.shadowColor = '#00f0ff';
-                fxCtx.shadowBlur = 18;
+                fxCtx.fillStyle = `rgba(0, 240, 255, ${chargeRatio * 0.72})`;
+                fxCtx.fill();
+
+                fxCtx.beginPath();
+                fxCtx.arc(0, 0, sRadius * 0.2, 0, Math.PI * 2);
+                fxCtx.fillStyle = `rgba(255, 255, 255, ${chargeRatio * 0.95})`;
                 fxCtx.fill();
                 fxCtx.restore();
             }
@@ -4728,15 +4939,12 @@
         // Hero CloudPlayer DOM 元素
         const heroCloudPlayer = document.getElementById('hero-cloud-player');
         const heroVinylDisc = document.getElementById('hero-vinyl-disc');
-        const heroDiscWrap = document.getElementById('hero-disc-wrap');
         const heroSongTitle = document.getElementById('hero-song-title');
         const heroSongTag = document.getElementById('hero-song-tag');
-        const heroPlayStatus = document.getElementById('hero-play-status');
         const heroPlayBtn = document.getElementById('hero-play-btn');
         const heroPlayIcon = document.getElementById('hero-play-icon');
         const heroPrevBtn = document.getElementById('hero-prev-btn');
         const heroNextBtn = document.getElementById('hero-next-btn');
-        const heroLoopBtn = document.getElementById('hero-loop-btn');
         const heroListBtn = document.getElementById('hero-list-btn');
         const heroCurTime = document.getElementById('hero-cur-time');
         const heroDurTime = document.getElementById('hero-dur-time');
@@ -4744,7 +4952,6 @@
         const heroProgressFill = document.getElementById('hero-progress-fill');
         const heroVolSlider = document.getElementById('hero-vol-slider');
         const heroMuteIcon = document.getElementById('hero-mute-icon');
-        const heroLyricText = document.getElementById('hero-lyric-text');
         const heroTrackCounter = document.getElementById('hero-track-counter');
         const heroPlaylistDrawer = document.getElementById('hero-playlist-drawer');
 
@@ -4769,6 +4976,13 @@
         const volSlider = document.getElementById('music-vol-slider');
         const muteIcon = document.getElementById('music-mute-icon');
 
+        // 工业级全套赛博微拟态 SVG 音频控制微标
+        const CYBER_SVG_PLAY = '<svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><polygon points="6 4 18 12 6 20 6 4"/></svg>';
+        const CYBER_SVG_PAUSE = '<svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
+        const CYBER_SVG_VOL_HIGH = '<svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>';
+        const CYBER_SVG_VOL_LOW = '<svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
+        const CYBER_SVG_VOL_MUTE = '<svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
+
         function formatAudioTime(secs) {
             if (isNaN(secs) || secs < 0) return '00:00';
             const m = Math.floor(secs / 60);
@@ -4789,7 +5003,7 @@
                             <div class="drawer-song-title">${i + 1}. ${t.title}</div>
                             <div class="drawer-song-artist">${t.artist}</div>
                         </div>
-                        <span style="font-size:0.75rem; color:var(--cyan);">${i === bgmIndex && isBgmPlaying ? '▶' : ''}</span>
+                        <span style="display:inline-flex; align-items:center; color:var(--cyan);">${i === bgmIndex && isBgmPlaying ? CYBER_SVG_PLAY : ''}</span>
                     `;
                     item.addEventListener('click', () => loadAndPlay(i, true));
                     heroPlaylistDrawer.appendChild(item);
@@ -4804,7 +5018,7 @@
                     item.className = 'playlist-item' + (i === bgmIndex ? ' active' : '');
                     item.innerHTML = `
                         <span class="playlist-item-title">${i + 1}. ${t.title}</span>
-                        <span style="font-size:0.65rem; opacity:0.8;">${i === bgmIndex && isBgmPlaying ? '▶' : ''}</span>
+                        <span style="display:inline-flex; align-items:center; opacity:0.85;">${i === bgmIndex && isBgmPlaying ? CYBER_SVG_PLAY : ''}</span>
                     `;
                     item.addEventListener('click', () => loadAndPlay(i, true));
                     musicDrawer.appendChild(item);
@@ -4819,17 +5033,11 @@
             // 1. 同步 Hero CloudPlayer
             if (heroSongTitle) heroSongTitle.textContent = track.title;
             if (heroSongTag) heroSongTag.textContent = track.artist;
-            if (heroLyricText) heroLyricText.textContent = track.lyric;
             if (heroTrackCounter) heroTrackCounter.textContent = `${bgmIndex + 1} / ${bgmPlaylist.length} TRACKS`;
-            if (heroPlayIcon) heroPlayIcon.textContent = isBgmPlaying ? '⏸' : '▶';
+            if (heroPlayIcon) heroPlayIcon.innerHTML = isBgmPlaying ? CYBER_SVG_PAUSE : CYBER_SVG_PLAY;
             if (heroVinylDisc) {
                 if (isBgmPlaying) heroVinylDisc.classList.add('spinning');
                 else heroVinylDisc.classList.remove('spinning');
-            }
-            if (heroPlayStatus) {
-                heroPlayStatus.innerHTML = isBgmPlaying ?
-                    `<span class="status-icon" style="color:#10b981;">●</span> <span class="status-text" style="color:#10b981;">正在播放</span>` :
-                    `<span class="status-icon">▶</span> <span class="status-text">点击中央大键即刻启奏</span>`;
             }
 
             // 2. 同步悬浮胶囊面板
@@ -4844,7 +5052,7 @@
                 if (isBgmPlaying) musicBigDisc.classList.add('spinning');
                 else musicBigDisc.classList.remove('spinning');
             }
-            if (musicPlayBtn) musicPlayBtn.textContent = isBgmPlaying ? '⏸' : '▶';
+            if (musicPlayBtn) musicPlayBtn.innerHTML = isBgmPlaying ? CYBER_SVG_PAUSE : CYBER_SVG_PLAY;
 
             renderPlaylists();
         }
@@ -4921,20 +5129,8 @@
         // Hero 专属大键绑定 (唱片黑胶与中央大播放键双重绑定)
         if (heroPlayBtn) heroPlayBtn.addEventListener('click', togglePlayPause);
         if (heroVinylDisc) heroVinylDisc.addEventListener('click', togglePlayPause);
-        if (heroDiscWrap) heroDiscWrap.addEventListener('click', togglePlayPause);
         if (heroNextBtn) heroNextBtn.addEventListener('click', () => loadAndPlay(bgmIndex + 1, true));
         if (heroPrevBtn) heroPrevBtn.addEventListener('click', () => loadAndPlay(bgmIndex - 1, true));
-        if (heroLoopBtn) {
-            heroLoopBtn.addEventListener('click', () => {
-                isLoopSingle = !isLoopSingle;
-                heroLoopBtn.style.color = isLoopSingle ? 'var(--cyan)' : '#cbd5e1';
-                heroLoopBtn.title = isLoopSingle ? '单曲循环' : '列表循环';
-                if (musicLoopBtn) {
-                    musicLoopBtn.style.color = isLoopSingle ? 'var(--cyan)' : '#cbd5e1';
-                    musicLoopBtn.title = isLoopSingle ? '单曲循环' : '列表循环';
-                }
-            });
-        }
         if (heroListBtn) {
             heroListBtn.addEventListener('click', () => {
                 if (heroPlaylistDrawer) heroPlaylistDrawer.classList.toggle('open');
@@ -4966,6 +5162,13 @@
                 if (musicModal) musicModal.classList.remove('open');
             });
         }
+        const musicDragHandle = document.getElementById('music-drag-handle');
+        if (musicDragHandle) {
+            musicDragHandle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (musicModal) musicModal.classList.remove('open');
+            });
+        }
         if (musicBigDisc) musicBigDisc.addEventListener('click', togglePlayPause);
         if (musicPlayBtn) musicPlayBtn.addEventListener('click', togglePlayPause);
         if (musicNextBtn) musicNextBtn.addEventListener('click', () => loadAndPlay(bgmIndex + 1, true));
@@ -4974,7 +5177,7 @@
             musicLoopBtn.addEventListener('click', () => {
                 isLoopSingle = !isLoopSingle;
                 musicLoopBtn.style.color = isLoopSingle ? 'var(--cyan)' : '#cbd5e1';
-                if (heroLoopBtn) heroLoopBtn.style.color = isLoopSingle ? 'var(--cyan)' : '#cbd5e1';
+                musicLoopBtn.title = isLoopSingle ? '单曲循环' : '列表循环';
             });
         }
         if (musicListToggleBtn) {
@@ -5024,13 +5227,13 @@
         if (heroProgressBg) heroProgressBg.addEventListener('click', (e) => handleSeekClick(heroProgressBg, e));
         if (progressBg) progressBg.addEventListener('click', (e) => handleSeekClick(progressBg, e));
 
-        // 音量调节联动
+        // 音量调节联动 (纯净赛博微拟态 SVG 矢量渲染)
         function handleVolumeChange(v) {
             if (!bgmAudio) return;
             bgmAudio.volume = v;
-            const icon = v === 0 ? '🔇' : (v < 0.5 ? '🔉' : '🔊');
-            if (heroMuteIcon) heroMuteIcon.textContent = icon;
-            if (muteIcon) muteIcon.textContent = icon;
+            const svgIcon = v === 0 ? CYBER_SVG_VOL_MUTE : (v < 0.5 ? CYBER_SVG_VOL_LOW : CYBER_SVG_VOL_HIGH);
+            if (heroMuteIcon) heroMuteIcon.innerHTML = svgIcon;
+            if (muteIcon) muteIcon.innerHTML = svgIcon;
             if (heroVolSlider) heroVolSlider.value = v;
             if (volSlider) volSlider.value = v;
         }
