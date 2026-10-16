@@ -5,6 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SherlockYzz // 折木柯南 - Intelligent Systems &amp; Cyber Anime Lab</title>
     <meta name="description" content="SherlockYzz (折木柯南) 个人实验室：探寻算法逻辑与二次元交互美学的交汇处。涵盖自主多代理系统、Live2D、3D WebGL、全栈工程。">
+
+    <!-- 移动端视口与沉浸式状态栏主题色 (解决微信、QQ、Safari 顶部状态栏颜色) -->
+    <meta name="theme-color" content="#030408">
+    <meta name="msapplication-navbutton-color" content="#030408">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <!-- Open Graph (微信、QQ、Discord、Telegram、微博分享预览卡片) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sherlockyzz.github.io/">
+    <meta property="og:title" content="SherlockYzz // 折木柯南 - 个人智能实验室">
+    <meta property="og:description" content="探寻算法逻辑与二次元交互美学的交汇处。涵盖自主多代理系统、Live2D、3D WebGL、二次元流光音乐盒与全栈交互工程。">
+    <meta property="og:image" content="https://sherlockyzz.github.io/avatar.png">
+    <meta property="og:image:width" content="460">
+    <meta property="og:image:height" content="460">
+    <meta property="og:image:alt" content="SherlockYzz // 折木柯南 Avatar">
+    <meta property="og:site_name" content="SherlockYzz // 折木柯南 Lab">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="https://sherlockyzz.github.io/">
+    <meta name="twitter:title" content="SherlockYzz // 折木柯南 - 个人智能实验室">
+    <meta name="twitter:description" content="探寻算法逻辑与二次元交互美学的交汇处。涵盖自主多代理系统、Live2D、3D WebGL、二次元流光音乐盒与全栈交互工程。">
+    <meta name="twitter:image" content="https://sherlockyzz.github.io/avatar.png">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300f0ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polygon points='12 2 2 7 12 12 22 7 12 2'/><polyline points='2 17 12 22 22 17'/><polyline points='2 12 12 17 22 12'/></svg>">
 
     <!-- 典雅字体：Space Grotesk、JetBrains Mono、Inter、Noto Sans SC -->
@@ -789,6 +813,63 @@
         .skill-level {
             font-size: 0.7rem;
             color: var(--text-dim);
+        }
+
+        /* ================= 移动端与触控设备体验优化 (彻底杜绝 :hover 粘连，隐藏无意义鼠标坐标) ================= */
+        @media (hover: none) and (pointer: coarse) {
+            /* 触屏上彻底解除 :hover 引起的粘连（贴着不放、常态泛光、悬浮抬升卡死） */
+            .bento-card:hover,
+            .skill-tile:hover,
+            .tech-stack-card:hover,
+            .hero-capsule-music-box:hover,
+            .companion-avatar-box:hover,
+            .btn-primary:hover,
+            .btn-secondary:hover,
+            .dock-mode-btn:hover,
+            .capsule-ctrl-btn:hover,
+            .capsule-play-btn:hover,
+            .capsule-list-btn:hover,
+            .capsule-mini-btn:hover,
+            .music-ctrl-btn:hover,
+            .music-play-btn:hover,
+            .playlist-item:hover,
+            .drawer-song-item:hover,
+            .card-link:hover,
+            .tech-mini-pill:hover,
+            .connect-badge-item:hover,
+            .music-capsule-btn:hover {
+                transform: none !important;
+                box-shadow: none !important;
+            }
+
+            .bento-card:hover {
+                border-color: var(--border-dim) !important;
+            }
+
+            .hud-btn:hover:not(.active) {
+                border-color: var(--border-dim) !important;
+                color: var(--text-dim) !important;
+                background: rgba(10, 14, 24, 0.6) !important;
+            }
+
+            .dock-mode-btn:hover:not(.selected) {
+                border-color: rgba(255, 255, 255, 0.08) !important;
+                background: rgba(255, 255, 255, 0.03) !important;
+                color: #94a3b8 !important;
+            }
+
+            .capsule-progress-fill::after,
+            .music-progress-fill::after {
+                transform: translateY(-50%) !important;
+            }
+        }
+
+        /* 触屏与移动设备隐藏桌面专属鼠标坐标信息 */
+        @media (hover: none), (pointer: coarse), (max-width: 900px) {
+            #telemetry-cursor-item,
+            #telemetry-cursor-sep {
+                display: none !important;
+            }
         }
 
         /* ================= 极客遥测监控 HUD 底栏 ================= */
@@ -2836,9 +2917,9 @@
 
         <div class="hud-controls">
             <!-- Web Audio 实时声学频谱可视化 -->
-            <button class="hud-btn active" id="audio-toggle-btn" title="原生赛博空间合成声景与实时频谱 (默认已启用)">
+            <button class="hud-btn" id="audio-toggle-btn" title="点击开启赛博音乐与合成声景">
                 <canvas class="audio-spectrum-canvas" id="audio-spectrum" width="38" height="14"></canvas>
-                <span id="audio-btn-label">AUDIO: ON</span>
+                <span id="audio-btn-label">点击开启音乐</span>
             </button>
 
             <!-- 呼出黑客终端 HUD -->
@@ -2855,8 +2936,8 @@
 
     <!-- 底部极客遥测监控 HUD -->
     <div class="telemetry-bar">
-        <span class="telemetry-item">CURSOR: <strong id="telemetry-coords">[0, 0]</strong></span>
-        <span style="color: rgba(255,255,255,0.1);">|</span>
+        <span class="telemetry-item" id="telemetry-cursor-item">CURSOR: <strong id="telemetry-coords">[0, 0]</strong></span>
+        <span class="telemetry-sep" id="telemetry-cursor-sep" style="color: rgba(255,255,255,0.1);">|</span>
         <span class="telemetry-item">FPS: <strong id="telemetry-fps">60.0</strong></span>
         <span style="color: rgba(255,255,255,0.1);">|</span>
         <span class="telemetry-item">ENGINE: <strong>3D KINETIC DYNAMICS</strong></span>
@@ -3855,7 +3936,6 @@
             const label = document.getElementById('audio-btn-label');
 
             if (!isAudioPlaying) {
-                // 移动端不启动低频振荡器嗡鸣，避免手机扬声器发出低频电流杂音干扰 BGM 歌曲
                 const isMobileCheck = /Android|iPhone|iPad|Mobile/i.test(navigator.userAgent) || window.innerWidth <= 768;
                 if (!isMobileCheck) {
                     const freqs = [130.81, 155.56, 196.00, 233.08, 293.66, 392.00];
@@ -3884,6 +3964,11 @@
                 if (btn) btn.classList.add('active');
                 if (label) label.textContent = 'AUDIO: ON';
                 playChime([523, 659, 784, 1046]);
+
+                // 若音乐盒尚未开播，联动起播音乐盒
+                if (bgmAudio && !isBgmPlaying) {
+                    safeExecutePlay();
+                }
             } else {
                 synthOscs.forEach(o => {
                     try {
@@ -3893,8 +3978,13 @@
                 });
                 synthOscs = [];
                 isAudioPlaying = false;
-                btn.classList.remove('active');
-                label.textContent = 'AUDIO: OFF';
+                if (btn) btn.classList.remove('active');
+                if (label) label.textContent = '点击开启音乐';
+
+                // 联动暂停音乐盒
+                if (bgmAudio && isBgmPlaying) {
+                    togglePlayPause();
+                }
             }
         }
 
@@ -5343,6 +5433,19 @@
         function syncMusicUI() {
             const track = bgmPlaylist[bgmIndex];
             const trackDur = track.duration || '03:48';
+
+            // 联动顶部导航栏音乐状态标签
+            const audioBtn = document.getElementById('audio-toggle-btn');
+            const audioLabel = document.getElementById('audio-btn-label');
+            if (audioBtn && audioLabel) {
+                if (isBgmPlaying || isAudioPlaying) {
+                    audioBtn.classList.add('active');
+                    audioLabel.textContent = 'AUDIO: ON';
+                } else {
+                    audioBtn.classList.remove('active');
+                    audioLabel.textContent = '点击开启音乐';
+                }
+            }
 
             // 1. 同步 Hero CloudPlayer
             if (heroSongTitle) heroSongTitle.textContent = track.title;
