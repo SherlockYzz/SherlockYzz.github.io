@@ -1374,11 +1374,20 @@
         }
 
         /* ================= 《鸣潮》飞行雪绒 · 爱弥斯 活体桌面挂件 ================= */
+        .anime-companion-widget {
+            touch-action: none;
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .anime-companion-widget.is-dragging {
+            filter: drop-shadow(0 14px 28px rgba(0, 240, 255, 0.55));
+            transition: none !important;
+            user-select: none;
+        }
         .companion-avatar-box {
             width: 100px;
             height: 100px;
             position: relative;
-            cursor: pointer;
+            cursor: grab;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1388,11 +1397,12 @@
         .companion-avatar-box:hover {
             transform: scale(1.08) translateY(-4px);
         }
-
-        /* 动图核心渲染 (37 帧 1000x1000 原版超清透明动图) */
-        #aemeath-pet-picture {
-            display: contents;
+        .companion-avatar-box:active,
+        .anime-companion-widget.is-dragging .companion-avatar-box {
+            cursor: grabbing !important;
         }
+
+        /* 精灵帧核心渲染 (零残影·纯透明高帧率桌宠) */
         #aemeath-pet-img {
             width: 92px;
             height: 92px;
@@ -1401,6 +1411,8 @@
             animation: snowfluff-float 3.2s ease-in-out infinite;
             transition: transform 0.15s ease;
             pointer-events: auto;
+            user-select: none;
+            -webkit-user-drag: none;
         }
 
         /* 上下呼吸轻盈悬浮 */
@@ -2986,9 +2998,9 @@
 
     <!-- ================= 《鸣潮》飞行雪绒 智能桌面挂件 (纯净静音·极客融合版) ================= -->
     <div class="anime-companion-widget" id="companion-widget">
-        <!-- 初始引导提示词（默认展示，引导用户点击互动） -->
-        <div class="companion-hint-pill" id="companion-hint-pill" title="点击与飞行雪绒互动">
-            <span style="font-size:0.8rem;">✨</span> 点击与飞行雪绒互动
+        <!-- 初始引导提示词（默认展示，引导用户拖拽与点击互动） -->
+        <div class="companion-hint-pill" id="companion-hint-pill" title="可按住拖拽桌宠或点击互动">
+            <span style="font-size:0.8rem;">✨</span> 飞行雪绒 · 可拖拽互动
         </div>
         <!-- 日系 Galgame 极客传讯气泡 (初始静默隐藏，点击挂件后才弹出) -->
         <div class="companion-bubble" id="companion-bubble" style="display: none;">
@@ -3001,15 +3013,12 @@
                 「排除一切不可能的，剩下的即使再不可思议，也是真相。」
             </div>
         </div>
-        <!-- 飞行雪绒活体挂件舞台 -->
-        <div class="companion-avatar-box" id="companion-avatar" title="点击与飞行雪绒互动">
-            <picture id="aemeath-pet-picture">
-                <source id="aemeath-pet-source" srcset="assets/sinlatansen_ameath_1000x1000_HD.webp" type="image/webp">
-                <img id="aemeath-pet-img" 
-                     src="assets/sinlatansen_ameath_1000x1000_HD.gif" 
-                     width="92" height="92"
-                     alt="飞行雪绒" />
-            </picture>
+        <!-- 飞行雪绒活体挂件舞台 (全屏自由拖拽·精灵帧动作库版) -->
+        <div class="companion-avatar-box" id="companion-avatar" title="长按拖拽桌宠，轻触互动">
+            <img id="aemeath-pet-img" 
+                 src="assets/aemeath_preview_idle.gif" 
+                 width="92" height="92"
+                 alt="飞行雪绒" />
             <div class="aemeath-resonance-ring"></div>
         </div>
     </div>
@@ -4121,86 +4130,174 @@
             });
         }
 
-        const petSource = document.getElementById('aemeath-pet-source');
-        const AEMEATH_BASE = 'assets/';
-
+        // ================= 鸣潮飞行雪绒【真·二次元交互桌宠精灵帧系统】 =================
         const AEMEATH_ASSETS = {
-            idleWebp: AEMEATH_BASE + 'sinlatansen_ameath_1000x1000_HD.webp',
-            idleGif: AEMEATH_BASE + 'sinlatansen_ameath_1000x1000_HD.gif',
-            hover: AEMEATH_BASE + 'sinlatansen_idle2_halo_eyes_open.gif',     // 睁开金色大瞳孔态
-            jump: AEMEATH_BASE + 'aemeath_preview_jumping.gif',               // 欢快起跳扑翅态
-            drag: AEMEATH_BASE + 'sinlatansen_drag.gif'                       // 手机长按/拖拽扑腾小爪爪态
+            idle: 'assets/aemeath_preview_idle.gif',     // 7帧大羽翼经典浮空呼吸 (263KB, 0残影, 极度丝滑)
+            wave: 'assets/aemeath_preview_waving.gif',   // 挥手打招呼 (165KB)
+            jump: 'assets/aemeath_preview_jumping.gif',  // 欢快起跳扑翅 (201KB)
+            review: 'assets/aemeath_preview_review.gif', // 好奇张望发呆思考 (223KB)
+            drag: 'assets/sinlatansen_drag.gif'          // 提溜抓起扑腾小脚丫 (128KB)
         };
 
+        let currentPetState = 'idle';
         function setCompanionState(state) {
             if (!petImg) return;
-            if (state === 'idle') {
-                if (petSource) petSource.srcset = AEMEATH_ASSETS.idleWebp;
-                petImg.src = AEMEATH_ASSETS.idleGif;
-            } else {
-                const asset = AEMEATH_ASSETS[state];
-                if (asset) {
-                    if (petSource) petSource.srcset = asset;
-                    petImg.src = asset;
-                }
+            const asset = AEMEATH_ASSETS[state] || AEMEATH_ASSETS.idle;
+            currentPetState = state;
+            if (petImg.getAttribute('src') !== asset) {
+                petImg.src = asset;
             }
         }
 
-        // 静默空闲预加载雪绒交互动图 (hover / jump / drag，合计仅 ~0.56MB)，消除首次交互时的白屏与卡顿
+        // 静默空闲预加载整套动作序列 (合计仅 ~700KB)，彻底消除动作切换延迟
         function preloadCompanionAssets() {
-            [AEMEATH_ASSETS.hover, AEMEATH_ASSETS.jump, AEMEATH_ASSETS.drag].forEach(url => {
+            Object.values(AEMEATH_ASSETS).forEach(url => {
                 const img = new Image();
                 img.src = url;
             });
         }
         if ('requestIdleCallback' in window) {
-            window.requestIdleCallback(() => preloadCompanionAssets(), { timeout: 3000 });
+            window.requestIdleCallback(() => preloadCompanionAssets(), { timeout: 2500 });
         } else {
-            window.addEventListener('load', () => setTimeout(preloadCompanionAssets, 1200));
+            window.addEventListener('load', () => setTimeout(preloadCompanionAssets, 1000));
         }
 
-        if (petImg && petStage) {
-            // 1. 桌面端鼠标交互 (悬停睁眼，移开回待机)
-            petStage.addEventListener('mouseenter', () => {
-                setCompanionState('hover');
+        // ================= 全屏自由拖拽 & 悬浮交互引擎 =================
+        let isDraggingPet = false;
+        let petDragStartX = 0;
+        let petDragStartY = 0;
+        let petInitialLeft = 0;
+        let petInitialTop = 0;
+        let hasMovedPet = false;
+        let ambientPetTimer = null;
+
+        function handlePetClick(e) {
+            if (e && e.preventDefault) e.preventDefault();
+            setCompanionState('jump');
+            if (petStage) petStage.style.transform = 'scale(1.15) translateY(-8px)';
+            showCompanionSpeech();
+
+            // 联动散落樱花彩蛋
+            if (typeof triggerSakuraBurst === 'function') {
+                triggerSakuraBurst();
+            }
+            playChime([880, 1174, 1567]);
+
+            setTimeout(() => {
+                if (!isDraggingPet) {
+                    setCompanionState('idle');
+                    if (petStage) petStage.style.transform = 'scale(1) translateY(0)';
+                }
+            }, 1200);
+        }
+
+        if (companionWidget && petStage) {
+            // Pointer Down (鼠标按下/手指触摸)
+            petStage.addEventListener('pointerdown', (e) => {
+                if (e.button && e.button !== 0) return; // 只响应主按键
+                isDraggingPet = true;
+                hasMovedPet = false;
+                petDragStartX = e.clientX;
+                petDragStartY = e.clientY;
+
+                const rect = companionWidget.getBoundingClientRect();
+                petInitialLeft = rect.left;
+                petInitialTop = rect.top;
+
+                // 解除右下角固定定位，转为绝对视口坐标
+                companionWidget.style.bottom = 'auto';
+                companionWidget.style.right = 'auto';
+                companionWidget.style.left = petInitialLeft + 'px';
+                companionWidget.style.top = petInitialTop + 'px';
+
+                try { petStage.setPointerCapture(e.pointerId); } catch(err) {}
             });
-            petStage.addEventListener('mouseleave', () => {
+
+            // Pointer Move (拖拽移动桌宠)
+            petStage.addEventListener('pointermove', (e) => {
+                if (!isDraggingPet) return;
+                const dx = e.clientX - petDragStartX;
+                const dy = e.clientY - petDragStartY;
+
+                if (!hasMovedPet && Math.hypot(dx, dy) > 6) {
+                    hasMovedPet = true;
+                    // 切换为被提溜扑腾抓起动作
+                    setCompanionState('drag');
+                    companionWidget.classList.add('is-dragging');
+                }
+
+                if (hasMovedPet) {
+                    const margin = 10;
+                    const maxLeft = window.innerWidth - companionWidget.offsetWidth - margin;
+                    const maxTop = window.innerHeight - companionWidget.offsetHeight - margin;
+                    const newLeft = Math.max(margin, Math.min(maxLeft, petInitialLeft + dx));
+                    const newTop = Math.max(margin, Math.min(maxTop, petInitialTop + dy));
+
+                    companionWidget.style.left = newLeft + 'px';
+                    companionWidget.style.top = newTop + 'px';
+                }
+            });
+
+            // Pointer Up (松手放置)
+            petStage.addEventListener('pointerup', (e) => {
+                if (!isDraggingPet) return;
+                isDraggingPet = false;
+                companionWidget.classList.remove('is-dragging');
+                try { petStage.releasePointerCapture(e.pointerId); } catch(err) {}
+
+                if (hasMovedPet) {
+                    // 放置桌宠：恢复优雅待机浮动
+                    setCompanionState('idle');
+                    if (petStage) petStage.style.transform = 'scale(1) translateY(0)';
+                    playUiBeep(1100, 0.05);
+                } else {
+                    // 未发生移动视为点击互动
+                    handlePetClick(e);
+                }
+            });
+
+            petStage.addEventListener('pointercancel', () => {
+                isDraggingPet = false;
+                companionWidget.classList.remove('is-dragging');
                 setCompanionState('idle');
             });
 
-            // 2. 点击戳戳反应 (向上轻快起跳，触发樱花星云爆发，100% 绝对静音)
-            petStage.addEventListener('click', (e) => {
-                e.preventDefault();
-                setCompanionState('jump');
-                petStage.style.transform = 'scale(1.12) translateY(-6px)';
-                showCompanionSpeech();
-
-                // 联动天气爆发彩蛋
-                if (typeof triggerSakuraBurst === 'function') {
-                    triggerSakuraBurst();
+            // 桌面端鼠标靠近时打招呼
+            petStage.addEventListener('mouseenter', () => {
+                if (!isDraggingPet && currentPetState === 'idle') {
+                    setCompanionState('wave');
                 }
-
-                setTimeout(() => {
-                    setCompanionState('idle');
-                    petStage.style.transform = 'scale(1) translateY(0)';
-                }, 1100);
             });
-
-            // 3. 手机端触控优化：长按扑腾爪爪，松手回位
-            let petTouchTimer = null;
-            petStage.addEventListener('touchstart', () => {
-                petTouchTimer = setTimeout(() => {
-                    setCompanionState('drag');
-                }, 220);
-            }, { passive: true });
-
-            petStage.addEventListener('touchend', () => {
-                if (petTouchTimer) clearTimeout(petTouchTimer);
-                setTimeout(() => {
+            petStage.addEventListener('mouseleave', () => {
+                if (!isDraggingPet && (currentPetState === 'wave' || currentPetState === 'review')) {
                     setCompanionState('idle');
-                }, 350);
+                }
             });
         }
+
+        // ================= 闲置自主生命力 (每 18~28 秒随机活动) =================
+        function scheduleAmbientAction() {
+            const delay = 18000 + Math.random() * 10000;
+            ambientPetTimer = setTimeout(() => {
+                if (!isDraggingPet && currentPetState === 'idle') {
+                    const r = Math.random();
+                    if (r < 0.5) {
+                        setCompanionState('review'); // 好奇张望思考
+                    } else {
+                        setCompanionState('wave'); // 热情挥手
+                    }
+                    setTimeout(() => {
+                        if (!isDraggingPet && (currentPetState === 'review' || currentPetState === 'wave')) {
+                            setCompanionState('idle');
+                        }
+                        scheduleAmbientAction();
+                    }, 2400);
+                } else {
+                    scheduleAmbientAction();
+                }
+            }, delay);
+        }
+        scheduleAmbientAction();
 
         // ================= 5. 交互式黑客终端控制台 HUD =================
         const termModal = document.getElementById('terminal-modal');
