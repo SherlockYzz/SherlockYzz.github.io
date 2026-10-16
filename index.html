@@ -1,16 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- 客户端无侵入防强缓存声明：确保直接访问干净主域名时第一时间获取最新页面，无需手动加版本号 -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <title>SherlockYzz // 折木柯南 - Intelligent Systems &amp; Cyber Anime Lab</title>
-    <meta name="description" content="SherlockYzz (折木柯南) 个人主页：探寻算法逻辑与二次元交互美学的交汇处。原生 Canvas 2D 动力学空间透视与高能粒子演算、Web Audio 实时声学频谱、自主 Agent 与全栈交互工程。">
-
-    <!-- 移动端视口与沉浸式状态栏主题色 (解决微信、QQ、Safari 顶部状态栏颜色) -->
+    <!-- 沉浸式视口与状态栏 -->
     <meta name="theme-color" content="#030408">
     <meta name="msapplication-navbutton-color" content="#030408">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -37,8 +30,8 @@
 
     <!-- 典雅字体：Space Grotesk、JetBrains Mono、Inter、Noto Sans SC -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700;900&family=Space+Grotesk:wght@500;600;700;800&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700;900&family=Space+Grotesk:wght@500;600;700;800&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700;900&family=Space+Grotesk:wght@500;600;700;800&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet"></noscript>
 
     <style>
         :root {
@@ -3690,9 +3683,8 @@
             <!-- 10 首曲目抽屉列表 -->
             <div class="music-playlist-drawer" id="music-playlist-drawer"></div>
         </div>
-        <!-- 核心音频元素 (preload="none" 确保0字节启动负担) -->
-        <!-- 核心音频元素 (preload="auto" 确保移动端即开即播，杜绝缓冲卡顿) -->
-        <audio id="global-bgm-audio" src="audio/track_01.mp3" preload="auto" playsinline webkit-playsinline></audio>
+        <!-- 核心音频元素 (preload="none" 杜绝首屏网络拥塞抢占带宽) -->
+        <audio id="global-bgm-audio" src="audio/track_01.mp3" preload="none" playsinline webkit-playsinline></audio>
     </div>
 
     <!-- 页面内容层 -->
@@ -4900,6 +4892,7 @@
                 };
 
                 this.lookResumeTimer = null;
+                this.previewImg = null;
 
                 this.initCanvasSize();
                 this.loadCharacter(this.currentCharId, true);
@@ -4920,16 +4913,20 @@
             }
 
             preloadAll() {
-                // 仅预载轻量的 preview 和主力 WebP 图集，绝不并发加载 3MB PNG 阻塞网络与带宽
-                Object.values(PET_CHARACTERS).forEach(cfg => {
-                    [cfg.preview, cfg.atlas].filter(Boolean).forEach(url => {
-                        if (!this.imgCache.has(url)) {
-                            const img = new Image();
-                            img.onload = () => this.imgCache.set(url, img);
-                            img.src = url;
-                        }
-                    });
-                });
+                // 首屏绝不并发预载未选中角色的数兆图集（杜绝抢占带宽），延迟至浏览器完全空闲时静默缓存
+                const idleHandler = () => {
+                    const ruoxiCfg = PET_CHARACTERS.ruoxi;
+                    if (ruoxiCfg && !this.imgCache.has(ruoxiCfg.atlas)) {
+                        const img = new Image();
+                        img.onload = () => this.imgCache.set(ruoxiCfg.atlas, img);
+                        img.src = ruoxiCfg.atlas;
+                    }
+                };
+                if ('requestIdleCallback' in window) {
+                    requestIdleCallback(idleHandler, { timeout: 10000 });
+                } else {
+                    setTimeout(idleHandler, 10000);
+                }
             }
 
             updateUiText(charCfg) {
@@ -4957,18 +4954,20 @@
                     return;
                 }
 
-                // 2. 若图集仍在加载，立刻用首屏轻量 preview(30KB) 瞬间直出画面，绝不卡在载入中，实现 0ms 秒切反馈！
+                // 2. 若图集仍在加载，立刻用首屏轻量 preview(35KB) 瞬间直出画面，绝不卡在载入中，实现 0ms 秒出桌宠！
                 const pImg = this.imgCache.get(charCfg.preview) || new Image();
+                this.previewImg = pImg;
                 const drawPreview = () => {
-                    if (this.ctx && this.canvas && this.currentCharId === charCfg.id) {
-                        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                        this.ctx.drawImage(pImg, 0, 0, this.canvas.width, this.canvas.height);
-                    }
+                    this.draw();
                 };
                 if (pImg.complete && pImg.naturalWidth) {
+                    this.imgCache.set(charCfg.preview, pImg);
                     drawPreview();
                 } else {
-                    pImg.onload = drawPreview;
+                    pImg.onload = () => {
+                        this.imgCache.set(charCfg.preview, pImg);
+                        drawPreview();
+                    };
                     if (!pImg.src) pImg.src = charCfg.preview;
                 }
 
@@ -5027,7 +5026,13 @@
                 const dt = Math.min(now - this.state.lastTick, 100);
                 this.state.lastTick = now;
 
-                if (!this.isLoaded || !this.ctx) return;
+                if (!this.ctx || !this.canvas) return;
+
+                // 若图集尚未加载完成，持续保障首屏 preview 渲染，绝不闪烁留白
+                if (!this.isLoaded || !this.atlasImg) {
+                    this.draw();
+                    return;
+                }
 
                 const animCfg = PET_ANIMATIONS[this.state.anim];
                 if (!animCfg) return;
@@ -5061,15 +5066,24 @@
             }
 
             draw() {
-                if (!this.isLoaded || !this.ctx || !this.atlasImg) return;
+                if (!this.ctx || !this.canvas) return;
+                const pw = this.canvas.width;
+                const ph = this.canvas.height;
+
+                // 核心保障：若完整图集尚未载入，立即绘制首屏轻量 preview (35KB)，首屏 50ms 绝不空白！
+                if (!this.isLoaded || !this.atlasImg) {
+                    if (this.previewImg && (this.previewImg.complete || this.previewImg.naturalWidth)) {
+                        this.ctx.clearRect(0, 0, pw, ph);
+                        this.ctx.drawImage(this.previewImg, 0, 0, pw, ph);
+                    }
+                    return;
+                }
+
                 const ctx = this.ctx;
                 const animCfg = PET_ANIMATIONS[this.state.anim] || PET_ANIMATIONS['idle'];
                 const col = (animCfg.startCol || 0) + this.state.frame;
                 const sx = col * this.cw;
                 const sy = animCfg.row * this.ch;
-
-                const pw = this.canvas.width;
-                const ph = this.canvas.height;
 
                 ctx.clearRect(0, 0, pw, ph);
                 ctx.drawImage(
@@ -7011,14 +7025,13 @@
                 bgmAudio.src = firstTrack.src;
             }
             syncMusicUI();
-            prefetchTrackBlob(0);
-            setTimeout(() => prefetchTrackBlob(1), 2000);
 
             const autoPlayPromise = bgmAudio.play();
             if (autoPlayPromise !== undefined) {
                 autoPlayPromise.then(() => {
                     isBgmPlaying = true;
                     syncMusicUI();
+                    prefetchTrackBlob(0);
                 }).catch(() => {
                     isBgmPlaying = false;
                     syncMusicUI();
