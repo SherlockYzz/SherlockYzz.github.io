@@ -55,6 +55,7 @@
                         break;
                     case 'RESUME':
                         if (this.gameInstance?.resume) this.gameInstance.resume();
+                        if (this.gameInstance?.audio?.unlock) this.gameInstance.audio.unlock();
                         break;
                     case 'RESTART':
                         if (this.gameInstance?.restart) this.gameInstance.restart();

@@ -6919,6 +6919,30 @@
             renderPlaylists();
         }
 
+        // ================= 智能音频内存缓冲池 (彻底根除跨国 CDN 范围请求连接熔断与卡顿) =================
+        const audioBlobCache = new Map();
+
+        async function prefetchTrackBlob(index) {
+            const track = bgmPlaylist[index];
+            if (!track || audioBlobCache.has(track.src)) return;
+            try {
+                const res = await fetch(track.src);
+                if (res.ok) {
+                    const blob = await res.blob();
+                    const blobUrl = URL.createObjectURL(blob);
+                    audioBlobCache.set(track.src, blobUrl);
+                    // 若当前正在播放此曲目且使用的是原始网络连接，在不打断播放的前提下平滑升级为本地内存源
+                    if (bgmIndex === index && bgmAudio && !bgmAudio.src.startsWith('blob:')) {
+                        const curTime = bgmAudio.currentTime;
+                        const wasPlaying = isBgmPlaying && !bgmAudio.paused;
+                        bgmAudio.src = blobUrl;
+                        bgmAudio.currentTime = curTime;
+                        if (wasPlaying) safeExecutePlay();
+                    }
+                }
+            } catch(e) {}
+        }
+
         // 核心播放调度器 (规范 HTML5 Audio 手势起播，绝无虚假播放状态卡顿)
         function safeExecutePlay() {
             if (!bgmAudio) return;
@@ -6931,17 +6955,17 @@
                     isBgmPlaying = true;
                     syncMusicUI();
                 }).catch(err => {
-                    console.warn('[Audio] play rejected:', err);
                     if (err.name === 'AbortError') {
                         return;
                     }
+                    console.warn('[Audio] play rejected:', err);
                     isBgmPlaying = false;
                     syncMusicUI();
                 });
             }
         }
 
-        // 载入并播放曲目 (纯净平滑切歌，移除引发 AbortError 的多余 load() 规避移动端崩溃)
+        // 载入并播放曲目 (优先从内存 Blob 秒级启动，无网络颠簸)
         function loadAndPlay(index, autoPlay = true) {
             bgmIndex = (index + bgmPlaylist.length) % bgmPlaylist.length;
             const track = bgmPlaylist[bgmIndex];
@@ -6949,7 +6973,18 @@
 
             isChangingTrack = true;
             try { bgmAudio.pause(); } catch(e) {}
-            bgmAudio.src = track.src;
+
+            // 优先挂载内存 Blob URL，若尚未缓存完成则使用静态路径并立即启动后台全速拉取
+            if (audioBlobCache.has(track.src)) {
+                bgmAudio.src = audioBlobCache.get(track.src);
+            } else {
+                bgmAudio.src = track.src;
+                prefetchTrackBlob(bgmIndex);
+            }
+
+            // 预加载队列下一首曲目，确保连续切歌 100% 丝滑
+            const nextIdx = (bgmIndex + 1) % bgmPlaylist.length;
+            setTimeout(() => prefetchTrackBlob(nextIdx), 1500);
 
             // 立即重置视觉进度与时间显示，给用户即刻响应反馈
             if (!isDraggingSeek) {
@@ -6971,8 +7006,14 @@
 
         // 默认初始化装载第 1 首曲目
         if (bgmAudio) {
-            bgmAudio.src = bgmPlaylist[0].src;
+            const firstTrack = bgmPlaylist[0];
+            if (!bgmAudio.src || !bgmAudio.src.includes(firstTrack.src)) {
+                bgmAudio.src = firstTrack.src;
+            }
             syncMusicUI();
+            prefetchTrackBlob(0);
+            setTimeout(() => prefetchTrackBlob(1), 2000);
+
             const autoPlayPromise = bgmAudio.play();
             if (autoPlayPromise !== undefined) {
                 autoPlayPromise.then(() => {
@@ -7241,6 +7282,24 @@
                     safeExecutePlay();
                 } else {
                     loadAndPlay(bgmIndex + 1, true);
+                }
+            });
+
+            // 智能缓冲异常自愈：当遭遇弱网 waiting 时自动恢复，杜绝永久冻结
+            bgmAudio.addEventListener('waiting', () => {
+                isBuffering = true;
+            });
+            bgmAudio.addEventListener('canplay', () => {
+                if (isBuffering && isBgmPlaying && bgmAudio.paused) {
+                    safeExecutePlay();
+                }
+                isBuffering = false;
+            });
+            bgmAudio.addEventListener('stalled', () => {
+                if (isBgmPlaying && bgmAudio.paused) {
+                    setTimeout(() => {
+                        if (isBgmPlaying && bgmAudio.paused) safeExecutePlay();
+                    }, 500);
                 }
             });
 
@@ -7594,6 +7653,21 @@
                 if (this.modal) {
                     this.modal.addEventListener('click', (e) => {
                         if (e.target === this.modal) this.closeGame();
+                    });
+
+                    // 移动端/全端手势下发：确保用户触碰游戏弹窗区域即刻激活 iframe 内部 Web Audio 解锁
+                    const passTouchUnlock = () => {
+                        if (this.iframe && this.iframe.contentWindow) {
+                            try {
+                                this.iframe.contentWindow.postMessage({
+                                    type: 'GAME_CONTROL',
+                                    action: 'RESUME'
+                                }, '*');
+                            } catch(e) {}
+                        }
+                    };
+                    ['pointerdown', 'touchstart', 'click'].forEach(evt => {
+                        this.modal.addEventListener(evt, passTouchUnlock, { passive: true, capture: true });
                     });
                 }
 

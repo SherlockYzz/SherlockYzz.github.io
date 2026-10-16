@@ -37,28 +37,48 @@
         _getOrCreateContext() {
             if (!this.ctx) {
                 const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                if (AudioCtx) {
-                    this.ctx = new AudioCtx();
-                }
+                if (AudioCtx) this.ctx = new AudioCtx();
             }
-            if (this.ctx && this.ctx.state === 'suspended') {
+            if (this.ctx && this.ctx.state === 'suspended' && !this.muted) {
                 this.ctx.resume().catch(() => {});
             }
             return this.ctx;
         }
 
+        /**
+         * 终极手势解锁 (覆盖捕获阶段 + 播放极短静音缓冲，突破移动端 iOS / Android Web Audio 策略限制)
+         */
+        unlock() {
+            if (this.muted) return;
+            const ctx = this._getOrCreateContext();
+            if (!ctx) return;
+
+            try {
+                const buffer = ctx.createBuffer(1, 1, 22050);
+                const source = ctx.createBufferSource();
+                source.buffer = buffer;
+                source.connect(ctx.destination);
+                source.start(0);
+            } catch(e) {}
+
+            if (ctx.state === 'suspended') {
+                ctx.resume().then(() => {
+                    this.isUnlocked = true;
+                }).catch(() => {});
+            } else {
+                this.isUnlocked = true;
+            }
+        }
+
         _bindUnlock() {
             const unlockHandler = () => {
-                const ctx = this._getOrCreateContext();
-                if (ctx && ctx.state === 'running') {
-                    this.isUnlocked = true;
-                    ['pointerdown', 'touchstart', 'keydown'].forEach(evt => {
-                        window.removeEventListener(evt, unlockHandler);
-                    });
-                }
+                this.unlock();
             };
-            ['pointerdown', 'touchstart', 'keydown'].forEach(evt => {
-                window.addEventListener(evt, unlockHandler, { passive: true, once: false });
+            // 关键：在 capture 阶段监听，确保在任何内部 stopPropagation 阻断前捕获首次触摸与按键
+            const events = ['pointerdown', 'touchstart', 'touchend', 'mousedown', 'keydown'];
+            events.forEach(evt => {
+                window.addEventListener(evt, unlockHandler, { capture: true, passive: true });
+                document.addEventListener(evt, unlockHandler, { capture: true, passive: true });
             });
         }
 
@@ -89,7 +109,7 @@
             if (this.ctx && this.muted) {
                 try { this.ctx.suspend(); } catch(e) {}
             } else if (this.ctx && !this.muted) {
-                try { this.ctx.resume(); } catch(e) {}
+                this.unlock();
             }
         }
 
