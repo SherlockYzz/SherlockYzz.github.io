@@ -1181,13 +1181,14 @@
                 height: 82px !important;
             }
             .companion-bubble {
-                max-width: 220px !important;
-                font-size: 0.72rem !important;
-                padding: 7px 10px !important;
+                max-width: 145px !important;
+                font-size: 0.68rem !important;
+                padding: 4px 8px !important;
+                margin-bottom: 4px !important;
             }
             .companion-hint-pill {
-                font-size: 0.68rem !important;
-                padding: 3px 8px !important;
+                font-size: 0.65rem !important;
+                padding: 2px 7px !important;
             }
 
             /* ================= 移动端音乐播放器 Bottom-Sheet 原生底部抽屉 ================= */
@@ -1308,66 +1309,70 @@
             50% { transform: translateY(-3px); box-shadow: 0 0 18px rgba(0, 240, 255, 0.55); border-color: var(--cyan); }
         }
 
-        /* 对话气泡 (Galgame 极客传讯气泡 · 默认隐藏，点击后显现) */
+        /* 对话气泡 (Galgame 极客微型气泡 · 极致轻量防遮挡，体积缩减 60%) */
         .companion-bubble {
             display: none;
-            background: rgba(15, 23, 42, 0.92);
+            background: rgba(15, 23, 42, 0.82);
             border: 1px solid var(--sakura);
-            border-radius: 12px;
+            border-radius: 10px;
             border-bottom-right-radius: 2px;
-            padding: 9px 13px;
-            max-width: 250px;
-            margin-bottom: 10px;
+            padding: 5px 9px;
+            max-width: 175px;
+            margin-bottom: 6px;
             font-family: var(--font-anime);
-            font-size: 0.8rem;
+            font-size: 0.74rem;
             color: #ffffff;
-            box-shadow: 0 8px 24px rgba(255, 117, 140, 0.25), 0 0 12px rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(14px);
+            box-shadow: 0 4px 16px rgba(255, 117, 140, 0.2), 0 0 10px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             position: relative;
             transform-origin: bottom right;
             animation: bubble-float 3s ease-in-out infinite;
+            cursor: pointer;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+            user-select: none;
         }
         .bubble-header {
             display: flex;
             align-items: center;
-            gap: 6px;
+            justify-content: space-between;
             font-size: 0.62rem;
             color: var(--cyan);
-            letter-spacing: 0.05em;
-            margin-bottom: 5px;
-            border-bottom: 1px dashed rgba(0, 240, 255, 0.25);
-            padding-bottom: 4px;
+            letter-spacing: 0.04em;
+            margin-bottom: 3px;
+            border-bottom: 1px dashed rgba(0, 240, 255, 0.2);
+            padding-bottom: 2px;
         }
         .bubble-dot {
-            width: 6px;
-            height: 6px;
+            width: 5px;
+            height: 5px;
             border-radius: 50%;
             background: #10b981;
             box-shadow: 0 0 6px #10b981;
             display: inline-block;
+            margin-right: 3px;
         }
         .bubble-tag {
             font-family: var(--font-mono);
-            font-weight: 600;
+            font-weight: 700;
+            color: var(--sakura);
+            font-size: 0.65rem;
         }
         .bubble-id {
-            margin-left: auto;
-            color: var(--sakura);
-            font-family: var(--font-mono);
-            font-size: 0.6rem;
-            font-weight: 600;
+            display: none;
         }
         .bubble-text {
-            line-height: 1.45;
+            line-height: 1.35;
+            word-break: break-all;
             transition: opacity 0.2s ease;
         }
         .companion-bubble::after {
             content: '';
             position: absolute;
-            bottom: -6px;
-            right: 18px;
-            width: 10px;
-            height: 6px;
+            bottom: -5px;
+            right: 14px;
+            width: 8px;
+            height: 5px;
             background: inherit;
             clip-path: polygon(0 0, 100% 0, 100% 100%);
         }
@@ -1426,30 +1431,35 @@
             animation: none !important;
         }
 
-        /* 角色快速切换按钮 */
+        /* 角色快速切换按钮 (精悍 2 字符胶囊键) */
         .companion-switch-char-btn {
-            background: rgba(0, 240, 255, 0.12);
-            border: 1px solid rgba(0, 240, 255, 0.38);
+            background: rgba(0, 240, 255, 0.15);
+            border: 1px solid rgba(0, 240, 255, 0.45);
             color: var(--cyan);
-            font-size: 0.68rem;
-            padding: 1px 7px;
-            border-radius: 9px;
+            font-size: 0.62rem;
+            padding: 1px 6px;
+            border-radius: 8px;
             cursor: pointer;
             font-family: var(--font-mono);
-            letter-spacing: 0.04em;
+            letter-spacing: 0.02em;
             transition: all 0.2s ease;
             pointer-events: auto;
-            margin-left: 6px;
-            line-height: 1.4;
+            margin-left: 4px;
+            line-height: 1.35;
             display: inline-flex;
             align-items: center;
-            gap: 2px;
+            justify-content: center;
+            touch-action: manipulation !important;
+            -webkit-tap-highlight-color: transparent !important;
+            user-select: none;
+            -webkit-user-select: none;
         }
         .companion-switch-char-btn:hover {
-            background: rgba(0, 240, 255, 0.32);
+            background: var(--cyan);
+            color: #030712;
             border-color: var(--cyan);
-            box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
-            transform: scale(1.04);
+            box-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
+            transform: scale(1.06);
         }
 
         /* 上下呼吸轻盈悬浮 */
@@ -3064,18 +3074,19 @@
         <div class="companion-hint-pill" id="companion-hint-pill" title="可按住拖拽桌宠或点击互动">
             <span style="font-size:0.8rem;">✨</span>
             <span id="companion-hint-label">飞行雪绒 · 左右拖拽奔跑</span>
-            <button class="companion-switch-char-btn" id="companion-switch-btn-hint" title="切换角色（爱弥斯 / 若曦）">🔄 换若曦</button>
+            <button class="companion-switch-char-btn" id="companion-switch-btn-hint" title="切换角色（爱弥斯 / 若曦）">切换</button>
         </div>
-        <!-- 日系 Galgame 极客传讯气泡 (初始静默隐藏，点击挂件后才弹出) -->
-        <div class="companion-bubble" id="companion-bubble" style="display: none;">
+        <!-- 日系 Galgame 极客微型气泡 (初始静默隐藏，点击挂件后才弹出) -->
+        <div class="companion-bubble" id="companion-bubble" style="display: none;" title="轻点气泡可立即关闭">
             <div class="bubble-header">
-                <span class="bubble-dot"></span>
-                <span class="bubble-tag" id="companion-character-tag">STARTORCH // 飞行雪绒 · 爱弥斯</span>
-                <button class="companion-switch-char-btn" id="companion-switch-btn-bubble" title="切换角色（爱弥斯 / 若曦）">🔄 换若曦</button>
-                <span class="bubble-id">[ONLINE]</span>
+                <div style="display:inline-flex; align-items:center;">
+                    <span class="bubble-dot"></span>
+                    <span class="bubble-tag" id="companion-character-tag">爱弥斯</span>
+                </div>
+                <button class="companion-switch-char-btn" id="companion-switch-btn-bubble" title="切换角色（爱弥斯 / 若曦）">切换</button>
             </div>
             <div class="bubble-text" id="companion-bubble-text">
-                「排除一切不可能的，剩下的即使再不可思议，也是真相。」
+                「真相，永远只有一个。」
             </div>
         </div>
         <!-- 精灵表活体挂件舞台 (全屏自由拖拽·ChatGPT Pets v2 精灵表引擎) -->
@@ -4153,51 +4164,48 @@
             aemeath: {
                 id: 'aemeath',
                 name: '飞行雪绒 · 爱弥斯',
-                speakerTag: 'STARTORCH // 飞行雪绒 · 爱弥斯',
+                speakerTag: '爱弥斯',
                 hintLabel: '飞行雪绒 · 左右拖拽奔跑',
                 switchTarget: 'ruoxi',
-                switchBtnText: '🔄 换若曦',
+                switchBtnText: '切换',
                 preview: 'assets/aemeath_preview.png',
                 atlas: 'assets/aemeath_spritesheet_v2_transparent.webp',
                 atlasFallback: 'assets/aemeath_spritesheet_v2_transparent.png',
                 ringBg: 'radial-gradient(ellipse at center, rgba(0, 240, 255, 0.45) 0%, rgba(255, 117, 140, 0.25) 50%, transparent 75%)',
                 phrases: [
-                    "「排除一切不可能的，剩下的即使再不可思议，也是真相。」",
-                    "「The game is on.」",
-                    "「真相永远只有一个！」",
-                    "「生命因为有限所以宝贵，因为有限所以才要不懈努力。」",
-                    "「所谓的勇气，是支撑人挺身而出的正义之词，绝不能成为任性冲动的借口。」",
-                    "「不去做也行的事情就不做，非做不可的事情就尽快解决。」",
-                    "「这一切都是命运石之门的选择。El Psy Congroo！」",
-                    "「无论身处哪条世界线，你都不是孤身一人。」",
-                    "「正因为生来一无所有，所以才能成就任何可能！」",
-                    "「向盟约宣誓——来吧，游戏开始了！」",
-                    "「大道三千，道阻且长；唯有一步一个脚印，方可行稳致远。」",
-                    "「愿你走过的每一个地方，都能开出温柔的花。」",
-                    "「我们生而眺望，自星海尽处回响！」"
+                    "「真相，永远只有一个。」",
+                    "「来吧，游戏开始了！」",
+                    "「生命有限，全力以赴。」",
+                    "「El Psy Congroo！」",
+                    "「世界线彼端，有我陪你。」",
+                    "「生来一无所有，成就一切可能！」",
+                    "「大道三千，行稳致远。」",
+                    "「愿你走过之地，盛开繁花。」",
+                    "「自星海尽处回响！」",
+                    "「The game is on.」"
                 ]
             },
             ruoxi: {
                 id: 'ruoxi',
                 name: '白发灵狐 · 若曦',
-                speakerTag: 'SPIRITFOX // 白发灵狐 · 若曦',
+                speakerTag: '若曦',
                 hintLabel: '灵狐若曦 · 左右拖拽奔跑',
                 switchTarget: 'aemeath',
-                switchBtnText: '🔄 换雪绒',
+                switchBtnText: '切换',
                 preview: 'assets/ruoxi_preview.png',
                 atlas: 'assets/ruoxi_pets_v2_atlas.webp',
                 atlasFallback: 'assets/ruoxi_pets_v2_atlas.png',
                 sleepStrip: 'assets/ruoxi_sleep.png',
                 ringBg: 'radial-gradient(ellipse at center, rgba(255, 117, 140, 0.45) 0%, rgba(168, 85, 247, 0.25) 50%, transparent 75%)',
                 phrases: [
-                    "「主上，若曦一直守护在您的身边哦~」",
-                    "「灵狐的耳朵很灵敏的，任何细微的声音都瞒不过我！」",
-                    "「代码写累了吗？若曦帮您揉揉肩~」",
-                    "「今天也要元气满满地探索星辰大海呢！」",
-                    "「天地玄黄，宇宙洪荒；若曦伴您踏遍千山万水。」",
-                    "「大道三千，道阻且长；唯有一步一个脚印，方可行稳致远。」",
+                    "「主上，若曦一直在呢~」",
+                    "「灵狐的耳朵动了动~」",
+                    "「代码写累了吗？揉揉肩~」",
+                    "「今天也要元气满满哦！」",
+                    "「伴主上踏遍千山万水。」",
+                    "「一步一个脚印，行稳致远。」",
                     "「呼呼~主上的指尖好温暖！」",
-                    "「愿主上所遇皆良善，所行化坦途！」"
+                    "「愿主上所遇皆良善！」"
                 ]
             }
         };
@@ -4490,30 +4498,63 @@
             });
         }
 
-        // ================= 传讯台词气泡系统 =================
+        // ================= 传讯台词气泡系统 (微型灵动 · 动态时长 · 点击即消 · 滚动避让) =================
         let compPhraseIdx = 0;
         let bubbleTimer = null;
+
+        let bubbleScrollStartY = 0;
+        function dismissCompanionSpeech() {
+            if (!companionBubble || companionBubble.style.display === 'none') return;
+            if (bubbleTimer) {
+                clearTimeout(bubbleTimer);
+                bubbleTimer = null;
+            }
+            companionBubble.style.opacity = '0';
+            setTimeout(() => {
+                companionBubble.style.display = 'none';
+                if (companionHintPill) companionHintPill.classList.remove('hidden');
+            }, 220);
+        }
 
         function showCompanionSpeech() {
             if (!companionBubble) return;
             const curChar = PET_CHARACTERS[petEngine.currentCharId] || PET_CHARACTERS.aemeath;
             const phrases = curChar.phrases;
             compPhraseIdx = (compPhraseIdx + 1) % phrases.length;
-            if (companionBubbleText) companionBubbleText.textContent = phrases[compPhraseIdx];
+            const text = phrases[compPhraseIdx];
+            if (companionBubbleText) companionBubbleText.textContent = text;
 
+            bubbleScrollStartY = window.scrollY || window.pageYOffset || 0;
             if (companionHintPill) companionHintPill.classList.add('hidden');
             companionBubble.style.display = 'block';
             companionBubble.style.opacity = '1';
 
             if (bubbleTimer) clearTimeout(bubbleTimer);
+            // 动态时长公式：根据字数计算（2.2s ~ 3.5s），读完即隐，彻底消除 8s 大常驻遮挡
+            const duration = Math.min(3500, Math.max(2200, text.length * 120));
             bubbleTimer = setTimeout(() => {
-                companionBubble.style.opacity = '0';
-                setTimeout(() => {
-                    companionBubble.style.display = 'none';
-                    if (companionHintPill) companionHintPill.classList.remove('hidden');
-                }, 300);
-            }, 8000);
+                dismissCompanionSpeech();
+            }, duration);
         }
+
+        // 🌟 点击气泡任意非切换区域即刻消散 (Tap to Dismiss，防遮挡最直接手段)
+        if (companionBubble) {
+            companionBubble.addEventListener('click', (e) => {
+                if (e.target && e.target.closest && e.target.closest('#companion-switch-btn-bubble')) return;
+                e.stopPropagation();
+                dismissCompanionSpeech();
+            });
+        }
+
+        // 🌟 页面滚动避让协议：用户滑动屏幕翻阅正文（>20px）时气泡立即平滑隐退，将视觉空间 100% 归还给正文
+        window.addEventListener('scroll', () => {
+            if (companionBubble && companionBubble.style.display !== 'none') {
+                const curY = window.scrollY || window.pageYOffset || 0;
+                if (Math.abs(curY - bubbleScrollStartY) > 20) {
+                    dismissCompanionSpeech();
+                }
+            }
+        }, { passive: true });
 
         if (companionHintPill) {
             companionHintPill.addEventListener('click', (e) => {
@@ -4534,7 +4575,12 @@
         let lastMoveClientY = 0;
         let moveAnimDebounceTimer = null;
 
+        let lastPetClickTime = 0;
         function handlePetClick(e) {
+            const now = Date.now();
+            if (now - lastPetClickTime < 350) return;
+            lastPetClickTime = now;
+
             if (e && e.preventDefault) e.preventDefault();
             petEngine.setAnim('jumping');
             if (petStage) petStage.style.transform = 'scale(1.15) translateY(-8px)';
@@ -4643,6 +4689,11 @@
                 } else {
                     handlePetClick(e);
                 }
+            });
+
+            petStage.addEventListener('click', (e) => {
+                if (hasMovedPet) return;
+                handlePetClick(e);
             });
 
             petStage.addEventListener('pointercancel', () => {
@@ -5171,7 +5222,7 @@
             const compHintPill = document.getElementById('companion-hint-pill');
             if (compBubble && compBubbleText) {
                 if (compHintPill) compHintPill.classList.add('hidden');
-                compBubbleText.textContent = '「千本樱落，星海解构！世界的真相在星尘中绽放——」';
+                compBubbleText.textContent = '「千本樱落，星海共鸣！」';
                 compBubble.style.display = 'block';
                 compBubble.style.opacity = '1';
                 setTimeout(() => {
@@ -5179,8 +5230,8 @@
                     setTimeout(() => {
                         compBubble.style.display = 'none';
                         if (compHintPill) compHintPill.classList.remove('hidden');
-                    }, 300);
-                }, 8000);
+                    }, 250);
+                }, 2800);
             }
 
             // 7. 按钮流光状态反馈与冷却保护
