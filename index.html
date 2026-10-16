@@ -3002,6 +3002,553 @@
             font-weight: 700;
         }
 
+
+        /* ================= 街机时刻 // ARCADE TIME · 极客微游戏实验室 ================= */
+        .arcade-bento-card {
+            border-color: rgba(0, 240, 255, 0.25);
+            background: linear-gradient(145deg, rgba(10, 16, 28, 0.88) 0%, rgba(6, 10, 20, 0.95) 100%);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 0 24px rgba(0, 240, 255, 0.04);
+            position: relative;
+            padding: clamp(20px, 2.5vw, 28px);
+        }
+        .arcade-bento-card:hover {
+            border-color: rgba(0, 240, 255, 0.55);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7), 0 0 35px rgba(0, 240, 255, 0.18);
+        }
+        .arcade-card-inner {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            width: 100%;
+        }
+        .arcade-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+            padding-bottom: 12px;
+        }
+        .arcade-header-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .arcade-status-led {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #00ffaa;
+            box-shadow: 0 0 8px #00ffaa;
+            animation: pulse-glow 2s infinite ease-in-out;
+            flex-shrink: 0;
+        }
+        .arcade-kicker {
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--cyan);
+            letter-spacing: 0.1em;
+        }
+        .arcade-tech-badge {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.04);
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .arcade-header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .arcade-pill {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            color: #94a3b8;
+            background: rgba(0, 0, 0, 0.35);
+            padding: 3px 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .arcade-pill-cyan {
+            color: var(--cyan);
+            border-color: rgba(0, 240, 255, 0.3);
+            background: rgba(0, 240, 255, 0.08);
+        }
+        .arcade-stage-container {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 24px;
+            align-items: center;
+        }
+        @media (max-width: 860px) {
+            .arcade-stage-container {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+        .arcade-cyberdeck-display {
+            position: relative;
+            width: 100%;
+            height: 200px;
+        }
+        @media (max-width: 860px) {
+            .arcade-cyberdeck-display {
+                height: 150px;
+            }
+        }
+        .arcade-screen-bezel {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            background: #070b16;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 30px rgba(0, 240, 255, 0.08);
+            transition: border-color 0.3s ease;
+        }
+        .arcade-screen-grid-bg {
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(0, 240, 255, 0.15) 1px, transparent 1px);
+            background-size: 16px 16px;
+            opacity: 0.6;
+        }
+        .arcade-scanline {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, transparent 50%, rgba(0, 240, 255, 0.04) 51%);
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+        .arcade-game-glyph {
+            position: relative;
+            z-index: 2;
+            width: 68px;
+            height: 68px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--cyan);
+            filter: drop-shadow(0 0 16px currentColor);
+            transition: all 0.35s ease;
+        }
+        .arcade-game-glyph svg {
+            width: 100%;
+            height: 100%;
+        }
+        .arcade-screen-hud {
+            position: absolute;
+            bottom: 8px;
+            left: 10px;
+            right: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 3;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+        }
+        .arcade-game-id-badge {
+            color: var(--cyan);
+            background: rgba(0, 240, 255, 0.12);
+            padding: 2px 7px;
+            border-radius: 4px;
+            border: 1px solid rgba(0, 240, 255, 0.25);
+        }
+        .arcade-best-badge {
+            color: #fbbf24;
+            background: rgba(251, 191, 36, 0.12);
+            padding: 2px 7px;
+            border-radius: 4px;
+            border: 1px solid rgba(251, 191, 36, 0.25);
+        }
+        .arcade-meta-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .arcade-title-group {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .arcade-game-title {
+            font-size: clamp(1.2rem, 2vw, 1.5rem);
+            font-weight: 700;
+            color: #fff;
+            margin: 0;
+            letter-spacing: 0.04em;
+        }
+        .arcade-game-subtitle {
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            color: var(--cyan);
+            opacity: 0.92;
+        }
+        .arcade-game-desc {
+            font-size: 0.88rem;
+            line-height: 1.6;
+            color: #94a3b8;
+            margin: 0;
+            min-height: 42px;
+        }
+        .arcade-features-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .arcade-feature-pill {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: #cbd5e1;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 3px 9px;
+            border-radius: 6px;
+        }
+        .arcade-action-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 4px;
+        }
+        .arcade-launch-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.22) 0%, rgba(255, 0, 127, 0.22) 100%);
+            border: 1px solid var(--cyan);
+            border-radius: 8px;
+            padding: 10px 22px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 0 16px rgba(0, 240, 255, 0.25);
+            outline: none;
+        }
+        .arcade-launch-btn:hover {
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.38) 0%, rgba(255, 0, 127, 0.38) 100%);
+            box-shadow: 0 0 28px rgba(0, 240, 255, 0.55);
+            transform: translateY(-2px);
+        }
+        .arcade-launch-btn:active {
+            transform: translateY(0);
+        }
+        .arcade-launch-icon {
+            display: inline-flex;
+            align-items: center;
+            color: var(--cyan);
+        }
+        .arcade-launch-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+        .arcade-launch-text {
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 0.06em;
+        }
+        .arcade-launch-subtext {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--cyan);
+            opacity: 0.85;
+        }
+        .arcade-nav-arrows {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .arcade-arrow-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #cbd5e1;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.8rem;
+        }
+        .arcade-arrow-btn:hover {
+            background: rgba(0, 240, 255, 0.18);
+            border-color: var(--cyan);
+            color: #fff;
+        }
+        .arcade-nav-counter {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: #94a3b8;
+            min-width: 42px;
+            text-align: center;
+        }
+        .arcade-dock-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
+            padding-top: 14px;
+        }
+        .arcade-dock-track {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+        .arcade-dock-pill {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 6px;
+            padding: 5px 11px;
+            font-family: var(--font-mono);
+            font-size: 0.74rem;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            user-select: none;
+        }
+        .arcade-dock-pill:hover {
+            border-color: rgba(0, 240, 255, 0.4);
+            color: #fff;
+            background: rgba(0, 240, 255, 0.06);
+        }
+        .arcade-dock-pill.active {
+            background: rgba(0, 240, 255, 0.15);
+            border-color: var(--cyan);
+            color: #fff;
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.25);
+        }
+        .arcade-timer-bar {
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+        .arcade-timer-progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--cyan), var(--sakura));
+            transition: width 0.1s linear;
+        }
+
+        /* ================= 赛博全屏街机模态视窗 (Game Modal) ================= */
+        body.arcade-active {
+            overflow: hidden !important;
+            touch-action: none;
+        }
+        .arcade-modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 100000;
+            background: rgba(4, 7, 16, 0.94);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .arcade-modal-backdrop.active {
+            display: flex;
+            opacity: 1;
+        }
+        .arcade-modal-container {
+            width: min(92vw, 540px);
+            height: min(96vh, 920px);
+            background: #070a13;
+            border: 1px solid rgba(0, 240, 255, 0.4);
+            border-radius: 12px;
+            box-shadow: 0 0 50px rgba(0, 240, 255, 0.25), 0 25px 80px rgba(0, 0, 0, 0.95);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+        @media (max-width: 768px) {
+            .arcade-modal-container {
+                width: 100vw !important;
+                height: 100dvh !important;
+                max-height: 100dvh !important;
+                border: none !important;
+                border-radius: 0 !important;
+                margin: 0 !important;
+            }
+            .arcade-modal-hud {
+            height: 38px;
+            background: #0d1222;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+            z-index: 10;
+            flex-shrink: 0;
+            user-select: none;
+            gap: 10px;
+        }
+        .arcade-hud-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow: hidden;
+            white-space: nowrap;
+            min-width: 0;
+            flex-shrink: 1;
+        }
+        .arcade-hud-led {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #00ffaa;
+            box-shadow: 0 0 8px #00ffaa;
+            flex-shrink: 0;
+            animation: pulse-glow 2s infinite ease-in-out;
+        }
+        .arcade-hud-title {
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #fff;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .arcade-hud-tag {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--cyan);
+            background: rgba(0, 240, 255, 0.1);
+            padding: 1px 6px;
+            border-radius: 3px;
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            white-space: nowrap;
+        }
+        .arcade-hud-center {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .arcade-score-pill {
+            color: var(--cyan);
+            background: rgba(0, 240, 255, 0.1);
+            padding: 2px 7px;
+            border-radius: 4px;
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+        .arcade-best-pill {
+            color: #fbbf24;
+            background: rgba(251, 191, 36, 0.1);
+            padding: 2px 7px;
+            border-radius: 4px;
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+        .arcade-hud-right {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+        .arcade-hud-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 4px;
+            color: #e2e8f0;
+            height: 26px;
+            padding: 0 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .arcade-hud-btn:hover {
+            background: rgba(0, 240, 255, 0.2);
+            border-color: var(--cyan);
+            color: #fff;
+        }
+        .arcade-hud-btn svg {
+            width: 13px;
+            height: 13px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+        .arcade-hud-close {
+            background: rgba(255, 51, 102, 0.12);
+            border-color: rgba(255, 51, 102, 0.35);
+            color: #ff6688;
+        }
+        .arcade-hud-close:hover {
+            background: rgba(255, 51, 102, 0.25);
+            border-color: #ff3366;
+            color: #fff;
+            box-shadow: 0 0 10px rgba(255, 51, 102, 0.4);
+        }
+        @media (max-width: 580px) {
+            .arcade-hud-center {
+                display: none !important;
+            }
+            .arcade-hud-tag {
+                display: none !important;
+            }
+            .arcade-hud-btn .hud-btn-txt {
+                display: none !important;
+            }
+            .arcade-hud-btn.arcade-hud-close .hud-btn-txt {
+                display: inline !important;
+            }
+        }
+        .arcade-iframe-wrapper {
+            flex: 1;
+            width: 100%;
+            height: calc(100% - 38px);
+            position: relative;
+            background: #070a13;
+        }
+        #arcade-game-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
 </style>
 </head>
 <body>
@@ -3524,6 +4071,78 @@
                             <span class="card-meta-text">Mathematics &amp; Theory</span>
                         </div>
                     </article>
+
+                    <!-- 项目 7 / 街机时刻: ARCADE TIME (大卡片 Span 12) -->
+                    <article class="bento-card card-span-12 interactive-card arcade-bento-card" id="arcade-bento-card">
+                        <div class="arcade-card-inner">
+                            <!-- 头部状态栏 -->
+                            <div class="arcade-header">
+                                <div class="arcade-header-left">
+                                    <span class="arcade-status-led"></span>
+                                    <span class="arcade-kicker">ARCADE TIME // 街机时刻 · 极客微游戏实验室</span>
+                                    <span class="arcade-tech-badge">CANVAS 2D × PROCEDURAL AUDIO</span>
+                                </div>
+                                <div class="arcade-header-right">
+                                    <span class="arcade-pill">ZERO RUNTIME LOAD</span>
+                                    <span class="arcade-pill arcade-pill-cyan">8 GAMES READY</span>
+                                </div>
+                            </div>
+
+                            <!-- 主展示舞台 (画廊轮播切换) -->
+                            <div class="arcade-stage-container">
+                                <!-- 左侧：赛博掌机 / 全息能量视窗 -->
+                                <div class="arcade-cyberdeck-display">
+                                    <div class="arcade-screen-bezel" id="arcade-screen-bezel">
+                                        <div class="arcade-screen-grid-bg"></div>
+                                        <div class="arcade-scanline"></div>
+                                        <div class="arcade-game-glyph" id="arcade-glyph"></div>
+                                        <div class="arcade-screen-hud">
+                                            <span class="arcade-game-id-badge" id="arcade-id-badge">GAME // 01</span>
+                                            <span class="arcade-best-badge" id="arcade-best-badge">🏆 BEST: <span id="arcade-best-val">0</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 右侧：游戏元数据、标签与一键全屏启动 -->
+                                <div class="arcade-meta-panel">
+                                    <div class="arcade-meta-top">
+                                        <div class="arcade-title-group">
+                                            <h3 class="arcade-game-title" id="arcade-game-title">拉海洛方块</h3>
+                                            <div class="arcade-game-subtitle" id="arcade-game-sub">Lahairo Blocks · 8×8 经典放置消除</div>
+                                        </div>
+                                        <p class="arcade-game-desc" id="arcade-game-desc">
+                                            8×8 网格极简放置爆破。预判下发方块形状，完成整行或整列连环爆破，触发超绝多重连击！
+                                        </p>
+                                    </div>
+
+                                    <div class="arcade-features-row" id="arcade-features-row"></div>
+
+                                    <div class="arcade-action-bar">
+                                        <button class="arcade-launch-btn" id="arcade-launch-btn" title="启动当前街机小游戏，享受纯粹沉浸体验">
+                                            <span class="arcade-launch-icon">
+                                                <svg viewBox="0 0 24 24" class="cyber-svg-icon" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                            </span>
+                                            <span class="arcade-launch-text">启动街机 · 全屏畅玩</span>
+                                            <span class="arcade-launch-subtext">[ ⚡ LAUNCH ARCADE ]</span>
+                                        </button>
+                                        <div class="arcade-nav-arrows">
+                                            <button class="arcade-arrow-btn" id="arcade-prev-btn" title="上一个游戏">◀</button>
+                                            <span class="arcade-nav-counter" id="arcade-nav-counter">1 / 8</span>
+                                            <button class="arcade-arrow-btn" id="arcade-next-btn" title="下一个游戏">▶</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 底部 8 款游戏快速切换胶囊坞 (带轮播倒计时流光底线) -->
+                            <div class="arcade-dock-container">
+                                <div class="arcade-dock-track" id="arcade-dock-track"></div>
+                                <div class="arcade-timer-bar">
+                                    <div class="arcade-timer-progress" id="arcade-timer-progress"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
                 </div>
             </section>
 
@@ -3932,6 +4551,45 @@
             <div class="terminal-input-row">
                 <span>sherlock@core:~$</span>
                 <input type="text" class="terminal-input" id="term-input" autocomplete="off" spellcheck="false" placeholder="type 'help', 'sakura', 'anime'...">
+            </div>
+        </div>
+    </div>
+
+    
+
+    <!-- ================= 赛博机甲微游戏全屏沉浸视窗 (Arcade Game Modal) ================= -->
+    <div class="arcade-modal-backdrop" id="arcade-modal-backdrop" style="display: none;">
+        <div class="arcade-modal-container" id="arcade-modal-container">
+            <!-- 极致压缩的超窄机甲 HUD 控制条 (仅 38px 高度，保证 98%+ 超大屏幕空间给游戏) -->
+            <div class="arcade-modal-hud">
+                <div class="arcade-hud-left">
+                    <span class="arcade-hud-led"></span>
+                    <span class="arcade-hud-title" id="arcade-modal-title">拉海洛方块</span>
+                    <span class="arcade-hud-tag" id="arcade-modal-tag">ARCADE // RUNNING</span>
+                </div>
+                <div class="arcade-hud-center">
+                    <span class="arcade-score-pill">SCORE: <strong id="arcade-modal-score">0</strong></span>
+                    <span class="arcade-best-pill">BEST: <strong id="arcade-modal-best">0</strong></span>
+                </div>
+                <div class="arcade-hud-right">
+                    <button class="arcade-hud-btn" id="arcade-hud-restart" title="重新开始游戏">
+                        <svg viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                        <span class="hud-btn-txt">重开</span>
+                    </button>
+                    <button class="arcade-hud-btn" id="arcade-hud-mute" title="游戏静音切换">
+                        <svg viewBox="0 0 24 24" id="arcade-mute-svg"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                        <span class="hud-btn-txt" id="arcade-mute-txt">声音</span>
+                    </button>
+                    <button class="arcade-hud-btn arcade-hud-close" id="arcade-hud-close" title="退出街机模式并返回网页 (ESC)">
+                        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        <span class="hud-btn-txt">退出</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 游戏 Iframe 舞台 (按需装载，关闭即销毁) -->
+            <div class="arcade-iframe-wrapper">
+                <iframe id="arcade-game-iframe" src="about:blank" allow="autoplay; accelerometer; gyroscope" allowtransparency="true" frameborder="0"></iframe>
             </div>
         </div>
     </div>
@@ -4771,6 +5429,12 @@
         }
 
         const terminalCommands = {
+            arcade: () => {
+                appendTermLine('[ARCADE] Launching Arcade Time station...', 'cyan');
+                const card = document.getElementById('arcade-bento-card');
+                if (card) card.scrollIntoView({ behavior: 'smooth' });
+                if (typeof arcadeGameManager !== 'undefined') arcadeGameManager.launchGame(arcadeGameManager.currentIndex);
+            },
             help: () => {
                 appendTermLine('Available commands:', 'gold');
                 appendTermLine('  anime        - Show anime character matrix & Live2D pipeline');
@@ -5358,6 +6022,7 @@
             const termEl = document.getElementById('terminal-modal');
             if (termEl && termEl.classList.contains('open')) return;
 
+            if (document.body.classList.contains('arcade-active')) return;
             if (['1', '2', '3', '4', '5'].includes(e.key)) {
                 e.preventDefault();
                 const m = parseInt(e.key, 10) - 1;
@@ -6631,11 +7296,485 @@
 
         // 空格键快捷播放/暂停
         window.addEventListener('keydown', (e) => {
+            if (document.body.classList.contains('arcade-active')) return;
             if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
                 e.preventDefault();
                 togglePlayPause();
             }
         });
+    
+        // ================= 街机时刻 // ARCADE TIME · 极客微游戏管理与通信核心 =================
+        const ARCADE_GAMES = [
+            {
+                id: 'lahairo-blocks',
+                title: '拉海洛方块',
+                englishTitle: 'Lahairo Blocks',
+                subtitle: '8×8 经典放置消除 · 空间几何规划',
+                tags: ['放置消除', '空间规划', '无尽连击'],
+                desc: '8×8 网格极简放置爆破。预判下发方块形状，完成整行或整列连环爆破，触发超绝多重连击！',
+                features: ['8×8 几何网格', '三选一方块池', '连环清除光效', '触感震动反馈'],
+                path: 'games/01-拉海洛方块01/index.html',
+                color: '#00f0ff',
+                iconSvg: '<svg viewBox="0 0 24 24" class="cyber-svg-icon" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 8.5 12 15 22 8.5 12 2"/><polygon points="2 15.5 12 22 22 15.5"/></svg>'
+            },
+            {
+                id: 'lahairo-blocks-02',
+                title: '方块降落 02',
+                englishTitle: 'Lahairo Falling Blocks',
+                subtitle: '10×20 经典重力下落 · 暂存与硬降落',
+                tags: ['重力下落', '落点虚影', '极速暂存'],
+                desc: '工业级重力方块物理下落。支持旋转变换、即时落点虚影投射、暂存仓周转与一键硬降落直达底端。',
+                features: ['经典 7 种砖型', '落点投影虚影', '暂存换块机制', '阶梯加速重力'],
+                path: 'games/01-拉海洛方块02/index.html',
+                color: '#ff007f',
+                iconSvg: '<svg viewBox="0 0 24 24" class="cyber-svg-icon" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>'
+            },
+            {
+                id: 'hex-frvr',
+                title: '六边形消除',
+                englishTitle: 'Hex FRVR',
+                subtitle: '61 格蜂巢全维拓扑 · 三向射线爆破',
+                tags: ['蜂巢网格', '三向消除', '策略脑力'],
+                desc: '经典 61 格正六边形拓扑网格。支持沿 0°、60°、120° 三个轴向同时贯穿消除，空间策略博弈乐趣倍增。',
+                features: ['61 格正六边形', '3 向全轴线消除', '蜂巢物理触感', '无限脑力博弈'],
+                path: 'games/02-六边形消除/index.html',
+                color: '#00ffaa',
+                iconSvg: '<svg viewBox="0 0 24 24" class="cyber-svg-icon" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 21 7.2 21 17.8 12 23 3 17.8 3 7.2 12 2"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>'
+            },
+            {
+                id: 'resonance-ball',
+                title: '共鸣弹球',
+                englishTitle: 'Resonance Ball',
+                subtitle: '多球 CCD 物理碰撞 · 反弹轨迹预判',
+                tags: ['物理碰撞', '预判轨迹', '残局加速'],
+                desc: 'CCD 连续碰撞检测物理弹球。高亮瞄准预判射线，砖块多段耐久碎裂，残局自动进入高速聚焦模式。',
+                features: ['连续碰撞 CCD', '双重反射瞄准线', '残局 3× 极速推进', '清脆 Web 音阶'],
+                path: 'games/03-共鸣弹球/index.html',
+                color: '#ffaa00',
+                iconSvg: '<svg viewBox="0 0 24 24" class="cyber-svg-icon" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M4 4 L9 9 M20 4 L15 9"/></svg>'
+            },
+            {
+                id: 'flow-link',
+                title: '点点引光',
+                englishTitle: 'Flow Link',
+                subtitle: '流光管道同色连线 · 8 大必解关卡',
+                tags: ['色彩连线', '全盘覆盖', '8大必解关'],
+                desc: '霓虹流光管道连线解谜。将同色端点以不交叉路线一一连通，并使流光管网 100% 覆盖整个棋盘！',
+                features: ['8 大精选关卡', '全盘无死角覆盖', '流光动态传导', '三星通关评级'],
+                path: 'games/04-点点引光/index.html',
+                color: '#b347ff',
+                iconSvg: '<svg viewBox="0 0 24 24" class="cyber-svg-icon" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3" fill="currentColor"/><circle cx="18" cy="18" r="3" fill="currentColor"/><path d="M6 9 v6 a3 3 0 0 0 3 3 h6"/></svg>'
+            },
+            {
+                id: 'chroma-paint',
+                title: '溢彩画',
+                englishTitle: 'Chroma Paint',
+                subtitle: 'BFS 拓扑水墨同化 · 步数极限挑战',
+                tags: ['色彩浸染', 'BFS扩展', '步数极限'],
+                desc: '水墨拓扑漫延同化。从左上角基点出发，每次选择目标色相引发涟漪同化，在步数上限内统一全幅画卷。',
+                features: ['BFS 涟漪同化', '10 大数学必过关', '极简色彩盘控制', '单步撤销栈支持'],
+                path: 'games/05-溢彩画/index.html',
+                color: '#ff3366',
+                iconSvg: '<svg viewBox="0 0 24 24" class="cyber-svg-icon" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/><circle cx="12" cy="14" r="3" fill="currentColor"/></svg>'
+            },
+            {
+                id: 'stack-tower',
+                title: '堆叠高塔',
+                englishTitle: 'Stack Tower',
+                subtitle: '2.5D 切片精准对齐 · 连击彩虹琶音',
+                tags: ['切片对齐', '连击琶音', '动量节奏'],
+                desc: '极简 2.5D 积木切片冲天。多余边缘被锋利切割坠落，连续完美对齐触发彩虹渐变色相与多重清亮琶音！',
+                features: ['2.5D 几何切片', '完美对齐恢复机制', '彩虹色相连续渐变', '音阶连击琶音'],
+                path: 'games/06-堆叠高塔/index.html',
+                color: '#00d2ff',
+                iconSvg: '<svg viewBox="0 0 24 24" class="cyber-svg-icon" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="15" width="14" height="4"/><rect x="7" y="10" width="10" height="4"/><rect x="9" y="5" width="6" height="4"/></svg>'
+            },
+            {
+                id: 'laser-optics',
+                title: '镜光引路',
+                englishTitle: 'Laser Optics',
+                subtitle: '光学反射与棱镜分光 · 严谨几何解谜',
+                tags: ['激光折射', '棱镜分光', '几何光学'],
+                desc: '光学物理射线解谜。旋转平面反射镜并布置分光棱镜，引导折射激光穿透障碍，逐一点亮所有能源接收器！',
+                features: ['严格几何反射', '分光棱镜分离', '8 大数学唯一解', '激光充能特效'],
+                path: 'games/07-镜光引路/index.html',
+                color: '#ffcc00',
+                iconSvg: '<svg viewBox="0 0 24 24" class="cyber-svg-icon" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 3 2 21 22 21 12 3"/><line x1="2" y1="12" x2="22" y2="12" stroke-dasharray="2,2"/></svg>'
+            }
+        ];
+
+        class ArcadeGameManager {
+            constructor() {
+                this.currentIndex = 0;
+                this.activeGame = null;
+                this.isModalOpen = false;
+                this.isGameMuted = false;
+                this.wasBgmPlayingBeforeGame = false;
+                this.autoTimer = null;
+                this.timerProgressVal = 0;
+                this.isHoveredOrTouch = false;
+
+                // DOM 缓存
+                this.modal = document.getElementById('arcade-modal-backdrop');
+                this.iframe = document.getElementById('arcade-game-iframe');
+                this.modalTitle = document.getElementById('arcade-modal-title');
+                this.modalScore = document.getElementById('arcade-modal-score');
+                this.modalBest = document.getElementById('arcade-modal-best');
+                this.muteTxt = document.getElementById('arcade-mute-txt');
+                this.muteSvg = document.getElementById('arcade-mute-svg');
+
+                this.cardTitle = document.getElementById('arcade-game-title');
+                this.cardSubtitle = document.getElementById('arcade-game-sub');
+                this.cardDesc = document.getElementById('arcade-game-desc');
+                this.cardFeatures = document.getElementById('arcade-features-row');
+                this.cardGlyph = document.getElementById('arcade-glyph');
+                this.cardIdBadge = document.getElementById('arcade-id-badge');
+                this.cardBestVal = document.getElementById('arcade-best-val');
+                this.navCounter = document.getElementById('arcade-nav-counter');
+                this.dockTrack = document.getElementById('arcade-dock-track');
+                this.timerProgress = document.getElementById('arcade-timer-progress');
+                this.screenBezel = document.getElementById('arcade-screen-bezel');
+
+                this.initBentoCard();
+                this.initUniversalBridgeListener();
+                this.initModalControls();
+                this.startAutoCarousel();
+            }
+
+            getHighScore(gameId) {
+                try {
+                    const val = localStorage.getItem(gameId + '_high_score');
+                    return val ? parseInt(JSON.parse(val), 10) || parseInt(val, 10) || 0 : 0;
+                } catch(e) {
+                    return 0;
+                }
+            }
+
+            setHighScore(gameId, score) {
+                try {
+                    const best = this.getHighScore(gameId);
+                    if (score > best) {
+                        localStorage.setItem(gameId + '_high_score', JSON.stringify(score));
+                    }
+                } catch(e) {}
+            }
+
+            initBentoCard() {
+                if (!this.dockTrack) return;
+                this.dockTrack.innerHTML = '';
+                ARCADE_GAMES.forEach((g, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'arcade-dock-pill' + (idx === 0 ? ' active' : '');
+                    btn.innerHTML = '<span>0' + (idx + 1) + '</span> <span>' + g.title + '</span>';
+                    btn.addEventListener('click', () => {
+                        this.switchGame(idx);
+                        this.resetCarouselTimer();
+                    });
+                    this.dockTrack.appendChild(btn);
+                });
+
+                const prevBtn = document.getElementById('arcade-prev-btn');
+                const nextBtn = document.getElementById('arcade-next-btn');
+                if (prevBtn) {
+                    prevBtn.addEventListener('click', () => {
+                        this.switchGame((this.currentIndex - 1 + ARCADE_GAMES.length) % ARCADE_GAMES.length);
+                        this.resetCarouselTimer();
+                    });
+                }
+                if (nextBtn) {
+                    nextBtn.addEventListener('click', () => {
+                        this.switchGame((this.currentIndex + 1) % ARCADE_GAMES.length);
+                        this.resetCarouselTimer();
+                    });
+                }
+
+                const launchBtn = document.getElementById('arcade-launch-btn');
+                if (launchBtn) {
+                    launchBtn.addEventListener('click', () => {
+                        this.launchGame(this.currentIndex);
+                    });
+                }
+
+                const bentoCard = document.getElementById('arcade-bento-card');
+                if (bentoCard) {
+                    bentoCard.addEventListener('mouseenter', () => { this.isHoveredOrTouch = true; });
+                    bentoCard.addEventListener('mouseleave', () => { this.isHoveredOrTouch = false; });
+                    bentoCard.addEventListener('touchstart', () => { this.isHoveredOrTouch = true; }, { passive: true });
+                    bentoCard.addEventListener('touchend', () => {
+                        setTimeout(() => { this.isHoveredOrTouch = false; }, 2000);
+                    }, { passive: true });
+                }
+
+                this.renderCurrentGame();
+            }
+
+            switchGame(index) {
+                this.currentIndex = index;
+                this.renderCurrentGame();
+            }
+
+            renderCurrentGame() {
+                const game = ARCADE_GAMES[this.currentIndex];
+                if (!game) return;
+
+                if (this.cardTitle) this.cardTitle.textContent = game.title;
+                if (this.cardSubtitle) this.cardSubtitle.textContent = game.subtitle;
+                if (this.cardDesc) this.cardDesc.textContent = game.desc;
+                if (this.cardIdBadge) this.cardIdBadge.textContent = 'GAME // 0' + (this.currentIndex + 1);
+                if (this.navCounter) this.navCounter.textContent = (this.currentIndex + 1) + ' / ' + ARCADE_GAMES.length;
+
+                const best = this.getHighScore(game.id);
+                if (this.cardBestVal) this.cardBestVal.textContent = best;
+
+                if (this.cardGlyph) {
+                    this.cardGlyph.innerHTML = game.iconSvg;
+                    this.cardGlyph.style.color = game.color;
+                }
+                if (this.screenBezel) {
+                    this.screenBezel.style.borderColor = game.color;
+                }
+
+                if (this.cardFeatures) {
+                    this.cardFeatures.innerHTML = '';
+                    game.features.forEach(f => {
+                        const span = document.createElement('span');
+                        span.className = 'arcade-feature-pill';
+                        span.textContent = f;
+                        this.cardFeatures.appendChild(span);
+                    });
+                }
+
+                if (this.dockTrack) {
+                    const pills = this.dockTrack.querySelectorAll('.arcade-dock-pill');
+                    pills.forEach((p, idx) => {
+                        if (idx === this.currentIndex) p.classList.add('active');
+                        else p.classList.remove('active');
+                    });
+                }
+            }
+
+            startAutoCarousel() {
+                if (this.autoTimer) clearInterval(this.autoTimer);
+                const stepMs = 50;
+                const totalMs = 4500;
+                this.autoTimer = setInterval(() => {
+                    if (this.isModalOpen || this.isHoveredOrTouch) return;
+                    this.timerProgressVal += (stepMs / totalMs) * 100;
+                    if (this.timerProgressVal >= 100) {
+                        this.timerProgressVal = 0;
+                        this.switchGame((this.currentIndex + 1) % ARCADE_GAMES.length);
+                    }
+                    if (this.timerProgress) {
+                        this.timerProgress.style.width = this.timerProgressVal + '%';
+                    }
+                }, stepMs);
+            }
+
+            resetCarouselTimer() {
+                this.timerProgressVal = 0;
+                if (this.timerProgress) {
+                    this.timerProgress.style.width = '0%';
+                }
+            }
+
+            initModalControls() {
+                const restartBtn = document.getElementById('arcade-hud-restart');
+                const muteBtn = document.getElementById('arcade-hud-mute');
+                const closeBtn = document.getElementById('arcade-hud-close');
+
+                if (restartBtn) restartBtn.addEventListener('click', () => this.restartGame());
+                if (muteBtn) muteBtn.addEventListener('click', () => this.toggleMute());
+                if (closeBtn) closeBtn.addEventListener('click', () => this.closeGame());
+
+                if (this.modal) {
+                    this.modal.addEventListener('click', (e) => {
+                        if (e.target === this.modal) this.closeGame();
+                    });
+                }
+
+                window.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && this.isModalOpen) {
+                        this.closeGame();
+                    }
+                });
+            }
+
+            launchGame(index) {
+                const game = ARCADE_GAMES[index];
+                if (!game) return;
+
+                this.activeGame = game;
+                this.isModalOpen = true;
+
+                // 1. 音频接力：暂停网页背景音乐并记录状态
+                if (typeof bgmAudio !== 'undefined' && bgmAudio && !bgmAudio.paused) {
+                    this.wasBgmPlayingBeforeGame = true;
+                    try { bgmAudio.pause(); } catch(e) {}
+                    if (typeof isBgmPlaying !== 'undefined') isBgmPlaying = false;
+                    if (typeof syncMusicUI === 'function') syncMusicUI();
+                } else {
+                    this.wasBgmPlayingBeforeGame = false;
+                }
+
+                // 2. 装载游戏 HUD
+                if (this.modalTitle) this.modalTitle.textContent = game.title;
+                if (this.modalScore) this.modalScore.textContent = '0';
+                const best = this.getHighScore(game.id);
+                if (this.modalBest) this.modalBest.textContent = best;
+
+                this.isGameMuted = false;
+                if (this.muteTxt) this.muteTxt.textContent = '声音';
+                if (this.muteSvg) {
+                    this.muteSvg.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>';
+                }
+
+                // 3. 挂载 Iframe 路径并激活显示
+                if (this.iframe) {
+                    this.iframe.src = game.path;
+                }
+                if (this.modal) {
+                    this.modal.style.display = 'flex';
+                    void this.modal.offsetWidth;
+                    this.modal.classList.add('active');
+                }
+                document.body.classList.add('arcade-active');
+            }
+
+            closeGame() {
+                if (!this.isModalOpen) return;
+                this.isModalOpen = false;
+
+                // 1. 发送暂停指令并置空 iframe (彻底释放 Web Audio 与 RAF 性能)
+                if (this.iframe && this.iframe.contentWindow) {
+                    try {
+                        this.iframe.contentWindow.postMessage({
+                            type: 'GAME_CONTROL',
+                            action: 'PAUSE'
+                        }, '*');
+                    } catch(e) {}
+                    this.iframe.src = 'about:blank';
+                }
+
+                // 2. 隐藏模态视窗
+                if (this.modal) {
+                    this.modal.classList.remove('active');
+                    setTimeout(() => {
+                        this.modal.style.display = 'none';
+                        document.body.classList.remove('arcade-active');
+                    }, 220);
+                }
+
+                // 3. 音频接力：无缝恢复网页背景音乐
+                if (this.wasBgmPlayingBeforeGame && typeof safeExecutePlay === 'function') {
+                    safeExecutePlay();
+                    this.wasBgmPlayingBeforeGame = false;
+                }
+
+                // 刷新卡片分数
+                if (this.activeGame) {
+                    const best = this.getHighScore(this.activeGame.id);
+                    if (this.cardBestVal) this.cardBestVal.textContent = best;
+                }
+                this.activeGame = null;
+            }
+
+            restartGame() {
+                if (this.iframe && this.iframe.contentWindow) {
+                    this.iframe.contentWindow.postMessage({
+                        type: 'GAME_CONTROL',
+                        action: 'RESTART'
+                    }, '*');
+                }
+            }
+
+            toggleMute() {
+                this.isGameMuted = !this.isGameMuted;
+                if (this.iframe && this.iframe.contentWindow) {
+                    this.iframe.contentWindow.postMessage({
+                        type: 'GAME_CONTROL',
+                        action: 'SET_MUTE',
+                        payload: { muted: this.isGameMuted }
+                    }, '*');
+                }
+                if (this.muteTxt) this.muteTxt.textContent = this.isGameMuted ? '静音' : '声音';
+                if (this.muteSvg) {
+                    this.muteSvg.innerHTML = this.isGameMuted
+                        ? '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>'
+                        : '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>';
+                }
+            }
+
+            triggerCheer(text, anim = 'jumping') {
+                if (typeof petEngine !== 'undefined' && petEngine) {
+                    petEngine.setAnim(anim);
+                }
+                const bubble = document.getElementById('companion-bubble');
+                const bubbleText = document.getElementById('companion-bubble-text');
+                const hintPill = document.getElementById('companion-hint-pill');
+                if (bubble && bubbleText) {
+                    bubbleText.textContent = text;
+                    if (hintPill) hintPill.classList.add('hidden');
+                    bubble.style.display = 'block';
+                    bubble.style.opacity = '1';
+                    if (typeof bubbleTimer !== 'undefined' && bubbleTimer) clearTimeout(bubbleTimer);
+                    setTimeout(() => {
+                        if (typeof dismissCompanionSpeech === 'function') {
+                            dismissCompanionSpeech();
+                        }
+                    }, 2800);
+                }
+            }
+
+            initUniversalBridgeListener() {
+                window.addEventListener('message', (event) => {
+                    const data = event.data;
+                    if (!data || data.type !== 'GAME_EVENT') return;
+
+                    const action = data.action || data.event;
+                    const payload = data.payload || {};
+                    const gameId = data.gameId || (this.activeGame ? this.activeGame.id : '');
+
+                    switch (action) {
+                        case 'SCORE_UPDATE':
+                        case 'ON_SCORE_UPDATE': {
+                            const curScore = payload.current !== undefined ? payload.current : (payload.currentScore || 0);
+                            const bestScore = payload.best !== undefined ? payload.best : (payload.highScore || 0);
+                            if (this.modalScore) this.modalScore.textContent = curScore;
+                            if (this.modalBest) this.modalBest.textContent = bestScore;
+                            if (gameId) this.setHighScore(gameId, bestScore);
+                            break;
+                        }
+                        case 'ON_COMBO_TRIGGER': {
+                            const count = payload.comboCount || 2;
+                            if (count >= 2) {
+                                this.triggerCheer('🔥 连击爆发！Combo ×' + count + '！', 'jumping');
+                            }
+                            break;
+                        }
+                        case 'ON_LEVEL_COMPLETE':
+                        case 'LEVEL_COMPLETE': {
+                            const lvl = payload.level || (payload.levelIndex !== undefined ? payload.levelIndex + 1 : 1);
+                            this.triggerCheer('✨ 关卡突破！顺利通过第 ' + lvl + ' 关！', 'jumping');
+                            break;
+                        }
+                        case 'ON_GAME_OVER':
+                        case 'GAME_OVER': {
+                            const finalScore = payload.score !== undefined ? payload.score : (payload.current || 0);
+                            const prevBest = this.getHighScore(gameId);
+                            if (finalScore > prevBest) {
+                                this.setHighScore(gameId, finalScore);
+                                if (this.modalBest) this.modalBest.textContent = finalScore;
+                                this.triggerCheer('🏆 刷新最高纪录！最终得分：' + finalScore + '！', 'jumping');
+                            }
+                            break;
+                        }
+                    }
+                });
+            }
+        }
+
+        const arcadeGameManager = new ArcadeGameManager();
+
     </script>
 </body>
 </html>
