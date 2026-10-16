@@ -842,45 +842,40 @@
 
             .hero-section {
                 min-height: auto !important;
-                padding-top: 68px !important;
+                padding-top: 96px !important; /* 彻底高于固定顶部导航栏 (75px)，绝不遮挡顶部 5 大模式坞 */
                 padding-bottom: 30px !important;
                 justify-content: flex-start !important;
             }
 
             /* 顶部 3D 模式切换坞移动端自适应 (5模式全景呈现 · 零遮挡触控) */
             .top-visual-dock-wrapper {
-                margin: 6px 0 14px 0 !important;
+                margin: 4px 0 16px 0 !important;
                 position: relative !important;
                 width: 100% !important;
                 display: flex !important;
                 justify-content: center !important;
-                overflow-x: auto !important;
-                -webkit-overflow-scrolling: touch !important;
-                scrollbar-width: none !important;
-                -ms-overflow-style: none !important;
-                padding: 2px 0 !important;
+                overflow: visible !important;
+                padding: 0 !important;
                 pointer-events: auto !important;
-                z-index: 100 !important;
+                z-index: 50 !important;
             }
             .top-visual-dock-wrapper::-webkit-scrollbar {
                 display: none !important;
             }
             .top-visual-dock {
-                padding: 3px 6px !important;
+                padding: 3px 5px !important;
                 gap: 4px !important;
-                border-radius: 20px !important;
+                border-radius: 16px !important;
                 max-width: 100% !important;
-                width: auto !important;
-                overflow: visible !important;
-                flex-wrap: nowrap !important;
-                white-space: nowrap !important;
-                justify-content: center !important;
-                display: inline-flex !important;
+                width: 100% !important;
+                background: rgba(10, 16, 32, 0.92) !important;
+                border: 1px solid rgba(0, 240, 255, 0.45) !important;
+                box-shadow: 0 4px 18px rgba(0, 0, 0, 0.7), 0 0 14px rgba(0, 240, 255, 0.25) !important;
+                display: flex !important;
                 align-items: center !important;
-                scrollbar-width: none !important;
-                height: 36px !important;
+                justify-content: space-between !important;
+                height: 38px !important;
                 box-sizing: border-box !important;
-                margin: 0 auto !important;
                 pointer-events: auto !important;
             }
             .top-visual-dock::-webkit-scrollbar {
@@ -890,28 +885,41 @@
                 display: none !important; /* 手机端隐藏标签文字 */
             }
             .dock-btn-group {
-                gap: 4px !important;
+                width: 100% !important;
+                display: flex !important;
+                justify-content: space-between !important;
+                gap: 3px !important;
                 flex-wrap: nowrap !important;
-                display: inline-flex !important;
                 pointer-events: auto !important;
             }
             .dock-mode-btn {
-                padding: 4px 7px !important;
+                flex: 1 1 0 !important;
+                min-width: 0 !important;
+                padding: 5px 2px !important;
                 font-size: 0.68rem !important;
-                gap: 3px !important;
-                flex-shrink: 0 !important;
+                gap: 2px !important;
+                flex-shrink: 1 !important;
                 white-space: nowrap !important;
                 touch-action: manipulation !important;
                 min-height: 28px !important;
-                border-radius: 14px !important;
+                border-radius: 10px !important;
                 pointer-events: auto !important;
                 cursor: pointer !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                text-align: center !important;
+            }
+            .dock-mode-btn .cyber-svg-icon {
+                width: 0.9em !important;
+                height: 0.9em !important;
+                flex-shrink: 0 !important;
             }
             .dock-shortcut-badge {
                 display: none !important; /* 手机无物理按键，隐藏数字 1-5 */
             }
 
-            /* 首屏 Bento 网格与胶囊音乐盒自适应 */
+            /* 首屏 Bento 网格与胶囊音乐盒自适应 (全宽卡片 + 双行高质感布局) */
             .hero-main-row {
                 grid-template-columns: minmax(0, 1fr) !important;
                 gap: 20px;
@@ -928,35 +936,81 @@
             .hero-capsule-music-box {
                 width: 100%;
                 max-width: 100%;
-                padding: 14px 16px;
-                border-radius: 20px;
-                box-sizing: border-box;
+                padding: 14px 16px !important;
+                border-radius: 20px !important;
+                box-sizing: border-box !important;
+                background: rgba(10, 16, 32, 0.9) !important;
+                border: 1px solid rgba(0, 240, 255, 0.35) !important;
+                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 16px rgba(0, 240, 255, 0.15) !important;
             }
             .capsule-content-row {
-                gap: 10px;
-            }
-            .capsule-meta-box {
-                min-width: 0;
-                flex: 1;
-            }
-            .capsule-song-title {
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                font-size: 0.88rem;
+                display: flex !important;
+                flex-wrap: wrap !important;
+                gap: 12px !important;
+                align-items: center !important;
             }
             .capsule-disc-vinyl {
-                width: 46px;
-                height: 46px;
-                flex-shrink: 0;
+                width: 48px !important;
+                height: 48px !important;
+                flex-shrink: 0 !important;
+            }
+            .capsule-meta-box {
+                flex: 1 1 calc(100% - 64px) !important;
+                min-width: 0 !important;
+            }
+            .capsule-song-tag {
+                font-size: 0.72rem !important;
+                color: var(--sakura) !important;
+                white-space: nowrap !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+                margin-bottom: 2px !important;
+            }
+            .capsule-song-title {
+                white-space: nowrap !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+                font-size: 0.95rem !important;
+                font-weight: 800 !important;
+                color: #ffffff !important;
+            }
+            .capsule-progress-box {
+                width: 100% !important;
+                margin-top: 4px !important;
+            }
+            .capsule-time-row {
+                display: flex !important;
+                justify-content: space-between !important;
+                font-size: 0.7rem !important;
+                color: #94a3b8 !important;
+                margin-bottom: 2px !important;
+            }
+            .capsule-ctrl-group {
+                width: 100% !important;
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
+                gap: 16px !important;
+                padding-top: 8px !important;
+                border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
             }
             .capsule-ctrl-btn {
-                padding: 2px;
+                width: 36px !important;
+                height: 36px !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                font-size: 1.1rem !important;
+                padding: 0 !important;
             }
             .capsule-play-btn {
-                width: 36px;
-                height: 36px;
-                font-size: 1rem;
+                width: 44px !important;
+                height: 44px !important;
+                font-size: 1.15rem !important;
+            }
+            .capsule-list-btn {
+                font-size: 0.75rem !important;
+                padding: 5px 12px !important;
             }
 
             /* 手机端中间音乐盒歌单列表：在卡片内/下方自适应展开，宽度 100%，绝不出界 */
@@ -5215,56 +5269,51 @@
             renderPlaylists();
         }
 
-        // 纯净安全的歌曲播放函数 (针对移动端与全平台异步防重入/防抖机制)
-        let pendingPlayPromise = null;
+        // 纯净安全的歌曲播放状态机 (针对移动端防并发、防事件竞争与防卡死)
+        let isChangingTrack = false;
         function safeExecutePlay() {
             if (!bgmAudio) return;
-            // 恢复可能处于挂起状态的 Web Audio 节点
             if (audioCtx && audioCtx.state === 'suspended') {
                 audioCtx.resume().catch(() => {});
             }
             isBgmPlaying = true;
             syncMusicUI();
 
-            const promise = bgmAudio.play();
-            if (promise !== undefined) {
-                pendingPlayPromise = promise;
-                promise.then(() => {
-                    pendingPlayPromise = null;
+            const playPromise = bgmAudio.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
                     isBgmPlaying = true;
                     syncMusicUI();
                 }).catch(err => {
-                    pendingPlayPromise = null;
-                    if (err.name === 'AbortError') return;
-                    console.warn('Playback requires user gesture or stream interrupted:', err);
+                    console.warn('Playback error or gesture needed:', err);
                     isBgmPlaying = false;
                     syncMusicUI();
                 });
             }
         }
 
-        // 载入并播放曲目 (毫秒级平滑切歌，彻底杜绝移动端中断卡死)
+        // 载入并播放曲目 (毫秒级平滑切歌，显式 load 消除移动端缓冲中断)
         function loadAndPlay(index, autoPlay = true) {
             bgmIndex = (index + bgmPlaylist.length) % bgmPlaylist.length;
             const track = bgmPlaylist[bgmIndex];
-            if (bgmAudio) {
-                const isSameTrack = bgmAudio.src && bgmAudio.src.endsWith(track.src);
-                if (!isSameTrack) {
-                    try { bgmAudio.pause(); } catch(e) {}
-                    bgmAudio.src = track.src;
-                }
-                syncMusicUI();
-                if (autoPlay) {
-                    safeExecutePlay();
-                }
+            if (!bgmAudio) return;
+
+            isChangingTrack = true;
+            try { bgmAudio.pause(); } catch(e) {}
+            bgmAudio.src = track.src;
+            try { bgmAudio.load(); } catch(e) {}
+            syncMusicUI();
+
+            if (autoPlay) {
+                safeExecutePlay();
             }
+            setTimeout(() => { isChangingTrack = false; }, 350);
         }
 
         // 默认初始化装载第 1 首曲目
         if (bgmAudio) {
             bgmAudio.src = bgmPlaylist[0].src;
             syncMusicUI();
-            // PC 端若允许则自动播放，手机端由用户点击直达触发
             const autoPlayPromise = bgmAudio.play();
             if (autoPlayPromise !== undefined) {
                 autoPlayPromise.then(() => {
@@ -5277,13 +5326,11 @@
             }
         }
 
-        // 播放/暂停总控 (状态精准感应，彻底解决暂停按钮失效问题)
+        // 播放/暂停总控 (状态精准感应，100% 响应)
         function togglePlayPause() {
             if (!bgmAudio) return;
             if (isBgmPlaying) {
-                try {
-                    bgmAudio.pause();
-                } catch(e) {}
+                try { bgmAudio.pause(); } catch(e) {}
                 isBgmPlaying = false;
                 syncMusicUI();
             } else {
@@ -5405,16 +5452,13 @@
                 syncMusicUI();
             });
             bgmAudio.addEventListener('pause', () => {
-                if (isBgmPlaying) {
-                    isBgmPlaying = false;
-                    syncMusicUI();
-                }
+                if (isChangingTrack) return;
+                isBgmPlaying = false;
+                syncMusicUI();
             });
             bgmAudio.addEventListener('playing', () => {
-                if (!isBgmPlaying) {
-                    isBgmPlaying = true;
-                    syncMusicUI();
-                }
+                isBgmPlaying = true;
+                syncMusicUI();
             });
         }
 
@@ -5451,19 +5495,13 @@
         if (heroMuteIcon) heroMuteIcon.addEventListener('click', toggleMute);
         if (muteIcon) muteIcon.addEventListener('click', toggleMute);
 
-        // 🌟 进站一键即播优化：首次触控无感解锁音频，且绝不与具体音乐按钮产生竞争
+        // 🌟 首次触控唤醒 Web Audio 节点，绝不擅自自动起播引发竞争冲突
         let userHasInteracted = false;
         function handleFirstGesture(e) {
             if (userHasInteracted) return;
             userHasInteracted = true;
             if (audioCtx && audioCtx.state === 'suspended') {
                 audioCtx.resume().catch(() => {});
-            }
-            if (e && e.target && e.target.closest && e.target.closest('.capsule-ctrl-btn, .capsule-play-btn, .capsule-list-btn, .drawer-song-item, .music-ctrl-btn, #music-capsule-btn, .capsule-disc-vinyl, .playlist-item')) {
-                return;
-            }
-            if (bgmAudio && bgmAudio.paused && !isBgmPlaying) {
-                safeExecutePlay();
             }
         }
         ['click', 'touchstart'].forEach(evt => {
