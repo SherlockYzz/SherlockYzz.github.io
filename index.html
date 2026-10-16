@@ -4133,6 +4133,7 @@
                 hintLabel: '飞行雪绒 · 左右拖拽奔跑',
                 switchTarget: 'ruoxi',
                 switchBtnText: '🔄 换若曦',
+                preview: 'assets/aemeath_preview.png',
                 atlas: 'assets/aemeath_spritesheet_v2_transparent.webp',
                 atlasFallback: 'assets/aemeath_spritesheet_v2_transparent.png',
                 ringBg: 'radial-gradient(ellipse at center, rgba(0, 240, 255, 0.45) 0%, rgba(255, 117, 140, 0.25) 50%, transparent 75%)',
@@ -4159,6 +4160,7 @@
                 hintLabel: '灵狐若曦 · 左右拖拽奔跑',
                 switchTarget: 'aemeath',
                 switchBtnText: '🔄 换雪绒',
+                preview: 'assets/ruoxi_preview.png',
                 atlas: 'assets/ruoxi_pets_v2_atlas.webp',
                 atlasFallback: 'assets/ruoxi_pets_v2_atlas.png',
                 sleepStrip: 'assets/ruoxi_sleep.png',
@@ -4219,9 +4221,10 @@
                 this.lookResumeTimer = null;
 
                 this.initCanvasSize();
-                this.loadCharacter(this.currentCharId);
+                this.loadCharacter(this.currentCharId, true);
                 this.startAnimationLoop();
                 this.bindGazeTracking();
+                this.preloadAll();
             }
 
             initCanvasSize() {
@@ -4235,64 +4238,95 @@
                 }
             }
 
-            loadCharacter(charId) {
-                const charCfg = PET_CHARACTERS[charId] || PET_CHARACTERS.aemeath;
-                this.currentCharId = charCfg.id;
-                localStorage.setItem('sherlock_pet_char', charCfg.id);
+            preloadAll() {
+                Object.values(PET_CHARACTERS).forEach(cfg => {
+                    [cfg.preview, cfg.atlas, cfg.atlasFallback].filter(Boolean).forEach(url => {
+                        if (!this.imgCache.has(url)) {
+                            const img = new Image();
+                            img.onload = () => this.imgCache.set(url, img);
+                            img.src = url;
+                        }
+                    });
+                });
+            }
 
-                // 更新界面文案
+            updateUiText(charCfg) {
                 if (companionCharTag) companionCharTag.textContent = charCfg.speakerTag;
                 if (companionHintLabel) companionHintLabel.textContent = charCfg.hintLabel;
                 if (switchBtnHint) switchBtnHint.textContent = charCfg.switchBtnText;
                 if (switchBtnBubble) switchBtnBubble.textContent = charCfg.switchBtnText;
                 if (petResonanceRing && charCfg.ringBg) petResonanceRing.style.background = charCfg.ringBg;
+            }
 
-                // 优先从内存缓存加载
+            loadCharacter(charId, isInitial = false) {
+                const charCfg = PET_CHARACTERS[charId] || PET_CHARACTERS.aemeath;
+
+                // 首屏秒级直出预览，绝不留白
+                if (isInitial && !this.isLoaded) {
+                    this.updateUiText(charCfg);
+                    const pImg = new Image();
+                    pImg.onload = () => {
+                        if (!this.isLoaded && this.ctx && this.canvas) {
+                            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                            this.ctx.drawImage(pImg, 0, 0, this.canvas.width, this.canvas.height);
+                        }
+                    };
+                    pImg.src = charCfg.preview;
+                }
+
+                // 若内存中已有该图集缓存，0ms 瞬间切换
                 if (this.imgCache.has(charCfg.atlas)) {
                     this.atlasImg = this.imgCache.get(charCfg.atlas);
+                    this.currentCharId = charCfg.id;
+                    localStorage.setItem('sherlock_pet_char', charCfg.id);
+                    this.updateUiText(charCfg);
                     this.isLoaded = true;
                     this.setAnim('idle', null, true);
                     return;
                 }
 
-                this.isLoaded = false;
-                const img = new Image();
-                img.onload = () => {
-                    this.imgCache.set(charCfg.atlas, img);
-                    this.atlasImg = img;
+                // 核心保障：切换时绝不抹去当前画面，按钮提供友好加载提示
+                if (!isInitial) {
+                    if (switchBtnHint) switchBtnHint.textContent = '⏳ 载入中...';
+                    if (switchBtnBubble) switchBtnBubble.textContent = '⏳ 载入中...';
+                }
+
+                const onAtlasReady = (loadedImg) => {
+                    this.imgCache.set(charCfg.atlas, loadedImg);
+                    this.atlasImg = loadedImg;
+                    this.currentCharId = charCfg.id;
+                    localStorage.setItem('sherlock_pet_char', charCfg.id);
+                    this.updateUiText(charCfg);
                     this.isLoaded = true;
-                    this.setAnim('idle', null, true);
+                    if (isInitial) {
+                        this.setAnim('idle', null, true);
+                    } else {
+                        this.setAnim('jumping');
+                        playUiBeep(1350, 0.08);
+                    }
                 };
+
+                const img = new Image();
+                img.onload = () => onAtlasReady(img);
                 img.onerror = () => {
-                    // 若 WebP 加载异常则尝试 Fallback
                     if (charCfg.atlasFallback && charCfg.atlasFallback !== charCfg.atlas) {
                         const fallbackImg = new Image();
-                        fallbackImg.onload = () => {
-                            this.imgCache.set(charCfg.atlas, fallbackImg);
-                            this.atlasImg = fallbackImg;
-                            this.isLoaded = true;
-                            this.setAnim('idle', null, true);
+                        fallbackImg.onload = () => onAtlasReady(fallbackImg);
+                        fallbackImg.onerror = () => {
+                            const pImg = new Image();
+                            pImg.onload = () => onAtlasReady(pImg);
+                            pImg.src = charCfg.preview;
                         };
                         fallbackImg.src = charCfg.atlasFallback;
                     }
                 };
                 img.src = charCfg.atlas;
-
-                // 预加载另一角色的图集，做到无缝秒切
-                const otherKey = charCfg.switchTarget;
-                if (otherKey && PET_CHARACTERS[otherKey] && !this.imgCache.has(PET_CHARACTERS[otherKey].atlas)) {
-                    const preloadImg = new Image();
-                    preloadImg.onload = () => this.imgCache.set(PET_CHARACTERS[otherKey].atlas, preloadImg);
-                    preloadImg.src = PET_CHARACTERS[otherKey].atlas;
-                }
             }
 
             toggleCharacter() {
                 const cur = PET_CHARACTERS[this.currentCharId] || PET_CHARACTERS.aemeath;
                 const nextId = cur.switchTarget || 'aemeath';
-                this.loadCharacter(nextId);
-                this.setAnim('jumping');
-                playUiBeep(1350, 0.08);
+                this.loadCharacter(nextId, false);
             }
 
             setAnim(name, onDone = null, force = false) {
