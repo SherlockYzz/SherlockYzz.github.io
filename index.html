@@ -3683,8 +3683,8 @@
             <!-- 10 首曲目抽屉列表 -->
             <div class="music-playlist-drawer" id="music-playlist-drawer"></div>
         </div>
-        <!-- 核心音频元素 (preload="metadata" 仅拉取32KB头部信息就绪，零网络占用，点击即刻秒播) -->
-        <audio id="global-bgm-audio" src="audio/track_01.mp3" preload="metadata" playsinline webkit-playsinline></audio>
+        <!-- 核心音频元素 (preload="auto" 后台静默流式缓冲当前曲目，拖拽寻址 0 卡顿) -->
+        <audio id="global-bgm-audio" src="audio/track_01.mp3" preload="auto" playsinline webkit-playsinline></audio>
     </div>
 
     <!-- 页面内容层 -->
@@ -7099,6 +7099,9 @@
 
         // ================= 进度条丝滑拖拽/寻址系统 (支持桌面端鼠标拖拽与移动端触控滑动，100% 响应) =================
         let isDraggingSeek = false;
+        let isSeekingBuffer = false;
+        let wasPlayingBeforeSeek = false;
+
         function setupProgressScrubber(bgEl, fillEl, curEl, durEl) {
             if (!bgEl) return;
 
@@ -7131,8 +7134,24 @@
                 if (!bgmAudio) return;
                 const totalDur = getAudioDuration();
                 if (totalDur > 0) {
-                    bgmAudio.currentTime = pct * totalDur;
+                    const targetSec = Math.max(0, Math.min(totalDur - 0.5, pct * totalDur));
+                    isSeekingBuffer = true;
+                    try {
+                        bgmAudio.currentTime = targetSec;
+                    } catch(err) {
+                        console.warn('[Audio] seek error:', err);
+                    }
+
+                    // 若拖拽前正在播放，或者处于已开播状态，立即确保续播！
+                    if (wasPlayingBeforeSeek || isBgmPlaying) {
+                        isBgmPlaying = true;
+                        syncMusicUI();
+                        safeExecutePlay();
+                    }
                 }
+                setTimeout(() => {
+                    isSeekingBuffer = false;
+                }, 400);
             }
 
             // Pointer Events (全平台统一触控与鼠标事件)
@@ -7140,6 +7159,8 @@
                 e.preventDefault();
                 e.stopPropagation();
                 isDraggingSeek = true;
+                isSeekingBuffer = true;
+                wasPlayingBeforeSeek = !bgmAudio.paused || isBgmPlaying;
                 try { bgEl.setPointerCapture(e.pointerId); } catch(err) {}
                 const pct = getProgress(e.clientX);
                 updateVisuals(pct);
@@ -7167,28 +7188,26 @@
             bgEl.addEventListener('pointerup', endSeek);
             bgEl.addEventListener('pointercancel', endSeek);
 
-            // 兼顾移动端 Touch 原生触控
+            // 针对移动端触摸增强保障
             bgEl.addEventListener('touchstart', (e) => {
                 if (e.touches && e.touches.length > 0) {
-                    e.stopPropagation();
                     isDraggingSeek = true;
+                    isSeekingBuffer = true;
+                    wasPlayingBeforeSeek = !bgmAudio.paused || isBgmPlaying;
                     const pct = getProgress(e.touches[0].clientX);
                     updateVisuals(pct);
                 }
-            }, { passive: false });
+            }, { passive: true });
 
             bgEl.addEventListener('touchmove', (e) => {
                 if (isDraggingSeek && e.touches && e.touches.length > 0) {
-                    e.preventDefault();
-                    e.stopPropagation();
                     const pct = getProgress(e.touches[0].clientX);
                     updateVisuals(pct);
                 }
-            }, { passive: false });
+            }, { passive: true });
 
             bgEl.addEventListener('touchend', (e) => {
                 if (isDraggingSeek) {
-                    e.stopPropagation();
                     isDraggingSeek = false;
                     const clientX = (e.changedTouches && e.changedTouches.length > 0) ? e.changedTouches[0].clientX : 0;
                     if (clientX) {
@@ -7197,7 +7216,7 @@
                         applySeek(pct);
                     }
                 }
-            });
+            }, { passive: true });
         }
 
         setupProgressScrubber(heroProgressBg, heroProgressFill, heroCurTime, heroDurTime);
@@ -7243,15 +7262,24 @@
             // 播放真正进入吐数据状态
             bgmAudio.addEventListener('playing', () => {
                 isChangingTrack = false;
+                isSeekingBuffer = false;
                 isBgmPlaying = true;
                 syncMusicUI();
             });
 
-            // 监听底层 pause 事件
+            // 监听底层 pause 事件 (过滤切歌、拖拽、寻址缓冲带来的虚假暂停)
             bgmAudio.addEventListener('pause', () => {
-                if (isChangingTrack) return;
+                if (isChangingTrack || isDraggingSeek || isSeekingBuffer) return;
                 isBgmPlaying = false;
                 syncMusicUI();
+            });
+
+            // 监听寻址完成 (seeked) 自动平滑续播
+            bgmAudio.addEventListener('seeked', () => {
+                isSeekingBuffer = false;
+                if ((wasPlayingBeforeSeek || isBgmPlaying) && bgmAudio.paused) {
+                    safeExecutePlay();
+                }
             });
 
             // 曲目自然结束播放
@@ -7264,12 +7292,24 @@
                 }
             });
 
-            // 智能缓冲异常自愈
+            // 智能缓冲异常自愈：当遭遇网络缓冲或跨段寻址时，收到数据即刻自动续播！
             bgmAudio.addEventListener('waiting', () => {
                 isBuffering = true;
             });
             bgmAudio.addEventListener('canplay', () => {
+                if ((wasPlayingBeforeSeek || isBgmPlaying) && bgmAudio.paused) {
+                    safeExecutePlay();
+                }
                 isBuffering = false;
+            });
+            bgmAudio.addEventListener('stalled', () => {
+                if ((wasPlayingBeforeSeek || isBgmPlaying) && bgmAudio.paused) {
+                    setTimeout(() => {
+                        if (bgmAudio.paused && (wasPlayingBeforeSeek || isBgmPlaying)) {
+                            safeExecutePlay();
+                        }
+                    }, 400);
+                }
             });
 
             // 播放异常捕获与容错
