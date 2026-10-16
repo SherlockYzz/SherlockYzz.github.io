@@ -1897,6 +1897,10 @@
             align-items: center;
             justify-content: center;
             transition: all 0.2s ease;
+            touch-action: manipulation !important;
+            -webkit-tap-highlight-color: transparent !important;
+            user-select: none;
+            -webkit-user-select: none;
         }
         .music-ctrl-btn:hover {
             color: #fff;
@@ -1911,6 +1915,10 @@
             font-weight: 700;
             font-size: 1rem;
             box-shadow: 0 0 16px rgba(0, 240, 255, 0.45);
+            touch-action: manipulation !important;
+            -webkit-tap-highlight-color: transparent !important;
+            user-select: none;
+            -webkit-user-select: none;
         }
         .music-play-btn:hover {
             transform: scale(1.08);
@@ -1933,6 +1941,10 @@
             color: var(--cyan);
             transition: all 0.2s ease;
             flex-shrink: 0;
+            touch-action: manipulation !important;
+            -webkit-tap-highlight-color: transparent !important;
+            user-select: none;
+            -webkit-user-select: none;
         }
         .capsule-mini-btn:hover {
             background: var(--cyan);
@@ -2573,6 +2585,10 @@
             cursor: pointer;
             padding: 4px;
             transition: all 0.2s ease;
+            touch-action: manipulation !important;
+            -webkit-tap-highlight-color: transparent !important;
+            user-select: none;
+            -webkit-user-select: none;
         }
         .capsule-ctrl-btn:hover {
             color: #ffffff;
@@ -2593,6 +2609,10 @@
             cursor: pointer;
             box-shadow: 0 0 18px rgba(0, 240, 255, 0.45);
             transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            touch-action: manipulation !important;
+            -webkit-tap-highlight-color: transparent !important;
+            user-select: none;
+            -webkit-user-select: none;
         }
         .capsule-play-btn:hover {
             transform: scale(1.14);
@@ -2609,6 +2629,10 @@
             cursor: pointer;
             white-space: nowrap;
             transition: all 0.2s ease;
+            touch-action: manipulation !important;
+            -webkit-tap-highlight-color: transparent !important;
+            user-select: none;
+            -webkit-user-select: none;
         }
         .capsule-list-btn:hover {
             background: rgba(0, 240, 255, 0.25);
@@ -6004,6 +6028,12 @@
         let bgmIndex = 0;
         let isBgmPlaying = false;
         let isLoopSingle = false;
+        let userWantsPlayback = false; // 用户明确期望播放 (唯一真实意志信标)
+        let playSessionId = 0;         // 单调递增的播放会话标记，彻底根除 300ms 竞争
+        let isChangingTrack = false;   // 正在切歌过渡期
+        let isBuffering = false;       // 移动端网络缓冲中
+        let audioPrimed = false;       // 手势解锁标记
+        let playlistsInitialized = false; // 列表 DOM 单次渲染标记，避免点击瞬间 DOM 节点被销毁重建
 
         const bgmAudio = document.getElementById('global-bgm-audio');
         const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(navigator.userAgent) || window.innerWidth <= 768;
@@ -6079,43 +6109,64 @@
             return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
         }
 
-        // 渲染 10 首曲目抽屉列表
+        // 渲染 10 首曲目抽屉列表 (单次构建 DOM + 极速状态切换，杜绝点击瞬间重构 DOM 导致的事件吞没)
         function renderPlaylists() {
-            if (heroPlaylistDrawer) {
-                heroPlaylistDrawer.innerHTML = '';
-                bgmPlaylist.forEach((t, i) => {
-                    const item = document.createElement('div');
-                    item.className = 'drawer-song-item' + (i === bgmIndex ? ' active' : '');
-                    item.innerHTML = `
-                        <div style="min-width:0; flex:1; padding-right:8px;">
-                            <div class="drawer-song-title" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${i + 1}. ${t.title}</div>
-                            <div class="drawer-song-artist" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${t.artist}</div>
-                        </div>
-                        <span style="font-family:var(--font-mono); font-size:0.75rem; color:${i === bgmIndex ? 'var(--cyan)' : '#64748b'}; flex-shrink:0;">${t.duration || ''}</span>
-                    `;
-                    item.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        loadAndPlay(i, true);
+            if (!playlistsInitialized) {
+                if (heroPlaylistDrawer) {
+                    heroPlaylistDrawer.innerHTML = '';
+                    bgmPlaylist.forEach((t, i) => {
+                        const item = document.createElement('div');
+                        item.className = 'drawer-song-item' + (i === bgmIndex ? ' active' : '');
+                        item.dataset.index = i;
+                        item.innerHTML = `
+                            <div style="min-width:0; flex:1; padding-right:8px;">
+                                <div class="drawer-song-title" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${i + 1}. ${t.title}</div>
+                                <div class="drawer-song-artist" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${t.artist}</div>
+                            </div>
+                            <span class="drawer-song-dur" style="font-family:var(--font-mono); font-size:0.75rem; color:${i === bgmIndex ? 'var(--cyan)' : '#64748b'}; flex-shrink:0;">${t.duration || ''}</span>
+                        `;
+                        item.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            loadAndPlay(i, true);
+                        });
+                        heroPlaylistDrawer.appendChild(item);
                     });
-                    heroPlaylistDrawer.appendChild(item);
-                });
-            }
+                }
 
-            if (musicDrawer) {
-                musicDrawer.innerHTML = '';
-                bgmPlaylist.forEach((t, i) => {
-                    const item = document.createElement('div');
-                    item.className = 'playlist-item' + (i === bgmIndex ? ' active' : '');
-                    item.innerHTML = `
-                        <span class="playlist-item-title">${i + 1}. ${t.title}</span>
-                        <span style="display:inline-flex; align-items:center; opacity:0.85; font-size:0.75rem; color:#64748b;">${t.duration || ''}</span>
-                    `;
-                    item.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        loadAndPlay(i, true);
+                if (musicDrawer) {
+                    musicDrawer.innerHTML = '';
+                    bgmPlaylist.forEach((t, i) => {
+                        const item = document.createElement('div');
+                        item.className = 'playlist-item' + (i === bgmIndex ? ' active' : '');
+                        item.dataset.index = i;
+                        item.innerHTML = `
+                            <span class="playlist-item-title">${i + 1}. ${t.title}</span>
+                            <span style="display:inline-flex; align-items:center; opacity:0.85; font-size:0.75rem; color:#64748b;">${t.duration || ''}</span>
+                        `;
+                        item.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            loadAndPlay(i, true);
+                        });
+                        musicDrawer.appendChild(item);
                     });
-                    musicDrawer.appendChild(item);
-                });
+                }
+                playlistsInitialized = true;
+            } else {
+                if (heroPlaylistDrawer) {
+                    const items = heroPlaylistDrawer.querySelectorAll('.drawer-song-item');
+                    items.forEach((item, i) => {
+                        const isActive = (i === bgmIndex);
+                        item.classList.toggle('active', isActive);
+                        const durSpan = item.querySelector('.drawer-song-dur');
+                        if (durSpan) durSpan.style.color = isActive ? 'var(--cyan)' : '#64748b';
+                    });
+                }
+                if (musicDrawer) {
+                    const items = musicDrawer.querySelectorAll('.playlist-item');
+                    items.forEach((item, i) => {
+                        item.classList.toggle('active', i === bgmIndex);
+                    });
+                }
             }
         }
 
@@ -6167,86 +6218,167 @@
             renderPlaylists();
         }
 
-        // 纯净安全的歌曲播放状态机 (针对移动端防并发、防事件竞争与防卡死)
-        let isChangingTrack = false;
+        // 核心播放调度器 (具备跨平台手势维持、Token 会话防竞态、Abort 自动续播重试)
         function safeExecutePlay() {
+            userWantsPlayback = true;
+            const session = ++playSessionId;
+            executePlayWithRetry(session, 0);
+        }
+
+        function executePlayWithRetry(session, retryCount = 0) {
             if (!bgmAudio) return;
+            // 校验会话有效性与用户真实意图
+            if (session !== playSessionId || !userWantsPlayback) {
+                return;
+            }
+
             if (audioCtx && audioCtx.state === 'suspended') {
                 audioCtx.resume().catch(() => {});
             }
+
             isBgmPlaying = true;
             syncMusicUI();
 
-            const playPromise = bgmAudio.play();
+            let playPromise;
+            try {
+                playPromise = bgmAudio.play();
+            } catch (err) {
+                playPromise = Promise.reject(err);
+            }
+
             if (playPromise !== undefined) {
                 playPromise.then(() => {
-                    isBgmPlaying = true;
-                    syncMusicUI();
+                    if (session === playSessionId && userWantsPlayback) {
+                        isChangingTrack = false;
+                        isBuffering = false;
+                        isBgmPlaying = true;
+                        syncMusicUI();
+                    }
                 }).catch(err => {
-                    console.warn('Playback error or gesture needed:', err);
-                    if (err.name === 'AbortError') {
-                        // 切歌引起的瞬态中断，保持状态，不重置界面
+                    if (session !== playSessionId || !userWantsPlayback) return;
+                    console.warn(`[MobileAudioEngine] play() deferred (session ${session}, attempt ${retryCount}):`, err.name);
+
+                    // 移动端核心关键解法：切歌或加载较大 MP3 时，因缓冲不足或解码管道置换容易触发 AbortError
+                    // 此时手势权限已由用户交互锁定，只需在 canplay / loadeddata 事件触发时无缝续播即可 100% 成功起播！
+                    if (retryCount < 3) {
+                        let triggered = false;
+                        const onReady = () => {
+                            if (triggered) return;
+                            triggered = true;
+                            bgmAudio.removeEventListener('canplay', onReady);
+                            bgmAudio.removeEventListener('loadeddata', onReady);
+                            bgmAudio.removeEventListener('playing', onReady);
+                            if (session === playSessionId && userWantsPlayback) {
+                                executePlayWithRetry(session, retryCount + 1);
+                            }
+                        };
+
+                        bgmAudio.addEventListener('canplay', onReady, { once: true });
+                        bgmAudio.addEventListener('loadeddata', onReady, { once: true });
+                        bgmAudio.addEventListener('playing', onReady, { once: true });
+
+                        // 1200ms 防挂起安全兜底
+                        setTimeout(() => {
+                            if (!triggered && session === playSessionId && userWantsPlayback && bgmAudio.paused) {
+                                triggered = true;
+                                bgmAudio.removeEventListener('canplay', onReady);
+                                bgmAudio.removeEventListener('loadeddata', onReady);
+                                bgmAudio.removeEventListener('playing', onReady);
+                                executePlayWithRetry(session, retryCount + 1);
+                            }
+                        }, 1200);
                         return;
                     }
+
+                    // 重试衰竭
+                    isChangingTrack = false;
+                    isBuffering = false;
                     isBgmPlaying = false;
+                    userWantsPlayback = false;
                     syncMusicUI();
                 });
             }
         }
 
-        // 载入并播放曲目 (毫秒级平滑切歌，移除引发 AbortError 的多余 load() 规避移动端崩溃)
+        // 载入并播放曲目 (序列 Token 会话隔离 + WebKit 规范 .load() 重置流水线)
         function loadAndPlay(index, autoPlay = true) {
             bgmIndex = (index + bgmPlaylist.length) % bgmPlaylist.length;
             const track = bgmPlaylist[bgmIndex];
             if (!bgmAudio) return;
 
+            const session = ++playSessionId;
+            userWantsPlayback = autoPlay;
             isChangingTrack = true;
-            try { bgmAudio.pause(); } catch(e) {}
-            bgmAudio.src = track.src;
 
-            // 立即重置视觉进度与时间显示，给用户即刻响应反馈
+            // 1. 立即重置视觉进度与时间显示，给用户即刻响应反馈
             if (!isDraggingSeek) {
                 if (heroProgressFill) heroProgressFill.style.width = '0%';
                 if (progressFill) progressFill.style.width = '0%';
                 if (heroCurTime) heroCurTime.textContent = '00:00';
                 if (curTimeEl) curTimeEl.textContent = '00:00';
             }
+
+            // 2. 状态先行同步
+            if (autoPlay) {
+                isBgmPlaying = true;
+            }
             syncMusicUI();
 
+            // 3. 释放旧解码资源并重置新资源
+            try { bgmAudio.pause(); } catch(e) {}
+            bgmAudio.src = track.src;
+            try {
+                bgmAudio.load();
+            } catch(e) {}
+
+            // 4. 派发播放
             if (autoPlay) {
-                safeExecutePlay();
+                executePlayWithRetry(session, 0);
+            } else {
+                isChangingTrack = false;
+                isBgmPlaying = false;
+                syncMusicUI();
             }
-            setTimeout(() => { isChangingTrack = false; }, 300);
         }
 
         // 默认初始化装载第 1 首曲目
         if (bgmAudio) {
             bgmAudio.src = bgmPlaylist[0].src;
+            try { bgmAudio.load(); } catch(e) {}
             syncMusicUI();
             const autoPlayPromise = bgmAudio.play();
             if (autoPlayPromise !== undefined) {
                 autoPlayPromise.then(() => {
+                    userWantsPlayback = true;
                     isBgmPlaying = true;
                     syncMusicUI();
                 }).catch(() => {
+                    userWantsPlayback = false;
                     isBgmPlaying = false;
                     syncMusicUI();
                 });
             }
         }
 
-        // 播放/暂停总控 (状态精准感应，100% 响应)
+        // 播放/暂停总控 (用户意志为最高信标，彻底消灭状态竞争脱节)
         function togglePlayPause() {
             if (!bgmAudio) return;
-            if (isBgmPlaying) {
+            if (isBgmPlaying || userWantsPlayback) {
+                userWantsPlayback = false;
+                playSessionId++; // 废弃所有旧重试
                 try { bgmAudio.pause(); } catch(e) {}
                 isBgmPlaying = false;
+                isChangingTrack = false;
                 syncMusicUI();
             } else {
+                userWantsPlayback = true;
+                const session = ++playSessionId;
                 if (!bgmAudio.src || bgmAudio.src === '' || bgmAudio.src === window.location.href) {
                     loadAndPlay(bgmIndex, true);
                 } else {
-                    safeExecutePlay();
+                    isBgmPlaying = true;
+                    syncMusicUI();
+                    executePlayWithRetry(session, 0);
                 }
             }
         }
@@ -6470,34 +6602,81 @@
                 });
             });
 
+            // 播放真正进入吐数据状态
+            bgmAudio.addEventListener('playing', () => {
+                isChangingTrack = false;
+                isBuffering = false;
+                isBgmPlaying = true;
+                userWantsPlayback = true;
+                syncMusicUI();
+            });
+
+            // 监听底层 pause 事件 (区分真实用户暂停 vs 切歌过渡异步 pause)
+            bgmAudio.addEventListener('pause', () => {
+                // 如果用户依然期望播放（例如切歌中、重载中、短暂缓冲），绝对不降级 UI！
+                if (userWantsPlayback) {
+                    return;
+                }
+                isBgmPlaying = false;
+                syncMusicUI();
+            });
+
+            // 移动端网络缓冲状态感应
+            bgmAudio.addEventListener('waiting', () => {
+                if (userWantsPlayback) {
+                    isBuffering = true;
+                }
+            });
+
+            // 弱网或蜂窝网卡顿自动恢复
+            bgmAudio.addEventListener('stalled', () => {
+                if (userWantsPlayback && bgmAudio.paused && !isChangingTrack) {
+                    const session = playSessionId;
+                    setTimeout(() => {
+                        if (session === playSessionId && userWantsPlayback && bgmAudio.paused) {
+                            console.log('[MobileAudioEngine] Auto-recovering from stalled connection...');
+                            executePlayWithRetry(session, 1);
+                        }
+                    }, 1500);
+                }
+            });
+
+            // 曲目自然结束播放
             bgmAudio.addEventListener('ended', () => {
                 if (isLoopSingle) {
                     bgmAudio.currentTime = 0;
-                    safeExecutePlay();
+                    const session = ++playSessionId;
+                    userWantsPlayback = true;
+                    executePlayWithRetry(session, 0);
                 } else {
                     loadAndPlay(bgmIndex + 1, true);
                 }
             });
+
+            // 播放异常捕获与容错
             bgmAudio.addEventListener('error', (e) => {
-                console.warn('Audio playback error:', e);
-                isBgmPlaying = false;
-                syncMusicUI();
-            });
-            bgmAudio.addEventListener('pause', () => {
-                if (isChangingTrack) return;
-                isBgmPlaying = false;
-                syncMusicUI();
-            });
-            bgmAudio.addEventListener('playing', () => {
-                isBgmPlaying = true;
-                syncMusicUI();
+                console.warn('[MobileAudioEngine] Audio element error:', e);
+                if (userWantsPlayback && !isChangingTrack) {
+                    const session = playSessionId;
+                    setTimeout(() => {
+                        if (session === playSessionId && userWantsPlayback) {
+                            loadAndPlay(bgmIndex, true);
+                        }
+                    }, 1200);
+                } else {
+                    isBgmPlaying = false;
+                    userWantsPlayback = false;
+                    syncMusicUI();
+                }
             });
         }
 
         // ================= 音量调节联动 (纯净赛博微拟态 SVG 矢量渲染 + 双端自适应) =================
         function handleVolumeChange(v) {
             v = Math.max(0, Math.min(1, parseFloat(v) || 0));
-            if (bgmAudio) bgmAudio.volume = v;
+            try {
+                if (bgmAudio) bgmAudio.volume = v;
+            } catch(e) {}
             const svgIcon = v === 0 ? CYBER_SVG_VOL_MUTE : (v < 0.4 ? CYBER_SVG_VOL_LOW : CYBER_SVG_VOL_HIGH);
             if (heroMuteIcon) heroMuteIcon.innerHTML = svgIcon;
             if (muteIcon) muteIcon.innerHTML = svgIcon;
@@ -6526,17 +6705,30 @@
         if (heroMuteIcon) heroMuteIcon.addEventListener('click', toggleMute);
         if (muteIcon) muteIcon.addEventListener('click', toggleMute);
 
-        // 🌟 首次触控唤醒 Web Audio 节点，绝不擅自自动起播引发竞争冲突
-        let userHasInteracted = false;
+        // 🌟 首次交互全局解锁 (适配 iOS Safari / 微信 / Android 唤醒媒体通道)
         function handleFirstGesture(e) {
-            if (userHasInteracted) return;
-            userHasInteracted = true;
+            if (audioPrimed) return;
+            audioPrimed = true;
             if (audioCtx && audioCtx.state === 'suspended') {
                 audioCtx.resume().catch(() => {});
             }
+            // 预先激活 HTML5 Audio 解码流水线 (不产生声音，仅解锁上下文)
+            if (bgmAudio && !userWantsPlayback && bgmAudio.paused) {
+                try {
+                    bgmAudio.load();
+                } catch(e) {}
+            }
         }
-        ['click', 'touchstart'].forEach(evt => {
+        ['click', 'touchstart', 'touchend', 'pointerdown'].forEach(evt => {
             window.addEventListener(evt, handleFirstGesture, { once: true, passive: true });
+        });
+
+        // 🌟 移动端锁屏/切后台唤醒恢复 (Page Visibility API)
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden && userWantsPlayback && bgmAudio && bgmAudio.paused) {
+                const session = playSessionId;
+                executePlayWithRetry(session, 0);
+            }
         });
 
         // 空格键快捷播放/暂停
