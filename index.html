@@ -4220,8 +4220,9 @@
                 this.rows = 11;
                 this.dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-                this.currentCharId = localStorage.getItem('sherlock_pet_char') || 'aemeath';
-                if (!PET_CHARACTERS[this.currentCharId]) this.currentCharId = 'aemeath';
+                // 默认初始看板娘恒定为「飞行雪绒 · 爱弥斯」
+                this.currentCharId = 'aemeath';
+                try { localStorage.removeItem('sherlock_pet_char'); } catch(e) {}
 
                 this.atlasImg = null;
                 this.isLoaded = false;
@@ -4278,7 +4279,6 @@
             loadCharacter(charId, isInitial = false) {
                 const charCfg = PET_CHARACTERS[charId] || PET_CHARACTERS.aemeath;
                 this.currentCharId = charCfg.id;
-                localStorage.setItem('sherlock_pet_char', charCfg.id);
                 this.updateUiText(charCfg);
 
                 // 1. 若内存已有该角色图集，0ms 瞬间无缝切换
