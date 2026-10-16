@@ -1163,24 +1163,27 @@
                 font-size: 0.76rem;
             }
 
-            /* 《鸣潮》飞行雪绒悬浮挂件移动端精致自适应 */
+            /* 《鸣潮》飞行雪绒 & 若曦精灵表挂件移动端自适应 */
             .anime-companion-widget {
-                bottom: 14px !important;
-                right: 12px !important;
+                bottom: 14px;
+                right: 12px;
+            }
+            .anime-companion-widget.is-positioned {
+                bottom: auto !important;
+                right: auto !important;
             }
             .companion-avatar-box {
                 width: 78px !important;
-                height: 78px !important;
+                height: 84px !important;
             }
-            #aemeath-pet-img {
-                width: 70px !important;
-                height: 70px !important;
+            #pet-sprite-canvas {
+                width: 76px !important;
+                height: 82px !important;
             }
             .companion-bubble {
-                max-width: 200px !important;
+                max-width: 220px !important;
                 font-size: 0.72rem !important;
                 padding: 7px 10px !important;
-                pointer-events: none !important;
             }
             .companion-hint-pill {
                 font-size: 0.68rem !important;
@@ -1373,10 +1376,14 @@
             50% { transform: translateY(-4px); }
         }
 
-        /* ================= 《鸣潮》飞行雪绒 · 爱弥斯 活体桌面挂件 ================= */
+        /* ================= 《鸣潮》飞行雪绒 · 爱弥斯 & 白发灵狐 · 若曦 活体桌面挂件 ================= */
         .anime-companion-widget {
             touch-action: none;
             transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .anime-companion-widget.is-positioned {
+            bottom: auto !important;
+            right: auto !important;
         }
         .anime-companion-widget.is-dragging {
             filter: drop-shadow(0 14px 28px rgba(0, 240, 255, 0.55));
@@ -1384,8 +1391,8 @@
             user-select: none;
         }
         .companion-avatar-box {
-            width: 100px;
-            height: 100px;
+            width: 104px;
+            height: 112px;
             position: relative;
             cursor: grab;
             display: flex;
@@ -1393,6 +1400,7 @@
             justify-content: center;
             transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             user-select: none;
+            touch-action: none;
         }
         .companion-avatar-box:hover {
             transform: scale(1.08) translateY(-4px);
@@ -1402,17 +1410,46 @@
             cursor: grabbing !important;
         }
 
-        /* 精灵帧核心渲染 (零残影·纯透明高帧率桌宠) */
-        #aemeath-pet-img {
-            width: 92px;
-            height: 92px;
-            object-fit: contain;
+        /* ChatGPT Pets v2 精灵表核心 Canvas 渲染器 (零死图·零残影·16向视线追踪) */
+        #pet-sprite-canvas {
+            width: 96px;
+            height: 104px;
+            display: block;
             filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.7));
-            animation: snowfluff-float 3.2s ease-in-out infinite;
-            transition: transform 0.15s ease;
-            pointer-events: auto;
+            pointer-events: none;
             user-select: none;
-            -webkit-user-drag: none;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            animation: snowfluff-float 3.2s ease-in-out infinite;
+        }
+        .anime-companion-widget.is-dragging #pet-sprite-canvas {
+            animation: none !important;
+        }
+
+        /* 角色快速切换按钮 */
+        .companion-switch-char-btn {
+            background: rgba(0, 240, 255, 0.12);
+            border: 1px solid rgba(0, 240, 255, 0.38);
+            color: var(--cyan);
+            font-size: 0.68rem;
+            padding: 1px 7px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-family: var(--font-mono);
+            letter-spacing: 0.04em;
+            transition: all 0.2s ease;
+            pointer-events: auto;
+            margin-left: 6px;
+            line-height: 1.4;
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+        }
+        .companion-switch-char-btn:hover {
+            background: rgba(0, 240, 255, 0.32);
+            border-color: var(--cyan);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+            transform: scale(1.04);
         }
 
         /* 上下呼吸轻盈悬浮 */
@@ -1431,6 +1468,7 @@
             background: radial-gradient(ellipse at center, rgba(0, 240, 255, 0.45) 0%, rgba(255, 117, 140, 0.25) 50%, transparent 75%);
             animation: ring-pulse 3.2s ease-in-out infinite;
             pointer-events: none;
+            transition: background 0.4s ease;
         }
         @keyframes ring-pulse {
             0%, 100% { transform: scale(1); opacity: 0.45; }
@@ -2996,30 +3034,30 @@
         <span class="telemetry-item">AGENT: <strong style="color:var(--green);">AUTONOMOUS</strong></span>
     </div>
 
-    <!-- ================= 《鸣潮》飞行雪绒 智能桌面挂件 (纯净静音·极客融合版) ================= -->
+    <!-- ================= 《鸣潮》飞行雪绒 · 爱弥斯 & 白发灵狐 · 若曦 活体桌面挂件 ================= -->
     <div class="anime-companion-widget" id="companion-widget">
         <!-- 初始引导提示词（默认展示，引导用户拖拽与点击互动） -->
         <div class="companion-hint-pill" id="companion-hint-pill" title="可按住拖拽桌宠或点击互动">
-            <span style="font-size:0.8rem;">✨</span> 飞行雪绒 · 可拖拽互动
+            <span style="font-size:0.8rem;">✨</span>
+            <span id="companion-hint-label">飞行雪绒 · 左右拖拽奔跑</span>
+            <button class="companion-switch-char-btn" id="companion-switch-btn-hint" title="切换角色（爱弥斯 / 若曦）">🔄 换若曦</button>
         </div>
         <!-- 日系 Galgame 极客传讯气泡 (初始静默隐藏，点击挂件后才弹出) -->
         <div class="companion-bubble" id="companion-bubble" style="display: none;">
             <div class="bubble-header">
                 <span class="bubble-dot"></span>
-                <span class="bubble-tag">STARTORCH // 飞行雪绒 · 爱弥斯</span>
+                <span class="bubble-tag" id="companion-character-tag">STARTORCH // 飞行雪绒 · 爱弥斯</span>
+                <button class="companion-switch-char-btn" id="companion-switch-btn-bubble" title="切换角色（爱弥斯 / 若曦）">🔄 换若曦</button>
                 <span class="bubble-id">[ONLINE]</span>
             </div>
             <div class="bubble-text" id="companion-bubble-text">
                 「排除一切不可能的，剩下的即使再不可思议，也是真相。」
             </div>
         </div>
-        <!-- 飞行雪绒活体挂件舞台 (全屏自由拖拽·精灵帧动作库版) -->
+        <!-- 精灵表活体挂件舞台 (全屏自由拖拽·ChatGPT Pets v2 精灵表引擎) -->
         <div class="companion-avatar-box" id="companion-avatar" title="长按拖拽桌宠，轻触互动">
-            <img id="aemeath-pet-img" 
-                 src="assets/aemeath_preview_idle.gif" 
-                 width="92" height="92"
-                 alt="飞行雪绒" />
-            <div class="aemeath-resonance-ring"></div>
+            <canvas id="pet-sprite-canvas" width="192" height="208"></canvas>
+            <div class="aemeath-resonance-ring" id="pet-resonance-ring"></div>
         </div>
     </div>
     <!-- 二次元毛玻璃音乐盒 (Glassmorphism Music Box) -->
@@ -4073,45 +4111,342 @@
             el.addEventListener('click', () => playUiBeep(1567, 0.05));
         });
 
-        // ================= 4. 《鸣潮》飞行雪绒 · 爱弥斯 智能桌面挂件 (纯净静音·极客动效状态机) =================
+        // ================= 4. 二次元桌宠精灵表引擎 (ChatGPT Pets v2 · 飞行雪绒 & 若曦 双角色活体渲染) =================
         const companionWidget = document.getElementById('companion-widget');
         const companionBubble = document.getElementById('companion-bubble');
         const companionBubbleText = document.getElementById('companion-bubble-text');
         const companionHintPill = document.getElementById('companion-hint-pill');
-        const petImg = document.getElementById('aemeath-pet-img');
+        const companionHintLabel = document.getElementById('companion-hint-label');
+        const companionCharTag = document.getElementById('companion-character-tag');
         const petStage = document.getElementById('companion-avatar');
+        const petCanvas = document.getElementById('pet-sprite-canvas');
+        const petResonanceRing = document.getElementById('pet-resonance-ring');
+        const switchBtnHint = document.getElementById('companion-switch-btn-hint');
+        const switchBtnBubble = document.getElementById('companion-switch-btn-bubble');
 
-        const companionPhrases = [
-            "「排除一切不可能的，剩下的即使再不可思议，也是真相。」",
-            "「The game is on.」",
-            "「真相永远只有一个！」",
-            "「生命因为有限所以宝贵，因为有限所以才要不懈努力。」",
-            "「所谓的勇气，是支撑人挺身而出的正义之词，绝不能成为任性冲动的借口。」",
-            "「不去做也行的事情就不做，非做不可的事情就尽快解决。」",
-            "「这一切都是命运石之门的选择。El Psy Congroo！」",
-            "「无论身处哪条世界线，你都不是孤身一人。」",
-            "「正因为生来一无所有，所以才能成就任何可能！」",
-            "「向盟约宣誓——来吧，游戏开始了！」",
-            "「大道三千，道阻且长；唯有一步一个脚印，方可行稳致远。」",
-            "「愿你走过的每一个地方，都能开出温柔的花。」",
-            "「我们生而眺望，自星海尽处回响！」"
-        ];
+        // 双角色定义 (与二次元桌宠项目 pet_manifest.json 及精灵表规范 100% 同源)
+        const PET_CHARACTERS = {
+            aemeath: {
+                id: 'aemeath',
+                name: '飞行雪绒 · 爱弥斯',
+                speakerTag: 'STARTORCH // 飞行雪绒 · 爱弥斯',
+                hintLabel: '飞行雪绒 · 左右拖拽奔跑',
+                switchTarget: 'ruoxi',
+                switchBtnText: '🔄 换若曦',
+                atlas: 'assets/aemeath_spritesheet_v2_transparent.webp',
+                atlasFallback: 'assets/aemeath_spritesheet_v2_transparent.webp',
+                ringBg: 'radial-gradient(ellipse at center, rgba(0, 240, 255, 0.45) 0%, rgba(255, 117, 140, 0.25) 50%, transparent 75%)',
+                phrases: [
+                    "「排除一切不可能的，剩下的即使再不可思议，也是真相。」",
+                    "「The game is on.」",
+                    "「真相永远只有一个！」",
+                    "「生命因为有限所以宝贵，因为有限所以才要不懈努力。」",
+                    "「所谓的勇气，是支撑人挺身而出的正义之词，绝不能成为任性冲动的借口。」",
+                    "「不去做也行的事情就不做，非做不可的事情就尽快解决。」",
+                    "「这一切都是命运石之门的选择。El Psy Congroo！」",
+                    "「无论身处哪条世界线，你都不是孤身一人。」",
+                    "「正因为生来一无所有，所以才能成就任何可能！」",
+                    "「向盟约宣誓——来吧，游戏开始了！」",
+                    "「大道三千，道阻且长；唯有一步一个脚印，方可行稳致远。」",
+                    "「愿你走过的每一个地方，都能开出温柔的花。」",
+                    "「我们生而眺望，自星海尽处回响！」"
+                ]
+            },
+            ruoxi: {
+                id: 'ruoxi',
+                name: '白发灵狐 · 若曦',
+                speakerTag: 'SPIRITFOX // 白发灵狐 · 若曦',
+                hintLabel: '灵狐若曦 · 左右拖拽奔跑',
+                switchTarget: 'aemeath',
+                switchBtnText: '🔄 换雪绒',
+                atlas: 'assets/ruoxi_pets_v2_atlas.webp',
+                atlasFallback: 'assets/ruoxi_pets_v2_atlas.png',
+                sleepStrip: 'assets/ruoxi_sleep.png',
+                ringBg: 'radial-gradient(ellipse at center, rgba(255, 117, 140, 0.45) 0%, rgba(168, 85, 247, 0.25) 50%, transparent 75%)',
+                phrases: [
+                    "「主上，若曦一直守护在您的身边哦~」",
+                    "「灵狐的耳朵很灵敏的，任何细微的声音都瞒不过我！」",
+                    "「代码写累了吗？若曦帮您揉揉肩~」",
+                    "「今天也要元气满满地探索星辰大海呢！」",
+                    "「天地玄黄，宇宙洪荒；若曦伴您踏遍千山万水。」",
+                    "「大道三千，道阻且长；唯有一步一个脚印，方可行稳致远。」",
+                    "「呼呼~主上的指尖好温暖！」",
+                    "「愿主上所遇皆良善，所行化坦途！」"
+                ]
+            }
+        };
+
+        // 标准 ChatGPT Pets v2 动画轨道定义 (1536x2288, 8x11 grid, 192x208 cell)
+        const PET_ANIMATIONS = {
+            'idle':          { label: '待机呼吸', row: 0, startCol: 0, frames: 6, durations: [280, 110, 110, 140, 140, 340], loop: true },
+            'running-right': { label: '向右奔跑', row: 1, startCol: 0, frames: 8, durations: [110, 110, 110, 110, 110, 110, 110, 190], loop: true },
+            'running-left':  { label: '向左奔跑', row: 2, startCol: 0, frames: 8, durations: [110, 110, 110, 110, 110, 110, 110, 190], loop: true },
+            'waving':        { label: '挥手问候', row: 3, startCol: 0, frames: 4, durations: [140, 140, 140, 300], loop: false, returnTo: 'idle' },
+            'jumping':       { label: '蓄力欢跳', row: 4, startCol: 0, frames: 5, durations: [150, 150, 150, 150, 300], loop: false, returnTo: 'idle' },
+            'failed':        { label: '悬空扑腾', row: 5, startCol: 0, frames: 8, durations: [160, 160, 160, 160, 160, 160, 160, 320], loop: true },
+            'waiting':       { label: '等待确认', row: 6, startCol: 0, frames: 6, durations: [170, 170, 170, 170, 170, 340], loop: true },
+            'running':       { label: '专注奔跑', row: 7, startCol: 0, frames: 6, durations: [120, 120, 120, 120, 120, 240], loop: true },
+            'review':        { label: '好奇张望', row: 8, startCol: 0, frames: 6, durations: [200, 200, 200, 200, 200, 380], loop: false, returnTo: 'idle' },
+            'look-row-9':    { label: '视线 0-157.5', row: 9, startCol: 0, frames: 8, durations: [120, 120, 120, 120, 120, 120, 120, 120], loop: false, kind: 'look' },
+            'look-row-10':   { label: '视线 180-337.5', row: 10, startCol: 0, frames: 8, durations: [120, 120, 120, 120, 120, 120, 120, 120], loop: false, kind: 'look' }
+        };
+
+        class WebSpritePetEngine {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.ctx = canvas ? canvas.getContext('2d') : null;
+                this.cw = 192;
+                this.ch = 208;
+                this.cols = 8;
+                this.rows = 11;
+                this.dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+                this.currentCharId = localStorage.getItem('sherlock_pet_char') || 'aemeath';
+                if (!PET_CHARACTERS[this.currentCharId]) this.currentCharId = 'aemeath';
+
+                this.atlasImg = null;
+                this.isLoaded = false;
+                this.imgCache = new Map();
+
+                this.state = {
+                    anim: 'idle',
+                    frame: 0,
+                    elapsed: 0,
+                    lastTick: performance.now(),
+                    onDone: null
+                };
+
+                this.lookResumeTimer = null;
+
+                this.initCanvasSize();
+                this.loadCharacter(this.currentCharId);
+                this.startAnimationLoop();
+                this.bindGazeTracking();
+            }
+
+            initCanvasSize() {
+                if (!this.canvas) return;
+                const dpr = this.dpr;
+                this.canvas.width = 192 * dpr;
+                this.canvas.height = 208 * dpr;
+                if (this.ctx) {
+                    this.ctx.imageSmoothingEnabled = true;
+                    this.ctx.imageSmoothingQuality = 'high';
+                }
+            }
+
+            loadCharacter(charId) {
+                const charCfg = PET_CHARACTERS[charId] || PET_CHARACTERS.aemeath;
+                this.currentCharId = charCfg.id;
+                localStorage.setItem('sherlock_pet_char', charCfg.id);
+
+                // 更新界面文案
+                if (companionCharTag) companionCharTag.textContent = charCfg.speakerTag;
+                if (companionHintLabel) companionHintLabel.textContent = charCfg.hintLabel;
+                if (switchBtnHint) switchBtnHint.textContent = charCfg.switchBtnText;
+                if (switchBtnBubble) switchBtnBubble.textContent = charCfg.switchBtnText;
+                if (petResonanceRing && charCfg.ringBg) petResonanceRing.style.background = charCfg.ringBg;
+
+                // 优先从内存缓存加载
+                if (this.imgCache.has(charCfg.atlas)) {
+                    this.atlasImg = this.imgCache.get(charCfg.atlas);
+                    this.isLoaded = true;
+                    this.setAnim('idle', null, true);
+                    return;
+                }
+
+                this.isLoaded = false;
+                const img = new Image();
+                img.onload = () => {
+                    this.imgCache.set(charCfg.atlas, img);
+                    this.atlasImg = img;
+                    this.isLoaded = true;
+                    this.setAnim('idle', null, true);
+                };
+                img.onerror = () => {
+                    // 若 WebP 加载异常则尝试 Fallback
+                    if (charCfg.atlasFallback && charCfg.atlasFallback !== charCfg.atlas) {
+                        const fallbackImg = new Image();
+                        fallbackImg.onload = () => {
+                            this.imgCache.set(charCfg.atlas, fallbackImg);
+                            this.atlasImg = fallbackImg;
+                            this.isLoaded = true;
+                            this.setAnim('idle', null, true);
+                        };
+                        fallbackImg.src = charCfg.atlasFallback;
+                    }
+                };
+                img.src = charCfg.atlas;
+
+                // 预加载另一角色的图集，做到无缝秒切
+                const otherKey = charCfg.switchTarget;
+                if (otherKey && PET_CHARACTERS[otherKey] && !this.imgCache.has(PET_CHARACTERS[otherKey].atlas)) {
+                    const preloadImg = new Image();
+                    preloadImg.onload = () => this.imgCache.set(PET_CHARACTERS[otherKey].atlas, preloadImg);
+                    preloadImg.src = PET_CHARACTERS[otherKey].atlas;
+                }
+            }
+
+            toggleCharacter() {
+                const cur = PET_CHARACTERS[this.currentCharId] || PET_CHARACTERS.aemeath;
+                const nextId = cur.switchTarget || 'aemeath';
+                this.loadCharacter(nextId);
+                this.setAnim('jumping');
+                playUiBeep(1350, 0.08);
+            }
+
+            setAnim(name, onDone = null, force = false) {
+                if (!PET_ANIMATIONS[name]) return;
+                if (this.state.anim === name && !force) return;
+                this.state.anim = name;
+                this.state.frame = 0;
+                this.state.elapsed = 0;
+                this.state.onDone = onDone;
+                this.draw();
+            }
+
+            startAnimationLoop() {
+                const tick = (now) => {
+                    this.step(now);
+                    requestAnimationFrame(tick);
+                };
+                this.state.lastTick = performance.now();
+                requestAnimationFrame(tick);
+            }
+
+            step(now) {
+                const dt = Math.min(now - this.state.lastTick, 100);
+                this.state.lastTick = now;
+
+                if (!this.isLoaded || !this.ctx) return;
+
+                const animCfg = PET_ANIMATIONS[this.state.anim];
+                if (!animCfg) return;
+
+                if (animCfg.kind !== 'look') {
+                    const dur = animCfg.durations[Math.min(this.state.frame, animCfg.durations.length - 1)] || 120;
+                    this.state.elapsed += dt;
+                    if (this.state.elapsed >= dur) {
+                        this.state.elapsed -= dur;
+                        if (this.state.elapsed > dur) this.state.elapsed = 0;
+
+                        if (this.state.frame < animCfg.frames - 1) {
+                            this.state.frame++;
+                        } else if (animCfg.loop) {
+                            this.state.frame = 0;
+                        } else {
+                            const cb = this.state.onDone;
+                            this.state.onDone = null;
+                            if (cb) {
+                                cb();
+                            } else if (animCfg.returnTo) {
+                                this.setAnim(animCfg.returnTo);
+                            } else {
+                                this.setAnim('idle');
+                            }
+                        }
+                    }
+                }
+
+                this.draw();
+            }
+
+            draw() {
+                if (!this.isLoaded || !this.ctx || !this.atlasImg) return;
+                const ctx = this.ctx;
+                const animCfg = PET_ANIMATIONS[this.state.anim] || PET_ANIMATIONS['idle'];
+                const col = (animCfg.startCol || 0) + this.state.frame;
+                const sx = col * this.cw;
+                const sy = animCfg.row * this.ch;
+
+                const pw = this.canvas.width;
+                const ph = this.canvas.height;
+
+                ctx.clearRect(0, 0, pw, ph);
+                ctx.drawImage(
+                    this.atlasImg,
+                    sx, sy, this.cw, this.ch,
+                    0, 0, pw, ph
+                );
+            }
+
+            bindGazeTracking() {
+                window.addEventListener('mousemove', (e) => {
+                    if (!this.isLoaded || !this.canvas) return;
+                    if (isDraggingPet) return;
+                    // 一次性非循环动作执行期间（如跳跃、挥手）不被视线追踪打断
+                    const curAnim = this.state.anim;
+                    if (['jumping', 'waving'].includes(curAnim)) return;
+
+                    const rect = this.canvas.getBoundingClientRect();
+                    const cx = rect.left + rect.width / 2;
+                    const cy = rect.top + rect.height * 0.42;
+                    const dx = e.clientX - cx;
+                    const dy = e.clientY - cy;
+                    const dist = Math.hypot(dx, dy);
+
+                    if (dist > 380) {
+                        if (curAnim === 'look-row-9' || curAnim === 'look-row-10') {
+                            this.setAnim('idle');
+                        }
+                        return;
+                    }
+
+                    // 16 方向角度计算 (以正上方为 0 度，顺时针方向)
+                    const deg = (Math.atan2(dx, -dy) * 180 / Math.PI + 360) % 360;
+                    const idx = Math.round(deg / 22.5) % 16;
+                    const targetLane = idx < 8 ? 'look-row-9' : 'look-row-10';
+                    const targetFrame = idx < 8 ? idx : idx - 8;
+
+                    if (this.state.anim !== targetLane || this.state.frame !== targetFrame) {
+                        this.state.anim = targetLane;
+                        this.state.frame = targetFrame;
+                        this.state.elapsed = 0;
+                        this.state.onDone = null;
+                    }
+
+                    // 鼠标静止 2.2 秒后轻柔恢复待机呼吸
+                    if (this.lookResumeTimer) clearTimeout(this.lookResumeTimer);
+                    this.lookResumeTimer = setTimeout(() => {
+                        if (this.state.anim === 'look-row-9' || this.state.anim === 'look-row-10') {
+                            this.setAnim('idle');
+                        }
+                    }, 2200);
+                });
+            }
+        }
+
+        const petEngine = new WebSpritePetEngine(petCanvas);
+
+        // 切换角色按钮事件
+        if (switchBtnHint) {
+            switchBtnHint.addEventListener('click', (e) => {
+                e.stopPropagation();
+                petEngine.toggleCharacter();
+            });
+        }
+        if (switchBtnBubble) {
+            switchBtnBubble.addEventListener('click', (e) => {
+                e.stopPropagation();
+                petEngine.toggleCharacter();
+            });
+        }
+
+        // ================= 传讯台词气泡系统 =================
         let compPhraseIdx = 0;
         let bubbleTimer = null;
 
-        // 仅在用户主动点击时才产生气泡（默认静默无气泡，绝不遮挡手机/电脑屏幕）
         function showCompanionSpeech() {
             if (!companionBubble) return;
-            const targetEl = companionBubbleText || companionBubble;
-            compPhraseIdx = (compPhraseIdx + 1) % companionPhrases.length;
-            if (targetEl) targetEl.textContent = companionPhrases[compPhraseIdx];
+            const curChar = PET_CHARACTERS[petEngine.currentCharId] || PET_CHARACTERS.aemeath;
+            const phrases = curChar.phrases;
+            compPhraseIdx = (compPhraseIdx + 1) % phrases.length;
+            if (companionBubbleText) companionBubbleText.textContent = phrases[compPhraseIdx];
 
-            // 隐藏引导提示，展示气泡
             if (companionHintPill) companionHintPill.classList.add('hidden');
             companionBubble.style.display = 'block';
             companionBubble.style.opacity = '1';
 
-            // 8 秒后自动收起气泡，恢复引导提示，避免长久遮挡视线
             if (bubbleTimer) clearTimeout(bubbleTimer);
             bubbleTimer = setTimeout(() => {
                 companionBubble.style.opacity = '0';
@@ -4122,62 +4457,31 @@
             }, 8000);
         }
 
-        // 点击引导提示词也可以直接触发互动
         if (companionHintPill) {
             companionHintPill.addEventListener('click', (e) => {
+                if (e.target === switchBtnHint || e.target.closest('#companion-switch-btn-hint')) return;
                 e.stopPropagation();
                 if (petStage) petStage.click();
             });
         }
 
-        // ================= 鸣潮飞行雪绒【真·二次元交互桌宠精灵帧系统】 =================
-        const AEMEATH_ASSETS = {
-            idle: 'assets/aemeath_preview_idle.gif',     // 7帧大羽翼经典浮空呼吸 (263KB, 0残影, 极度丝滑)
-            wave: 'assets/aemeath_preview_waving.gif',   // 挥手打招呼 (165KB)
-            jump: 'assets/aemeath_preview_jumping.gif',  // 欢快起跳扑翅 (201KB)
-            review: 'assets/aemeath_preview_review.gif', // 好奇张望发呆思考 (223KB)
-            drag: 'assets/sinlatansen_drag.gif'          // 提溜抓起扑腾小脚丫 (128KB)
-        };
-
-        let currentPetState = 'idle';
-        function setCompanionState(state) {
-            if (!petImg) return;
-            const asset = AEMEATH_ASSETS[state] || AEMEATH_ASSETS.idle;
-            currentPetState = state;
-            if (petImg.getAttribute('src') !== asset) {
-                petImg.src = asset;
-            }
-        }
-
-        // 静默空闲预加载整套动作序列 (合计仅 ~700KB)，彻底消除动作切换延迟
-        function preloadCompanionAssets() {
-            Object.values(AEMEATH_ASSETS).forEach(url => {
-                const img = new Image();
-                img.src = url;
-            });
-        }
-        if ('requestIdleCallback' in window) {
-            window.requestIdleCallback(() => preloadCompanionAssets(), { timeout: 2500 });
-        } else {
-            window.addEventListener('load', () => setTimeout(preloadCompanionAssets, 1000));
-        }
-
-        // ================= 全屏自由拖拽 & 悬浮交互引擎 =================
+        // ================= 全屏自由拖拽 & 左右奔跑状态机 (与若曦桌宠100%同源) =================
         let isDraggingPet = false;
         let petDragStartX = 0;
         let petDragStartY = 0;
         let petInitialLeft = 0;
         let petInitialTop = 0;
         let hasMovedPet = false;
-        let ambientPetTimer = null;
+        let lastMoveClientX = 0;
+        let lastMoveClientY = 0;
+        let moveAnimDebounceTimer = null;
 
         function handlePetClick(e) {
             if (e && e.preventDefault) e.preventDefault();
-            setCompanionState('jump');
+            petEngine.setAnim('jumping');
             if (petStage) petStage.style.transform = 'scale(1.15) translateY(-8px)';
             showCompanionSpeech();
 
-            // 联动散落樱花彩蛋
             if (typeof triggerSakuraBurst === 'function') {
                 triggerSakuraBurst();
             }
@@ -4185,73 +4489,100 @@
 
             setTimeout(() => {
                 if (!isDraggingPet) {
-                    setCompanionState('idle');
                     if (petStage) petStage.style.transform = 'scale(1) translateY(0)';
                 }
             }, 1200);
         }
 
         if (companionWidget && petStage) {
-            // Pointer Down (鼠标按下/手指触摸)
+            // Pointer Down
             petStage.addEventListener('pointerdown', (e) => {
-                if (e.button && e.button !== 0) return; // 只响应主按键
+                if (e.button && e.button !== 0) return;
                 isDraggingPet = true;
                 hasMovedPet = false;
                 petDragStartX = e.clientX;
                 petDragStartY = e.clientY;
+                lastMoveClientX = e.clientX;
+                lastMoveClientY = e.clientY;
 
                 const rect = companionWidget.getBoundingClientRect();
                 petInitialLeft = rect.left;
                 petInitialTop = rect.top;
 
-                // 解除右下角固定定位，转为绝对视口坐标
-                companionWidget.style.bottom = 'auto';
-                companionWidget.style.right = 'auto';
-                companionWidget.style.left = petInitialLeft + 'px';
-                companionWidget.style.top = petInitialTop + 'px';
+                // 解除定位限制，固定到绝对视口坐标
+                companionWidget.classList.add('is-positioned');
+                companionWidget.style.setProperty('left', petInitialLeft + 'px', 'important');
+                companionWidget.style.setProperty('top', petInitialTop + 'px', 'important');
+                companionWidget.style.setProperty('bottom', 'auto', 'important');
+                companionWidget.style.setProperty('right', 'auto', 'important');
 
                 try { petStage.setPointerCapture(e.pointerId); } catch(err) {}
             });
 
-            // Pointer Move (拖拽移动桌宠)
+            // Pointer Move (左右拖拽奔跑 + 悬空提溜扑腾)
             petStage.addEventListener('pointermove', (e) => {
                 if (!isDraggingPet) return;
-                const dx = e.clientX - petDragStartX;
-                const dy = e.clientY - petDragStartY;
+                const totalDx = e.clientX - petDragStartX;
+                const totalDy = e.clientY - petDragStartY;
 
-                if (!hasMovedPet && Math.hypot(dx, dy) > 6) {
+                if (!hasMovedPet && Math.hypot(totalDx, totalDy) > 5) {
                     hasMovedPet = true;
-                    // 切换为被提溜扑腾抓起动作
-                    setCompanionState('drag');
                     companionWidget.classList.add('is-dragging');
                 }
 
                 if (hasMovedPet) {
-                    const margin = 10;
+                    // 核心算法：实时计算瞬时水平位移速度 stepDx
+                    const stepDx = e.clientX - lastMoveClientX;
+                    lastMoveClientX = e.clientX;
+                    lastMoveClientY = e.clientY;
+
+                    if (stepDx < -1.5) {
+                        // 向左拉拽 -> 触发向左奔跑动画
+                        petEngine.setAnim('running-left');
+                    } else if (stepDx > 1.5) {
+                        // 向右拉拽 -> 触发向右奔跑动画
+                        petEngine.setAnim('running-right');
+                    } else {
+                        // 瞬时水平位移停顿（如垂直提溜或悬空悬停），轻微延迟后切入受阻挣扎扑腾动作
+                        if (!moveAnimDebounceTimer) {
+                            moveAnimDebounceTimer = setTimeout(() => {
+                                moveAnimDebounceTimer = null;
+                                if (isDraggingPet && hasMovedPet) {
+                                    petEngine.setAnim('failed');
+                                }
+                            }, 140);
+                        }
+                    }
+
+                    // 视口安全边界限制
+                    const margin = 8;
                     const maxLeft = window.innerWidth - companionWidget.offsetWidth - margin;
                     const maxTop = window.innerHeight - companionWidget.offsetHeight - margin;
-                    const newLeft = Math.max(margin, Math.min(maxLeft, petInitialLeft + dx));
-                    const newTop = Math.max(margin, Math.min(maxTop, petInitialTop + dy));
+                    const newLeft = Math.max(margin, Math.min(maxLeft, petInitialLeft + totalDx));
+                    const newTop = Math.max(margin, Math.min(maxTop, petInitialTop + totalDy));
 
-                    companionWidget.style.left = newLeft + 'px';
-                    companionWidget.style.top = newTop + 'px';
+                    companionWidget.style.setProperty('left', newLeft + 'px', 'important');
+                    companionWidget.style.setProperty('top', newTop + 'px', 'important');
                 }
             });
 
-            // Pointer Up (松手放置)
+            // Pointer Up
             petStage.addEventListener('pointerup', (e) => {
                 if (!isDraggingPet) return;
                 isDraggingPet = false;
                 companionWidget.classList.remove('is-dragging');
+                if (moveAnimDebounceTimer) {
+                    clearTimeout(moveAnimDebounceTimer);
+                    moveAnimDebounceTimer = null;
+                }
                 try { petStage.releasePointerCapture(e.pointerId); } catch(err) {}
 
                 if (hasMovedPet) {
-                    // 放置桌宠：恢复优雅待机浮动
-                    setCompanionState('idle');
+                    // 放置桌宠：恢复优雅待机呼吸
+                    petEngine.setAnim('idle', null, true);
                     if (petStage) petStage.style.transform = 'scale(1) translateY(0)';
                     playUiBeep(1100, 0.05);
                 } else {
-                    // 未发生移动视为点击互动
                     handlePetClick(e);
                 }
             });
@@ -4259,36 +4590,37 @@
             petStage.addEventListener('pointercancel', () => {
                 isDraggingPet = false;
                 companionWidget.classList.remove('is-dragging');
-                setCompanionState('idle');
+                petEngine.setAnim('idle', null, true);
             });
 
-            // 桌面端鼠标靠近时打招呼
+            // 桌面端鼠标移入移出友好问候
             petStage.addEventListener('mouseenter', () => {
-                if (!isDraggingPet && currentPetState === 'idle') {
-                    setCompanionState('wave');
+                if (!isDraggingPet && petEngine.state.anim === 'idle') {
+                    petEngine.setAnim('waving');
                 }
             });
             petStage.addEventListener('mouseleave', () => {
-                if (!isDraggingPet && (currentPetState === 'wave' || currentPetState === 'review')) {
-                    setCompanionState('idle');
+                if (!isDraggingPet && (petEngine.state.anim === 'waving' || petEngine.state.anim === 'review')) {
+                    petEngine.setAnim('idle');
                 }
             });
         }
 
         // ================= 闲置自主生命力 (每 18~28 秒随机活动) =================
+        let ambientPetTimer = null;
         function scheduleAmbientAction() {
             const delay = 18000 + Math.random() * 10000;
             ambientPetTimer = setTimeout(() => {
-                if (!isDraggingPet && currentPetState === 'idle') {
+                if (!isDraggingPet && petEngine.state.anim === 'idle') {
                     const r = Math.random();
                     if (r < 0.5) {
-                        setCompanionState('review'); // 好奇张望思考
+                        petEngine.setAnim('review');
                     } else {
-                        setCompanionState('wave'); // 热情挥手
+                        petEngine.setAnim('waving');
                     }
                     setTimeout(() => {
-                        if (!isDraggingPet && (currentPetState === 'review' || currentPetState === 'wave')) {
-                            setCompanionState('idle');
+                        if (!isDraggingPet && (petEngine.state.anim === 'review' || petEngine.state.anim === 'waving')) {
+                            petEngine.setAnim('idle');
                         }
                         scheduleAmbientAction();
                     }, 2400);
