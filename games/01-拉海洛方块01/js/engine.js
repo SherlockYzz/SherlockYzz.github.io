@@ -708,8 +708,17 @@
     }
 
     // 页面加载自动实例化并暴露到全局
-    window.addEventListener('DOMContentLoaded', () => {
-        window.LahairoGame = new LahairoGame();
-    });
+    function bootLahairo01() {
+        if (!window.LahairoGame && !window.game) {
+            window.LahairoGame = new LahairoGame();
+            window.game = window.LahairoGame;
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bootLahairo01);
+    } else {
+        bootLahairo01();
+    }
 
 })(window);

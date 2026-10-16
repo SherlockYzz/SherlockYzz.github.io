@@ -1107,8 +1107,17 @@
         }
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-        window.FlowGame = new FlowGame();
-    });
+    function bootFlow() {
+        if (!window.FlowGame && !window.game) {
+            window.FlowGame = new FlowGame();
+            window.game = window.FlowGame;
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bootFlow);
+    } else {
+        bootFlow();
+    }
 
 })(window);

@@ -833,8 +833,17 @@
         }
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-        window.LahairoFallingGame = new LahairoFallingGame();
-    });
+    function bootLahairo02() {
+        if (!window.LahairoFallingGame && !window.game) {
+            window.LahairoFallingGame = new LahairoFallingGame();
+            window.game = window.LahairoFallingGame;
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bootLahairo02);
+    } else {
+        bootLahairo02();
+    }
 
 })(window);

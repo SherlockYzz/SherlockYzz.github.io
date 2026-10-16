@@ -668,8 +668,16 @@
         }
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-        window.game = new StackGame();
-    });
+    function bootStack() {
+        if (!window.game) {
+            window.game = new StackGame();
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bootStack);
+    } else {
+        bootStack();
+    }
 
 })(window);

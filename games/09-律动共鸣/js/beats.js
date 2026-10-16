@@ -948,7 +948,16 @@
     }
 
     window.EchoBeatsGame = EchoBeatsGame;
-    window.addEventListener('DOMContentLoaded', () => {
-        window.game = new EchoBeatsGame();
-    });
+
+    function bootBeats() {
+        if (!window.game) {
+            window.game = new EchoBeatsGame();
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bootBeats);
+    } else {
+        bootBeats();
+    }
 })(window);

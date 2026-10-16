@@ -748,8 +748,17 @@
         }
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-        window.ResonanceBallGame = new ResonanceBallGame();
-    });
+    function bootResonance() {
+        if (!window.ResonanceBallGame && !window.game) {
+            window.ResonanceBallGame = new ResonanceBallGame();
+            window.game = window.ResonanceBallGame;
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bootResonance);
+    } else {
+        bootResonance();
+    }
 
 })(window);

@@ -598,7 +598,16 @@
     }
 
     window.SudokuGame = SudokuGame;
-    window.addEventListener('DOMContentLoaded', () => {
-        window.game = new SudokuGame();
-    });
+
+    function bootSudoku() {
+        if (!window.game) {
+            window.game = new SudokuGame();
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bootSudoku);
+    } else {
+        bootSudoku();
+    }
 })(window);

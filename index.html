@@ -28,10 +28,10 @@
     <meta name="twitter:image" content="https://sherlockyzz.github.io/avatar.png">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300f0ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polygon points='12 2 2 7 12 12 22 7 12 2'/><polyline points='2 17 12 22 22 17'/><polyline points='2 12 12 17 22 12'/></svg>">
 
-    <!-- Google Fonts 纯美学字体栈 -->
+    <!-- Google Fonts 纯美学极速字体栈 (仅保留西文微量字形，CJK 采用原生高刷系统字体，零网络阻塞) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700;900&family=Space+Grotesk:wght@500;600;700;800&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -57,8 +57,8 @@
 
             --font-display: 'Space Grotesk', -apple-system, sans-serif;
             --font-mono: 'JetBrains Mono', 'Consolas', monospace;
-            --font-sans: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
-            --font-anime: 'Zen Maru Gothic', 'Noto Sans SC', sans-serif;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            --font-anime: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
         }
 
         * {
@@ -3683,8 +3683,8 @@
             <!-- 10 首曲目抽屉列表 -->
             <div class="music-playlist-drawer" id="music-playlist-drawer"></div>
         </div>
-        <!-- 核心音频元素 (preload="none" 零首屏网络占用，用户交互时按需挂载并秒播) -->
-        <audio id="global-bgm-audio" preload="none" playsinline webkit-playsinline></audio>
+        <!-- 核心音频元素 (preload="metadata" 仅拉取32KB头部信息就绪，零网络占用，点击即刻秒播) -->
+        <audio id="global-bgm-audio" src="audio/track_01.mp3" preload="metadata" playsinline webkit-playsinline></audio>
     </div>
 
     <!-- 页面内容层 -->
@@ -6951,23 +6951,7 @@
             renderPlaylists();
         }
 
-        // ================= 智能音频内存缓冲池 (彻底根除跨国 CDN 范围请求连接熔断与卡顿) =================
-        const audioBlobCache = new Map();
-
-        async function prefetchTrackBlob(index) {
-            const track = bgmPlaylist[index];
-            if (!track || audioBlobCache.has(track.src)) return;
-            try {
-                const res = await fetch(track.src);
-                if (res.ok) {
-                    const blob = await res.blob();
-                    const blobUrl = URL.createObjectURL(blob);
-                    audioBlobCache.set(track.src, blobUrl);
-                }
-            } catch(e) {}
-        }
-
-        // 核心播放调度器 (规范 HTML5 Audio 手势起播，绝无虚假播放状态卡顿)
+        // ================= 原生流式音频调度器 (规范 HTML5 Audio 手势起播，零卡顿零带宽浪费) =================
         function safeExecutePlay() {
             if (!bgmAudio) return;
             if (audioCtx && audioCtx.state === 'suspended') {
@@ -6989,7 +6973,7 @@
             }
         }
 
-        // 载入并播放曲目 (优先从内存 Blob 秒级启动，无网络颠簸)
+        // 载入并播放曲目 (原生 206 Partial Content 流式播放，0ms 瞬时响应)
         function loadAndPlay(index, autoPlay = true) {
             bgmIndex = (index + bgmPlaylist.length) % bgmPlaylist.length;
             const track = bgmPlaylist[bgmIndex];
@@ -6998,17 +6982,7 @@
             isChangingTrack = true;
             try { bgmAudio.pause(); } catch(e) {}
 
-            // 优先挂载内存 Blob URL，若尚未缓存完成则使用静态路径并立即启动后台全速拉取
-            if (audioBlobCache.has(track.src)) {
-                bgmAudio.src = audioBlobCache.get(track.src);
-            } else {
-                bgmAudio.src = track.src;
-                prefetchTrackBlob(bgmIndex);
-            }
-
-            // 预加载队列下一首曲目，确保连续切歌 100% 丝滑
-            const nextIdx = (bgmIndex + 1) % bgmPlaylist.length;
-            setTimeout(() => prefetchTrackBlob(nextIdx), 1500);
+            bgmAudio.src = track.src;
 
             // 立即重置视觉进度与时间显示，给用户即刻响应反馈
             if (!isDraggingSeek) {
@@ -7028,7 +7002,7 @@
             setTimeout(() => { isChangingTrack = false; }, 300);
         }
 
-        // 默认初始化装载第 1 首曲目信息 (只同步纯静态 UI，严禁在此阶段抢载音频资源或触发自动播放)
+        // 默认初始化装载第 1 首曲目信息 (只同步纯静态 UI)
         syncMusicUI();
 
         // 播放/暂停总控 (精准响应，真实感知音频状态)
@@ -7635,6 +7609,20 @@
                         else p.classList.remove('active');
                     });
                 }
+
+                // 智能预热：静默预载当前选中街机资源，确保点击启动时 0ms 瞬间直出
+                this.prefetchGame(game.path);
+            }
+
+            prefetchGame(path) {
+                if (!path) return;
+                if (!this.prefetchedSet) this.prefetchedSet = new Set();
+                if (this.prefetchedSet.has(path)) return;
+                this.prefetchedSet.add(path);
+                const link = document.createElement('link');
+                link.rel = 'prefetch';
+                link.href = path;
+                document.head.appendChild(link);
             }
 
             startAutoCarousel() {

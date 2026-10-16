@@ -1639,8 +1639,16 @@
         }
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-        window.game = new ChromaGame();
-    });
+    function bootChroma() {
+        if (!window.game) {
+            window.game = new ChromaGame();
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bootChroma);
+    } else {
+        bootChroma();
+    }
 
 })(window);

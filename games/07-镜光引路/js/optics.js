@@ -996,8 +996,16 @@
         }
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-        window.game = new OpticsGame();
-    });
+    function bootOptics() {
+        if (!window.game) {
+            window.game = new OpticsGame();
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bootOptics);
+    } else {
+        bootOptics();
+    }
 
 })(window);

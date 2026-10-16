@@ -675,8 +675,17 @@
         }
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-        window.HexGame = new HexGame();
-    });
+    function bootHex() {
+        if (!window.HexGame && !window.game) {
+            window.HexGame = new HexGame();
+            window.game = window.HexGame;
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bootHex);
+    } else {
+        bootHex();
+    }
 
 })(window);
