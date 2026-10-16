@@ -903,6 +903,10 @@
             /* ================= 彻底修复移动端半屏 BUG：自适应视口收容 ================= */
             .hud-nav {
                 padding: 10px 14px;
+                height: 60px !important;
+                max-height: 60px !important;
+                box-sizing: border-box !important;
+                overflow: hidden !important;
             }
             .hud-status-bar {
                 display: none; /* 移动端隐藏状态栏，释放横向宽度 */
@@ -2919,7 +2923,7 @@
             <!-- Web Audio 实时声学频谱可视化 -->
             <button class="hud-btn" id="audio-toggle-btn" title="点击开启赛博音乐与合成声景">
                 <canvas class="audio-spectrum-canvas" id="audio-spectrum" width="38" height="14"></canvas>
-                <span id="audio-btn-label">点击开启音乐</span>
+                <span id="audio-btn-label">OFF</span>
             </button>
 
             <!-- 呼出黑客终端 HUD -->
@@ -3962,7 +3966,7 @@
 
                 isAudioPlaying = true;
                 if (btn) btn.classList.add('active');
-                if (label) label.textContent = 'AUDIO: ON';
+                if (label) label.textContent = 'ON';
                 playChime([523, 659, 784, 1046]);
 
                 // 若音乐盒尚未开播，联动起播音乐盒
@@ -3979,7 +3983,7 @@
                 synthOscs = [];
                 isAudioPlaying = false;
                 if (btn) btn.classList.remove('active');
-                if (label) label.textContent = '点击开启音乐';
+                if (label) label.textContent = 'OFF';
 
                 // 联动暂停音乐盒
                 if (bgmAudio && isBgmPlaying) {
@@ -5440,10 +5444,10 @@
             if (audioBtn && audioLabel) {
                 if (isBgmPlaying || isAudioPlaying) {
                     audioBtn.classList.add('active');
-                    audioLabel.textContent = 'AUDIO: ON';
+                    audioLabel.textContent = 'ON';
                 } else {
                     audioBtn.classList.remove('active');
-                    audioLabel.textContent = '点击开启音乐';
+                    audioLabel.textContent = 'OFF';
                 }
             }
 
