@@ -3374,7 +3374,7 @@
             opacity: 1;
         }
         .arcade-modal-container {
-            width: min(92vw, 540px);
+            width: min(94vw, 560px);
             height: min(96vh, 920px);
             background: #070a13;
             border: 1px solid rgba(0, 240, 255, 0.4);
@@ -3385,16 +3385,7 @@
             overflow: hidden;
             position: relative;
         }
-        @media (max-width: 768px) {
-            .arcade-modal-container {
-                width: 100vw !important;
-                height: 100dvh !important;
-                max-height: 100dvh !important;
-                border: none !important;
-                border-radius: 0 !important;
-                margin: 0 !important;
-            }
-            .arcade-modal-hud {
+        .arcade-modal-hud {
             height: 38px;
             background: #0d1222;
             border-bottom: 1px solid rgba(0, 240, 255, 0.2);
@@ -3411,10 +3402,8 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            overflow: hidden;
             white-space: nowrap;
-            min-width: 0;
-            flex-shrink: 1;
+            flex-shrink: 0;
         }
         .arcade-hud-led {
             width: 7px;
@@ -3430,8 +3419,6 @@
             font-size: 0.82rem;
             font-weight: 700;
             color: #fff;
-            overflow: hidden;
-            text-overflow: ellipsis;
             white-space: nowrap;
         }
         .arcade-hud-tag {
@@ -3521,6 +3508,37 @@
             color: #fff;
             box-shadow: 0 0 10px rgba(255, 51, 102, 0.4);
         }
+        .arcade-iframe-wrapper {
+            flex: 1;
+            width: 100%;
+            height: calc(100% - 38px);
+            position: relative;
+            background: #070a13;
+        }
+        #arcade-game-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        /* 移动端全屏响应式适配 */
+        @media (max-width: 768px) {
+            .arcade-modal-backdrop {
+                padding: 0;
+            }
+            .arcade-modal-container {
+                width: 100vw !important;
+                height: 100dvh !important;
+                max-height: 100dvh !important;
+                border: none !important;
+                border-radius: 0 !important;
+                margin: 0 !important;
+            }
+            .arcade-iframe-wrapper {
+                height: calc(100dvh - 38px) !important;
+            }
+        }
         @media (max-width: 580px) {
             .arcade-hud-center {
                 display: none !important;
@@ -3534,19 +3552,6 @@
             .arcade-hud-btn.arcade-hud-close .hud-btn-txt {
                 display: inline !important;
             }
-        }
-        .arcade-iframe-wrapper {
-            flex: 1;
-            width: 100%;
-            height: calc(100% - 38px);
-            position: relative;
-            background: #070a13;
-        }
-        #arcade-game-iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
         }
 
 </style>
@@ -4565,7 +4570,7 @@
                 <div class="arcade-hud-left">
                     <span class="arcade-hud-led"></span>
                     <span class="arcade-hud-title" id="arcade-modal-title">拉海洛方块</span>
-                    <span class="arcade-hud-tag" id="arcade-modal-tag">ARCADE // RUNNING</span>
+                    <span class="arcade-hud-tag" id="arcade-modal-tag">ARCADE</span>
                 </div>
                 <div class="arcade-hud-center">
                     <span class="arcade-score-pill">SCORE: <strong id="arcade-modal-score">0</strong></span>
