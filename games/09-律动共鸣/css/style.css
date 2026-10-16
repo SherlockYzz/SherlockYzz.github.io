@@ -149,6 +149,10 @@ html, body {
 
 #beats-canvas {
     display: block;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100%;
+    max-height: 100%;
     border-radius: var(--radius-md);
     box-shadow: 0 0 24px rgba(0, 0, 0, 0.7), 0 0 18px rgba(236, 72, 153, 0.15);
     background: rgba(12, 14, 24, 0.9);

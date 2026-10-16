@@ -638,10 +638,13 @@
             const container = this.canvas.parentElement;
             if (!container) return;
             const rect = container.getBoundingClientRect();
+            if (rect.width === 0 || rect.height === 0) return;
             const dpr = window.devicePixelRatio || 1;
 
-            this.canvas.width = rect.width * dpr;
-            this.canvas.height = rect.height * dpr;
+            this.canvas.width = Math.round(rect.width * dpr);
+            this.canvas.height = Math.round(rect.height * dpr);
+            this.canvas.style.width = rect.width + 'px';
+            this.canvas.style.height = rect.height + 'px';
             this.viewW = rect.width;
             this.viewH = rect.height;
 
@@ -880,15 +883,28 @@
                 ctx.shadowBlur = 12;
 
                 ctx.beginPath();
-                ctx.roundRect(x, y - noteH / 2, noteW, noteH, 6);
+                this._drawRoundedRect(ctx, x, y - noteH / 2, noteW, noteH, 6);
                 ctx.fill();
 
                 ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
                 ctx.beginPath();
-                ctx.roundRect(x + 4, y - noteH / 2 + 2, noteW - 8, 4, 2);
+                this._drawRoundedRect(ctx, x + 4, y - noteH / 2 + 2, noteW - 8, 4, 2);
                 ctx.fill();
 
                 ctx.restore();
+            }
+        }
+
+        _drawRoundedRect(ctx, x, y, w, h, r) {
+            if (typeof ctx.roundRect === 'function') {
+                ctx.roundRect(x, y, w, h, r);
+            } else {
+                ctx.moveTo(x + r, y);
+                ctx.arcTo(x + w, y, x + w, y + h, r);
+                ctx.arcTo(x + w, y + h, x, y + h, r);
+                ctx.arcTo(x, y + h, x, y, r);
+                ctx.arcTo(x, y, x + w, y, r);
+                ctx.closePath();
             }
         }
 
