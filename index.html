@@ -1280,33 +1280,21 @@
             user-select: none;
         }
 
-        /* 交互引导提示条 (初始不说话，引导用户轻触互动) */
+        /* 角色快速切换胶囊容器 (极简纯净 · 零多余文字遮挡) */
         .companion-hint-pill {
-            background: rgba(15, 23, 42, 0.88);
-            border: 1px solid rgba(0, 240, 255, 0.45);
-            border-radius: 20px;
-            padding: 4px 10px;
-            font-size: 0.72rem;
-            font-family: var(--font-mono);
-            color: var(--cyan);
-            box-shadow: 0 4px 16px rgba(0, 240, 255, 0.25);
-            backdrop-filter: blur(10px);
-            margin-bottom: 6px;
-            cursor: pointer;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            padding: 0;
+            margin-bottom: 4px;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            white-space: nowrap;
-            animation: hint-pulse 2.2s ease-in-out infinite;
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            justify-content: flex-end;
             user-select: none;
+            transition: opacity 0.2s ease;
         }
         .companion-hint-pill.hidden {
             display: none !important;
-        }
-        @keyframes hint-pulse {
-            0%, 100% { transform: translateY(0); box-shadow: 0 0 10px rgba(0, 240, 255, 0.25); border-color: rgba(0, 240, 255, 0.4); }
-            50% { transform: translateY(-3px); box-shadow: 0 0 18px rgba(0, 240, 255, 0.55); border-color: var(--cyan); }
         }
 
         /* 对话气泡 (Galgame 极客微型气泡 · 极致轻量防遮挡，体积缩减 60%) */
@@ -3070,10 +3058,8 @@
 
     <!-- ================= 《鸣潮》飞行雪绒 · 爱弥斯 & 白发灵狐 · 若曦 活体桌面挂件 ================= -->
     <div class="anime-companion-widget" id="companion-widget">
-        <!-- 初始引导提示词（默认展示，引导用户拖拽与点击互动） -->
-        <div class="companion-hint-pill" id="companion-hint-pill" title="可按住拖拽桌宠或点击互动">
-            <span style="font-size:0.8rem;">✨</span>
-            <span id="companion-hint-label">飞行雪绒 · 左右拖拽奔跑</span>
+        <!-- 角色切换快捷按键 (精悍 2 字符，彻底剔除多余引导文字) -->
+        <div class="companion-hint-pill" id="companion-hint-pill">
             <button class="companion-switch-char-btn" id="companion-switch-btn-hint" title="切换角色（爱弥斯 / 若曦）">切换</button>
         </div>
         <!-- 日系 Galgame 极客微型气泡 (初始静默隐藏，点击挂件后才弹出) -->
@@ -4151,7 +4137,6 @@
         const companionBubble = document.getElementById('companion-bubble');
         const companionBubbleText = document.getElementById('companion-bubble-text');
         const companionHintPill = document.getElementById('companion-hint-pill');
-        const companionHintLabel = document.getElementById('companion-hint-label');
         const companionCharTag = document.getElementById('companion-character-tag');
         const petStage = document.getElementById('companion-avatar');
         const petCanvas = document.getElementById('pet-sprite-canvas');
@@ -4165,7 +4150,6 @@
                 id: 'aemeath',
                 name: '飞行雪绒 · 爱弥斯',
                 speakerTag: '爱弥斯',
-                hintLabel: '飞行雪绒 · 左右拖拽奔跑',
                 switchTarget: 'ruoxi',
                 switchBtnText: '切换',
                 preview: 'assets/aemeath_preview.png',
@@ -4189,7 +4173,6 @@
                 id: 'ruoxi',
                 name: '白发灵狐 · 若曦',
                 speakerTag: '若曦',
-                hintLabel: '灵狐若曦 · 左右拖拽奔跑',
                 switchTarget: 'aemeath',
                 switchBtnText: '切换',
                 preview: 'assets/ruoxi_preview.png',
@@ -4273,8 +4256,9 @@
             }
 
             preloadAll() {
+                // 仅预载轻量的 preview 和主力 WebP 图集，绝不并发加载 3MB PNG 阻塞网络与带宽
                 Object.values(PET_CHARACTERS).forEach(cfg => {
-                    [cfg.preview, cfg.atlas, cfg.atlasFallback].filter(Boolean).forEach(url => {
+                    [cfg.preview, cfg.atlas].filter(Boolean).forEach(url => {
                         if (!this.imgCache.has(url)) {
                             const img = new Image();
                             img.onload = () => this.imgCache.set(url, img);
@@ -4286,7 +4270,6 @@
 
             updateUiText(charCfg) {
                 if (companionCharTag) companionCharTag.textContent = charCfg.speakerTag;
-                if (companionHintLabel) companionHintLabel.textContent = charCfg.hintLabel;
                 if (switchBtnHint) switchBtnHint.textContent = charCfg.switchBtnText;
                 if (switchBtnBubble) switchBtnBubble.textContent = charCfg.switchBtnText;
                 if (petResonanceRing && charCfg.ringBg) petResonanceRing.style.background = charCfg.ringBg;
@@ -4294,49 +4277,49 @@
 
             loadCharacter(charId, isInitial = false) {
                 const charCfg = PET_CHARACTERS[charId] || PET_CHARACTERS.aemeath;
+                this.currentCharId = charCfg.id;
+                localStorage.setItem('sherlock_pet_char', charCfg.id);
+                this.updateUiText(charCfg);
 
-                // 首屏秒级直出预览，绝不留白
-                if (isInitial && !this.isLoaded) {
-                    this.updateUiText(charCfg);
-                    const pImg = new Image();
-                    pImg.onload = () => {
-                        if (!this.isLoaded && this.ctx && this.canvas) {
-                            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                            this.ctx.drawImage(pImg, 0, 0, this.canvas.width, this.canvas.height);
-                        }
-                    };
-                    pImg.src = charCfg.preview;
-                }
-
-                // 若内存中已有该图集缓存，0ms 瞬间切换
+                // 1. 若内存已有该角色图集，0ms 瞬间无缝切换
                 if (this.imgCache.has(charCfg.atlas)) {
                     this.atlasImg = this.imgCache.get(charCfg.atlas);
-                    this.currentCharId = charCfg.id;
-                    localStorage.setItem('sherlock_pet_char', charCfg.id);
-                    this.updateUiText(charCfg);
                     this.isLoaded = true;
-                    this.setAnim('idle', null, true);
+                    if (!isInitial) {
+                        this.setAnim('jumping');
+                        playUiBeep(1350, 0.08);
+                    } else {
+                        this.setAnim('idle', null, true);
+                    }
                     return;
                 }
 
-                // 核心保障：切换时绝不抹去当前画面，按钮提供友好加载提示
-                if (!isInitial) {
-                    if (switchBtnHint) switchBtnHint.textContent = '⏳ 载入中...';
-                    if (switchBtnBubble) switchBtnBubble.textContent = '⏳ 载入中...';
+                // 2. 若图集仍在加载，立刻用首屏轻量 preview(30KB) 瞬间直出画面，绝不卡在载入中，实现 0ms 秒切反馈！
+                const pImg = this.imgCache.get(charCfg.preview) || new Image();
+                const drawPreview = () => {
+                    if (this.ctx && this.canvas && this.currentCharId === charCfg.id) {
+                        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                        this.ctx.drawImage(pImg, 0, 0, this.canvas.width, this.canvas.height);
+                    }
+                };
+                if (pImg.complete && pImg.naturalWidth) {
+                    drawPreview();
+                } else {
+                    pImg.onload = drawPreview;
+                    if (!pImg.src) pImg.src = charCfg.preview;
                 }
 
+                if (!isInitial) {
+                    playUiBeep(1200, 0.06);
+                }
+
+                // 3. 后台加载完整动作图集，完成后无缝平滑切入动态循环
                 const onAtlasReady = (loadedImg) => {
                     this.imgCache.set(charCfg.atlas, loadedImg);
-                    this.atlasImg = loadedImg;
-                    this.currentCharId = charCfg.id;
-                    localStorage.setItem('sherlock_pet_char', charCfg.id);
-                    this.updateUiText(charCfg);
-                    this.isLoaded = true;
-                    if (isInitial) {
+                    if (this.currentCharId === charCfg.id) {
+                        this.atlasImg = loadedImg;
+                        this.isLoaded = true;
                         this.setAnim('idle', null, true);
-                    } else {
-                        this.setAnim('jumping');
-                        playUiBeep(1350, 0.08);
                     }
                 };
 
@@ -4346,11 +4329,6 @@
                     if (charCfg.atlasFallback && charCfg.atlasFallback !== charCfg.atlas) {
                         const fallbackImg = new Image();
                         fallbackImg.onload = () => onAtlasReady(fallbackImg);
-                        fallbackImg.onerror = () => {
-                            const pImg = new Image();
-                            pImg.onload = () => onAtlasReady(pImg);
-                            pImg.src = charCfg.preview;
-                        };
                         fallbackImg.src = charCfg.atlasFallback;
                     }
                 };
@@ -6090,8 +6068,8 @@
 
         const bgmAudio = document.getElementById('global-bgm-audio');
         const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(navigator.userAgent) || window.innerWidth <= 768;
-        // 🌟 遵照指令：手机端默认极小音量 0.08（防误触炸耳），电脑端默认 0.25
-        const defaultVolume = isMobileDevice ? 0.08 : 0.25;
+        // 默认初始化音量 (手机端 0.35 适中听感，电脑端 0.25)
+        const defaultVolume = isMobileDevice ? 0.35 : 0.25;
         let previousVolume = defaultVolume;
 
         // Hero CloudPlayer DOM 元素
@@ -6271,167 +6249,84 @@
             renderPlaylists();
         }
 
-        // 核心播放调度器 (具备跨平台手势维持、Token 会话防竞态、Abort 自动续播重试)
+        // 核心播放调度器 (规范 HTML5 Audio 手势起播，绝无虚假播放状态卡顿)
         function safeExecutePlay() {
-            userWantsPlayback = true;
-            const session = ++playSessionId;
-            executePlayWithRetry(session, 0);
-        }
-
-        function executePlayWithRetry(session, retryCount = 0) {
             if (!bgmAudio) return;
-            // 校验会话有效性与用户真实意图
-            if (session !== playSessionId || !userWantsPlayback) {
-                return;
-            }
-
             if (audioCtx && audioCtx.state === 'suspended') {
                 audioCtx.resume().catch(() => {});
             }
-
-            isBgmPlaying = true;
-            syncMusicUI();
-
-            let playPromise;
-            try {
-                playPromise = bgmAudio.play();
-            } catch (err) {
-                playPromise = Promise.reject(err);
-            }
-
+            const playPromise = bgmAudio.play();
             if (playPromise !== undefined) {
                 playPromise.then(() => {
-                    if (session === playSessionId && userWantsPlayback) {
-                        isChangingTrack = false;
-                        isBuffering = false;
-                        isBgmPlaying = true;
-                        syncMusicUI();
-                    }
+                    isBgmPlaying = true;
+                    syncMusicUI();
                 }).catch(err => {
-                    if (session !== playSessionId || !userWantsPlayback) return;
-                    console.warn(`[MobileAudioEngine] play() deferred (session ${session}, attempt ${retryCount}):`, err.name);
-
-                    // 移动端核心关键解法：切歌或加载较大 MP3 时，因缓冲不足或解码管道置换容易触发 AbortError
-                    // 此时手势权限已由用户交互锁定，只需在 canplay / loadeddata 事件触发时无缝续播即可 100% 成功起播！
-                    if (retryCount < 3) {
-                        let triggered = false;
-                        const onReady = () => {
-                            if (triggered) return;
-                            triggered = true;
-                            bgmAudio.removeEventListener('canplay', onReady);
-                            bgmAudio.removeEventListener('loadeddata', onReady);
-                            bgmAudio.removeEventListener('playing', onReady);
-                            if (session === playSessionId && userWantsPlayback) {
-                                executePlayWithRetry(session, retryCount + 1);
-                            }
-                        };
-
-                        bgmAudio.addEventListener('canplay', onReady, { once: true });
-                        bgmAudio.addEventListener('loadeddata', onReady, { once: true });
-                        bgmAudio.addEventListener('playing', onReady, { once: true });
-
-                        // 1200ms 防挂起安全兜底
-                        setTimeout(() => {
-                            if (!triggered && session === playSessionId && userWantsPlayback && bgmAudio.paused) {
-                                triggered = true;
-                                bgmAudio.removeEventListener('canplay', onReady);
-                                bgmAudio.removeEventListener('loadeddata', onReady);
-                                bgmAudio.removeEventListener('playing', onReady);
-                                executePlayWithRetry(session, retryCount + 1);
-                            }
-                        }, 1200);
+                    console.warn('[Audio] play rejected:', err);
+                    if (err.name === 'AbortError') {
                         return;
                     }
-
-                    // 重试衰竭
-                    isChangingTrack = false;
-                    isBuffering = false;
                     isBgmPlaying = false;
-                    userWantsPlayback = false;
                     syncMusicUI();
                 });
             }
         }
 
-        // 载入并播放曲目 (序列 Token 会话隔离 + WebKit 规范 .load() 重置流水线)
+        // 载入并播放曲目 (纯净平滑切歌，移除引发 AbortError 的多余 load() 规避移动端崩溃)
         function loadAndPlay(index, autoPlay = true) {
             bgmIndex = (index + bgmPlaylist.length) % bgmPlaylist.length;
             const track = bgmPlaylist[bgmIndex];
             if (!bgmAudio) return;
 
-            const session = ++playSessionId;
-            userWantsPlayback = autoPlay;
             isChangingTrack = true;
+            try { bgmAudio.pause(); } catch(e) {}
+            bgmAudio.src = track.src;
 
-            // 1. 立即重置视觉进度与时间显示，给用户即刻响应反馈
+            // 立即重置视觉进度与时间显示，给用户即刻响应反馈
             if (!isDraggingSeek) {
                 if (heroProgressFill) heroProgressFill.style.width = '0%';
                 if (progressFill) progressFill.style.width = '0%';
                 if (heroCurTime) heroCurTime.textContent = '00:00';
                 if (curTimeEl) curTimeEl.textContent = '00:00';
             }
-
-            // 2. 状态先行同步
-            if (autoPlay) {
-                isBgmPlaying = true;
-            }
             syncMusicUI();
 
-            // 3. 释放旧解码资源并重置新资源
-            try { bgmAudio.pause(); } catch(e) {}
-            bgmAudio.src = track.src;
-            try {
-                bgmAudio.load();
-            } catch(e) {}
-
-            // 4. 派发播放
             if (autoPlay) {
-                executePlayWithRetry(session, 0);
+                safeExecutePlay();
             } else {
-                isChangingTrack = false;
                 isBgmPlaying = false;
                 syncMusicUI();
             }
+            setTimeout(() => { isChangingTrack = false; }, 300);
         }
 
         // 默认初始化装载第 1 首曲目
         if (bgmAudio) {
             bgmAudio.src = bgmPlaylist[0].src;
-            try { bgmAudio.load(); } catch(e) {}
             syncMusicUI();
             const autoPlayPromise = bgmAudio.play();
             if (autoPlayPromise !== undefined) {
                 autoPlayPromise.then(() => {
-                    userWantsPlayback = true;
                     isBgmPlaying = true;
                     syncMusicUI();
                 }).catch(() => {
-                    userWantsPlayback = false;
                     isBgmPlaying = false;
                     syncMusicUI();
                 });
             }
         }
 
-        // 播放/暂停总控 (用户意志为最高信标，彻底消灭状态竞争脱节)
+        // 播放/暂停总控 (精准响应，真实感知音频状态)
         function togglePlayPause() {
             if (!bgmAudio) return;
-            if (isBgmPlaying || userWantsPlayback) {
-                userWantsPlayback = false;
-                playSessionId++; // 废弃所有旧重试
+            if (isBgmPlaying || !bgmAudio.paused) {
                 try { bgmAudio.pause(); } catch(e) {}
                 isBgmPlaying = false;
-                isChangingTrack = false;
                 syncMusicUI();
             } else {
-                userWantsPlayback = true;
-                const session = ++playSessionId;
                 if (!bgmAudio.src || bgmAudio.src === '' || bgmAudio.src === window.location.href) {
                     loadAndPlay(bgmIndex, true);
                 } else {
-                    isBgmPlaying = true;
-                    syncMusicUI();
-                    executePlayWithRetry(session, 0);
+                    safeExecutePlay();
                 }
             }
         }
@@ -6658,49 +6553,22 @@
             // 播放真正进入吐数据状态
             bgmAudio.addEventListener('playing', () => {
                 isChangingTrack = false;
-                isBuffering = false;
                 isBgmPlaying = true;
-                userWantsPlayback = true;
                 syncMusicUI();
             });
 
-            // 监听底层 pause 事件 (区分真实用户暂停 vs 切歌过渡异步 pause)
+            // 监听底层 pause 事件
             bgmAudio.addEventListener('pause', () => {
-                // 如果用户依然期望播放（例如切歌中、重载中、短暂缓冲），绝对不降级 UI！
-                if (userWantsPlayback) {
-                    return;
-                }
+                if (isChangingTrack) return;
                 isBgmPlaying = false;
                 syncMusicUI();
-            });
-
-            // 移动端网络缓冲状态感应
-            bgmAudio.addEventListener('waiting', () => {
-                if (userWantsPlayback) {
-                    isBuffering = true;
-                }
-            });
-
-            // 弱网或蜂窝网卡顿自动恢复
-            bgmAudio.addEventListener('stalled', () => {
-                if (userWantsPlayback && bgmAudio.paused && !isChangingTrack) {
-                    const session = playSessionId;
-                    setTimeout(() => {
-                        if (session === playSessionId && userWantsPlayback && bgmAudio.paused) {
-                            console.log('[MobileAudioEngine] Auto-recovering from stalled connection...');
-                            executePlayWithRetry(session, 1);
-                        }
-                    }, 1500);
-                }
             });
 
             // 曲目自然结束播放
             bgmAudio.addEventListener('ended', () => {
                 if (isLoopSingle) {
                     bgmAudio.currentTime = 0;
-                    const session = ++playSessionId;
-                    userWantsPlayback = true;
-                    executePlayWithRetry(session, 0);
+                    safeExecutePlay();
                 } else {
                     loadAndPlay(bgmIndex + 1, true);
                 }
@@ -6708,19 +6576,9 @@
 
             // 播放异常捕获与容错
             bgmAudio.addEventListener('error', (e) => {
-                console.warn('[MobileAudioEngine] Audio element error:', e);
-                if (userWantsPlayback && !isChangingTrack) {
-                    const session = playSessionId;
-                    setTimeout(() => {
-                        if (session === playSessionId && userWantsPlayback) {
-                            loadAndPlay(bgmIndex, true);
-                        }
-                    }, 1200);
-                } else {
-                    isBgmPlaying = false;
-                    userWantsPlayback = false;
-                    syncMusicUI();
-                }
+                console.warn('[Audio] playback error:', e);
+                isBgmPlaying = false;
+                syncMusicUI();
             });
         }
 
@@ -6759,29 +6617,16 @@
         if (muteIcon) muteIcon.addEventListener('click', toggleMute);
 
         // 🌟 首次交互全局解锁 (适配 iOS Safari / 微信 / Android 唤醒媒体通道)
-        function handleFirstGesture(e) {
-            if (audioPrimed) return;
-            audioPrimed = true;
+        let userHasInteracted = false;
+        function handleFirstGesture() {
+            if (userHasInteracted) return;
+            userHasInteracted = true;
             if (audioCtx && audioCtx.state === 'suspended') {
                 audioCtx.resume().catch(() => {});
             }
-            // 预先激活 HTML5 Audio 解码流水线 (不产生声音，仅解锁上下文)
-            if (bgmAudio && !userWantsPlayback && bgmAudio.paused) {
-                try {
-                    bgmAudio.load();
-                } catch(e) {}
-            }
         }
-        ['click', 'touchstart', 'touchend', 'pointerdown'].forEach(evt => {
+        ['click', 'touchstart'].forEach(evt => {
             window.addEventListener(evt, handleFirstGesture, { once: true, passive: true });
-        });
-
-        // 🌟 移动端锁屏/切后台唤醒恢复 (Page Visibility API)
-        document.addEventListener('visibilitychange', () => {
-            if (!document.hidden && userWantsPlayback && bgmAudio && bgmAudio.paused) {
-                const session = playSessionId;
-                executePlayWithRetry(session, 0);
-            }
         });
 
         // 空格键快捷播放/暂停
