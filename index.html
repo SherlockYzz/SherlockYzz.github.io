@@ -847,38 +847,41 @@
                 justify-content: flex-start !important;
             }
 
-            /* 顶部 3D 模式切换坞移动端横向滑轨 (100% 显眼自适应横滑) */
+            /* 顶部 3D 模式切换坞移动端自适应 (5模式全景呈现 · 零遮挡触控) */
             .top-visual-dock-wrapper {
-                margin: 8px 0 16px 0 !important;
+                margin: 6px 0 14px 0 !important;
                 position: relative !important;
                 width: 100% !important;
                 display: flex !important;
-                justify-content: flex-start !important;
+                justify-content: center !important;
                 overflow-x: auto !important;
                 -webkit-overflow-scrolling: touch !important;
                 scrollbar-width: none !important;
                 -ms-overflow-style: none !important;
                 padding: 2px 0 !important;
+                pointer-events: auto !important;
+                z-index: 100 !important;
             }
             .top-visual-dock-wrapper::-webkit-scrollbar {
                 display: none !important;
             }
             .top-visual-dock {
-                padding: 4px 8px !important;
-                gap: 6px !important;
-                border-radius: 24px !important;
-                max-width: none !important;
-                width: max-content !important;
+                padding: 3px 6px !important;
+                gap: 4px !important;
+                border-radius: 20px !important;
+                max-width: 100% !important;
+                width: auto !important;
                 overflow: visible !important;
                 flex-wrap: nowrap !important;
                 white-space: nowrap !important;
-                justify-content: flex-start !important;
+                justify-content: center !important;
                 display: inline-flex !important;
                 align-items: center !important;
                 scrollbar-width: none !important;
-                height: 40px !important;
+                height: 36px !important;
                 box-sizing: border-box !important;
                 margin: 0 auto !important;
+                pointer-events: auto !important;
             }
             .top-visual-dock::-webkit-scrollbar {
                 display: none !important;
@@ -887,19 +890,22 @@
                 display: none !important; /* 手机端隐藏标签文字 */
             }
             .dock-btn-group {
-                gap: 6px !important;
+                gap: 4px !important;
                 flex-wrap: nowrap !important;
                 display: inline-flex !important;
+                pointer-events: auto !important;
             }
             .dock-mode-btn {
-                padding: 5px 11px !important;
-                font-size: 0.74rem !important;
-                gap: 4px !important;
+                padding: 4px 7px !important;
+                font-size: 0.68rem !important;
+                gap: 3px !important;
                 flex-shrink: 0 !important;
                 white-space: nowrap !important;
                 touch-action: manipulation !important;
-                min-height: 32px !important;
-                border-radius: 18px !important;
+                min-height: 28px !important;
+                border-radius: 14px !important;
+                pointer-events: auto !important;
+                cursor: pointer !important;
             }
             .dock-shortcut-badge {
                 display: none !important; /* 手机无物理按键，隐藏数字 1-5 */
@@ -1031,6 +1037,11 @@
                 max-width: 200px !important;
                 font-size: 0.72rem !important;
                 padding: 7px 10px !important;
+                pointer-events: none !important;
+            }
+            .companion-hint-pill {
+                font-size: 0.68rem !important;
+                padding: 3px 8px !important;
             }
 
             /* ================= 移动端音乐播放器 Bottom-Sheet 原生底部抽屉 ================= */
@@ -1045,6 +1056,8 @@
                 pointer-events: auto !important;
                 margin-left: 14px !important;
                 margin-bottom: 14px !important;
+                padding: 6px 12px !important;
+                gap: 8px !important;
             }
             .music-card-modal {
                 position: fixed !important;
@@ -1120,8 +1133,38 @@
             user-select: none;
         }
 
-        /* 对话气泡 (Galgame 极客传讯气泡) */
+        /* 交互引导提示条 (初始不说话，引导用户轻触互动) */
+        .companion-hint-pill {
+            background: rgba(15, 23, 42, 0.88);
+            border: 1px solid rgba(0, 240, 255, 0.45);
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: 0.72rem;
+            font-family: var(--font-mono);
+            color: var(--cyan);
+            box-shadow: 0 4px 16px rgba(0, 240, 255, 0.25);
+            backdrop-filter: blur(10px);
+            margin-bottom: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+            animation: hint-pulse 2.2s ease-in-out infinite;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            user-select: none;
+        }
+        .companion-hint-pill.hidden {
+            display: none !important;
+        }
+        @keyframes hint-pulse {
+            0%, 100% { transform: translateY(0); box-shadow: 0 0 10px rgba(0, 240, 255, 0.25); border-color: rgba(0, 240, 255, 0.4); }
+            50% { transform: translateY(-3px); box-shadow: 0 0 18px rgba(0, 240, 255, 0.55); border-color: var(--cyan); }
+        }
+
+        /* 对话气泡 (Galgame 极客传讯气泡 · 默认隐藏，点击后显现) */
         .companion-bubble {
+            display: none;
             background: rgba(15, 23, 42, 0.92);
             border: 1px solid var(--sakura);
             border-radius: 12px;
@@ -1644,6 +1687,56 @@
             transform: scale(1.08);
             box-shadow: 0 0 22px rgba(0, 240, 255, 0.7);
             background: #ffffff;
+        }
+
+        /* 悬浮胶囊迷你控制按键 (直达免展开控制) */
+        .capsule-mini-btn {
+            background: rgba(0, 240, 255, 0.15);
+            border: 1px solid rgba(0, 240, 255, 0.45);
+            border-radius: 50%;
+            width: 26px;
+            height: 26px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 0;
+            color: var(--cyan);
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        .capsule-mini-btn:hover {
+            background: var(--cyan);
+            color: #030712;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+        }
+        .capsule-mini-btn .cyber-svg-icon {
+            width: 13px;
+            height: 13px;
+            stroke-width: 2.2;
+            fill: currentColor;
+            stroke: currentColor;
+            filter: none;
+        }
+        .capsule-mini-btn:hover .cyber-svg-icon {
+            color: #030712 !important;
+            fill: #030712 !important;
+            stroke: #030712 !important;
+        }
+        /* 播放/暂停按键纯黑高对比度图标 (彻底解决青色背景冲淡隐形) */
+        .capsule-play-btn .cyber-svg-icon,
+        .music-play-btn .cyber-svg-icon {
+            color: #030712 !important;
+            stroke: #030712 !important;
+            fill: #030712 !important;
+            filter: none !important;
+        }
+        .capsule-play-btn .cyber-svg-icon polygon,
+        .music-play-btn .cyber-svg-icon polygon,
+        .capsule-play-btn .cyber-svg-icon rect,
+        .music-play-btn .cyber-svg-icon rect {
+            fill: #030712 !important;
+            stroke: #030712 !important;
         }
 
         /* 音量条与歌单抽屉 */
@@ -2628,8 +2721,12 @@
 
     <!-- ================= 《鸣潮》飞行雪绒 智能桌面挂件 (纯净静音·极客融合版) ================= -->
     <div class="anime-companion-widget" id="companion-widget">
-        <!-- 日系 Galgame 极客传讯气泡 (100% 纯净静默轮播 · 绝无音频打扰) -->
-        <div class="companion-bubble" id="companion-bubble">
+        <!-- 初始引导提示词（默认展示，引导用户点击互动） -->
+        <div class="companion-hint-pill" id="companion-hint-pill" title="点击与飞行雪绒互动">
+            <span style="font-size:0.8rem;">✨</span> 点击与飞行雪绒互动
+        </div>
+        <!-- 日系 Galgame 极客传讯气泡 (初始静默隐藏，点击挂件后才弹出) -->
+        <div class="companion-bubble" id="companion-bubble" style="display: none;">
             <div class="bubble-header">
                 <span class="bubble-dot"></span>
                 <span class="bubble-tag">STARTORCH // 飞行雪绒 · 爱弥斯</span>
@@ -2650,17 +2747,23 @@
     </div>
     <!-- 二次元毛玻璃音乐盒 (Glassmorphism Music Box) -->
     <div class="music-box-widget" id="music-box-widget">
-        <!-- 音乐盒折叠胶囊按钮 -->
-        <button class="music-capsule-btn" id="music-capsule-btn" title="点击展开音乐盒控制台">
-            <span class="music-vinyl-icon" id="capsule-disc-icon"></span>
+        <!-- 音乐盒折叠胶囊控件 (含黑胶、歌名、迷你播放/暂停、下一首、声波) -->
+        <div class="music-capsule-btn" id="music-capsule-btn" title="点击展开音乐盒控制台">
+            <span class="music-vinyl-icon" id="capsule-disc-icon" title="播放/暂停"></span>
             <span class="music-capsule-text" id="capsule-song-name">BGM: 月声尽，心灯明</span>
-            <span class="music-waves">
+            <button class="capsule-mini-btn" id="capsule-mini-play" title="播放/暂停">
+                <svg class="cyber-svg-icon" viewBox="0 0 24 24"><polygon points="6 4 18 12 6 20 6 4"/></svg>
+            </button>
+            <button class="capsule-mini-btn" id="capsule-mini-next" title="下一首">
+                <svg class="cyber-svg-icon" viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+            </button>
+            <span class="music-waves" id="capsule-waves-trigger" title="展开/收起面板">
                 <span class="music-wave-bar"></span>
                 <span class="music-wave-bar"></span>
                 <span class="music-wave-bar"></span>
                 <span class="music-wave-bar"></span>
             </span>
-        </button>
+        </div>
 
         <!-- 展开式毛玻璃音乐卡片控制台 (原生吸底 Bottom-Sheet) -->
         <div class="music-card-modal" id="music-card-modal">
@@ -3687,6 +3790,7 @@
         const companionWidget = document.getElementById('companion-widget');
         const companionBubble = document.getElementById('companion-bubble');
         const companionBubbleText = document.getElementById('companion-bubble-text');
+        const companionHintPill = document.getElementById('companion-hint-pill');
         const petImg = document.getElementById('aemeath-pet-img');
         const petStage = document.getElementById('companion-avatar');
 
@@ -3706,24 +3810,42 @@
             "「我们生而眺望，自星海尽处回响！」"
         ];
         let compPhraseIdx = 0;
+        let bubbleTimer = null;
 
-        function updateCompanionDialogue() {
+        // 仅在用户主动点击时才产生气泡（默认静默无气泡，绝不遮挡手机/电脑屏幕）
+        function showCompanionSpeech() {
+            if (!companionBubble) return;
             const targetEl = companionBubbleText || companionBubble;
-            if (!targetEl) return;
             compPhraseIdx = (compPhraseIdx + 1) % companionPhrases.length;
-            targetEl.style.opacity = '0';
-            setTimeout(() => {
-                targetEl.textContent = companionPhrases[compPhraseIdx];
-                targetEl.style.opacity = '1';
-            }, 200);
+            if (targetEl) targetEl.textContent = companionPhrases[compPhraseIdx];
+
+            // 隐藏引导提示，展示气泡
+            if (companionHintPill) companionHintPill.classList.add('hidden');
+            companionBubble.style.display = 'block';
+            companionBubble.style.opacity = '1';
+
+            // 8 秒后自动收起气泡，恢复引导提示，避免长久遮挡视线
+            if (bubbleTimer) clearTimeout(bubbleTimer);
+            bubbleTimer = setTimeout(() => {
+                companionBubble.style.opacity = '0';
+                setTimeout(() => {
+                    companionBubble.style.display = 'none';
+                    if (companionHintPill) companionHintPill.classList.remove('hidden');
+                }, 300);
+            }, 8000);
         }
 
-        // 纯净静默轮播金句（绝无音频打扰）
-        setInterval(updateCompanionDialogue, 8000);
+        // 点击引导提示词也可以直接触发互动
+        if (companionHintPill) {
+            companionHintPill.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (petStage) petStage.click();
+            });
+        }
 
-        // 智能双环境路径解析 (本地 DeskBox 与 GitHub Pages 自动兼容)
-        const isLocalDeskBox = window.location.protocol === 'file:' || window.location.pathname.includes('文档');
-        const AEMEATH_BASE = isLocalDeskBox ? '../图片/' : 'assets/';
+        // 智能三环境路径解析 (本地文档、本地代码仓与 GitHub Pages 自动智能无缝兼容)
+        const isLocalDocDir = window.location.pathname.includes('文档') || window.location.pathname.includes('反重力产出');
+        const AEMEATH_BASE = isLocalDocDir ? '../图片/' : 'assets/';
 
         const AEMEATH_ASSETS = {
             idle: AEMEATH_BASE + 'sinlatansen_ameath_1000x1000_HD.gif',        // 37帧目镜羽翼主待机
@@ -3746,7 +3868,7 @@
                 e.preventDefault();
                 petImg.src = AEMEATH_ASSETS.jump;
                 petStage.style.transform = 'scale(1.12) translateY(-6px)';
-                updateCompanionDialogue();
+                showCompanionSpeech();
 
                 // 联动天气爆发彩蛋
                 if (typeof triggerSakuraBurst === 'function') {
@@ -4385,8 +4507,13 @@
                 screenShake *= Math.pow(0.88, dtRatio);
             }
 
-            // 清理主图层与特效图层
-            ctx.clearRect(0, 0, width, height);
+            // 清理主图层与特效图层 (模式 3 骇客矩阵使用半透明拖尾蒙版，实现经典绿意代码雨拖尾)
+            if (currentMode !== 3) {
+                ctx.clearRect(0, 0, width, height);
+            } else {
+                ctx.fillStyle = 'rgba(3, 7, 18, 0.22)';
+                ctx.fillRect(0, 0, width, height);
+            }
             fxCtx.clearRect(0, 0, width, height);
 
             ctx.save();
@@ -4677,7 +4804,10 @@
 
             // ================= 4. 全局常驻三维赛博樱花散华 (Zero-GC 原位景深光栅化流水线) =================
             const mouseSpeed = Math.hypot(mouseSpeedX, mouseSpeedY);
-            const activeSakuraLimit = currentMode === 4 ? sakuraPetals.length : Math.floor(sakuraPetals.length * 0.9);
+            // 模式差异化落樱密度：骇客矩阵清零聚焦代码雨，赛博网格与虫洞弱化聚焦空间线，樱花风暴拉满
+            const activeSakuraLimit = (currentMode === 3) ? 0 : 
+                                      (currentMode === 1 || currentMode === 2) ? Math.floor(sakuraPetals.length * 0.15) : 
+                                      (currentMode === 4 ? sakuraPetals.length : Math.floor(sakuraPetals.length * 0.85));
             const scrollY = window.scrollY || window.pageYOffset || 0;
             const scrollFade = Math.max(0.22, 1.0 - (scrollY / (height * 0.85)) * 0.78);
 
@@ -4993,10 +5123,13 @@
         const durTimeEl = document.getElementById('music-dur-time');
         const volSlider = document.getElementById('music-vol-slider');
         const muteIcon = document.getElementById('music-mute-icon');
+        const capsuleMiniPlay = document.getElementById('capsule-mini-play');
+        const capsuleMiniNext = document.getElementById('capsule-mini-next');
+        const capsuleWavesTrigger = document.getElementById('capsule-waves-trigger');
 
         // 工业级全套赛博微拟态 SVG 音频控制微标
-        const CYBER_SVG_PLAY = '<svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><polygon points="6 4 18 12 6 20 6 4"/></svg>';
-        const CYBER_SVG_PAUSE = '<svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
+        const CYBER_SVG_PLAY = '<svg class="cyber-svg-icon" viewBox="0 0 24 24"><polygon points="6 4 18 12 6 20 6 4"/></svg>';
+        const CYBER_SVG_PAUSE = '<svg class="cyber-svg-icon" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
         const CYBER_SVG_VOL_HIGH = '<svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>';
         const CYBER_SVG_VOL_LOW = '<svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
         const CYBER_SVG_VOL_MUTE = '<svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
@@ -5077,6 +5210,7 @@
                 else musicBigDisc.classList.remove('spinning');
             }
             if (musicPlayBtn) musicPlayBtn.innerHTML = isBgmPlaying ? CYBER_SVG_PAUSE : CYBER_SVG_PLAY;
+            if (capsuleMiniPlay) capsuleMiniPlay.innerHTML = isBgmPlaying ? CYBER_SVG_PAUSE : CYBER_SVG_PLAY;
 
             renderPlaylists();
         }
@@ -5143,19 +5277,21 @@
             }
         }
 
-        // 播放/暂停总控 (点击即播，无任何额外拦截)
+        // 播放/暂停总控 (状态精准感应，彻底解决暂停按钮失效问题)
         function togglePlayPause() {
             if (!bgmAudio) return;
-            if (!bgmAudio.src || bgmAudio.src === '' || bgmAudio.src === window.location.href) {
-                loadAndPlay(bgmIndex, true);
-                return;
-            }
-            if (bgmAudio.paused) {
-                safeExecutePlay();
-            } else {
-                bgmAudio.pause();
+            if (isBgmPlaying) {
+                try {
+                    bgmAudio.pause();
+                } catch(e) {}
                 isBgmPlaying = false;
                 syncMusicUI();
+            } else {
+                if (!bgmAudio.src || bgmAudio.src === '' || bgmAudio.src === window.location.href) {
+                    loadAndPlay(bgmIndex, true);
+                } else {
+                    safeExecutePlay();
+                }
             }
         }
 
@@ -5170,25 +5306,41 @@
             });
         }
 
-        // 悬浮面板按键绑定
-        if (capsuleBtn) {
-            capsuleBtn.addEventListener('click', (e) => {
-                if (musicModal) {
-                    const willOpen = !musicModal.classList.contains('open');
-                    musicModal.classList.toggle('open');
-                    if (willOpen && bgmAudio && bgmAudio.paused) {
-                        togglePlayPause();
-                    }
-                }
+        // 悬浮迷你胶囊控件绑定 (直达免展开播放/暂停、切歌与弹窗控制)
+        if (capsuleMiniPlay) {
+            capsuleMiniPlay.addEventListener('click', (e) => {
+                e.stopPropagation();
+                togglePlayPause();
             });
         }
-        const capsuleDiscIcon = document.getElementById('capsule-disc-icon');
+        if (capsuleMiniNext) {
+            capsuleMiniNext.addEventListener('click', (e) => {
+                e.stopPropagation();
+                loadAndPlay(bgmIndex + 1, true);
+            });
+        }
         if (capsuleDiscIcon) {
             capsuleDiscIcon.addEventListener('click', (e) => {
                 e.stopPropagation();
                 togglePlayPause();
             });
         }
+        function toggleMusicModal(e) {
+            if (e) e.stopPropagation();
+            if (musicModal) {
+                musicModal.classList.toggle('open');
+            }
+        }
+        if (capsuleBtn) {
+            capsuleBtn.addEventListener('click', (e) => {
+                if (e.target && e.target.closest && e.target.closest('.capsule-mini-btn, .music-vinyl-icon')) {
+                    return;
+                }
+                toggleMusicModal(e);
+            });
+        }
+        if (capsuleName) capsuleName.addEventListener('click', toggleMusicModal);
+        if (capsuleWavesTrigger) capsuleWavesTrigger.addEventListener('click', toggleMusicModal);
         if (musicCloseBtn) {
             musicCloseBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
