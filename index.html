@@ -1683,11 +1683,23 @@
         }
         .music-progress-bar-bg {
             width: 100%;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.1);
+            height: 6px;
+            background: rgba(255, 255, 255, 0.16);
             border-radius: 3px;
             cursor: pointer;
             position: relative;
+            touch-action: none !important;
+            user-select: none !important;
+            -webkit-user-select: none !important;
+        }
+        .music-progress-bar-bg::before {
+            content: '';
+            position: absolute;
+            top: -14px;
+            bottom: -14px;
+            left: 0;
+            right: 0;
+            cursor: pointer;
         }
         .music-progress-fill {
             height: 100%;
@@ -1695,7 +1707,28 @@
             background: linear-gradient(90deg, var(--cyan), var(--sakura));
             border-radius: 3px;
             position: relative;
+            pointer-events: none;
+            transition: width 0.08s linear;
         }
+        .music-progress-fill::after {
+            content: '';
+            position: absolute;
+            right: -5px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ffffff;
+            box-shadow: 0 0 10px var(--cyan), 0 0 4px rgba(0,0,0,0.5);
+            pointer-events: none;
+            transition: transform 0.15s ease;
+        }
+        .music-progress-bar-bg:hover .music-progress-fill::after,
+        .music-progress-bar-bg:active .music-progress-fill::after {
+            transform: translateY(-50%) scale(1.3);
+        }
+
         .music-time-row {
             display: flex;
             justify-content: space-between;
@@ -2282,12 +2315,23 @@
         }
         .capsule-progress-bg {
             width: 100%;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.12);
+            height: 6px;
+            background: rgba(255, 255, 255, 0.16);
             border-radius: 6px;
             cursor: pointer;
             position: relative;
-            overflow: hidden;
+            touch-action: none !important;
+            user-select: none !important;
+            -webkit-user-select: none !important;
+        }
+        .capsule-progress-bg::before {
+            content: '';
+            position: absolute;
+            top: -14px;
+            bottom: -14px;
+            left: 0;
+            right: 0;
+            cursor: pointer;
         }
         .capsule-progress-fill {
             height: 100%;
@@ -2295,7 +2339,54 @@
             background: linear-gradient(90deg, var(--cyan), var(--sakura));
             border-radius: 6px;
             box-shadow: 0 0 8px var(--cyan);
-            transition: width 0.1s linear;
+            position: relative;
+            pointer-events: none;
+            transition: width 0.08s linear;
+        }
+        .capsule-progress-fill::after {
+            content: '';
+            position: absolute;
+            right: -5px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ffffff;
+            box-shadow: 0 0 10px var(--cyan), 0 0 4px rgba(0,0,0,0.5);
+            pointer-events: none;
+            transition: transform 0.15s ease;
+        }
+        .capsule-progress-bg:hover .capsule-progress-fill::after,
+        .capsule-progress-bg:active .capsule-progress-fill::after {
+            transform: translateY(-50%) scale(1.3);
+        }
+        .vol-slider {
+            -webkit-appearance: none;
+            height: 6px;
+            width: 75px;
+            background: rgba(255, 255, 255, 0.18);
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+            touch-action: none !important;
+        }
+        .vol-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--cyan);
+            box-shadow: 0 0 8px var(--cyan);
+            cursor: pointer;
+        }
+        .vol-icon {
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+            touch-action: manipulation;
         }
 
         .capsule-ctrl-group {
@@ -2857,7 +2948,8 @@
             <div class="music-playlist-drawer" id="music-playlist-drawer"></div>
         </div>
         <!-- 核心音频元素 (preload="none" 确保0字节启动负担) -->
-        <audio id="global-bgm-audio" src="audio/track_01.mp3" preload="metadata" playsinline webkit-playsinline></audio>
+        <!-- 核心音频元素 (preload="auto" 确保移动端即开即播，杜绝缓冲卡顿) -->
+        <audio id="global-bgm-audio" src="audio/track_01.mp3" preload="auto" playsinline webkit-playsinline></audio>
     </div>
 
     <!-- 页面内容层 -->
@@ -5135,8 +5227,9 @@
 
         const bgmAudio = document.getElementById('global-bgm-audio');
         const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(navigator.userAgent) || window.innerWidth <= 768;
-        // 手机端音量默认设为 1.0 (通过手机物理按键调节)，电脑端设为 0.35 避免炸耳
-        if (bgmAudio) bgmAudio.volume = isMobileDevice ? 1.0 : 0.35;
+        // 🌟 遵照指令：手机端默认极小音量 0.08（防误触炸耳），电脑端默认 0.25
+        const defaultVolume = isMobileDevice ? 0.08 : 0.25;
+        let previousVolume = defaultVolume;
 
         // Hero CloudPlayer DOM 元素
         const heroCloudPlayer = document.getElementById('hero-cloud-player');
@@ -5180,6 +5273,7 @@
         const capsuleMiniPlay = document.getElementById('capsule-mini-play');
         const capsuleMiniNext = document.getElementById('capsule-mini-next');
         const capsuleWavesTrigger = document.getElementById('capsule-waves-trigger');
+        const capsuleDiscIcon = document.getElementById('capsule-disc-icon');
 
         // 工业级全套赛博微拟态 SVG 音频控制微标
         const CYBER_SVG_PLAY = '<svg class="cyber-svg-icon" viewBox="0 0 24 24"><polygon points="6 4 18 12 6 20 6 4"/></svg>';
@@ -5188,8 +5282,18 @@
         const CYBER_SVG_VOL_LOW = '<svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
         const CYBER_SVG_VOL_MUTE = '<svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
 
+        function getTrackDurationSec(index) {
+            const track = bgmPlaylist[index];
+            if (!track || !track.duration) return 228;
+            const parts = track.duration.split(':');
+            if (parts.length === 2) {
+                return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+            }
+            return 228;
+        }
+
         function formatAudioTime(secs) {
-            if (isNaN(secs) || secs < 0) return '00:00';
+            if (isNaN(secs) || secs < 0 || !isFinite(secs)) return '00:00';
             const m = Math.floor(secs / 60);
             const s = Math.floor(secs % 60);
             return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
@@ -5197,7 +5301,6 @@
 
         // 渲染 10 首曲目抽屉列表
         function renderPlaylists() {
-            // 1. 渲染 Hero CloudPlayer 抽屉
             if (heroPlaylistDrawer) {
                 heroPlaylistDrawer.innerHTML = '';
                 bgmPlaylist.forEach((t, i) => {
@@ -5218,7 +5321,6 @@
                 });
             }
 
-            // 2. 渲染悬浮面板抽屉
             if (musicDrawer) {
                 musicDrawer.innerHTML = '';
                 bgmPlaylist.forEach((t, i) => {
@@ -5240,12 +5342,14 @@
         // 状态全界面精准同步
         function syncMusicUI() {
             const track = bgmPlaylist[bgmIndex];
+            const trackDur = track.duration || '03:48';
 
             // 1. 同步 Hero CloudPlayer
             if (heroSongTitle) heroSongTitle.textContent = track.title;
             if (heroSongTag) heroSongTag.textContent = track.artist;
             if (heroTrackCounter) heroTrackCounter.textContent = `${bgmIndex + 1} / ${bgmPlaylist.length} TRACKS`;
             if (heroPlayIcon) heroPlayIcon.innerHTML = isBgmPlaying ? CYBER_SVG_PAUSE : CYBER_SVG_PLAY;
+            if (heroDurTime) heroDurTime.textContent = trackDur;
             if (heroVinylDisc) {
                 if (isBgmPlaying) heroVinylDisc.classList.add('spinning');
                 else heroVinylDisc.classList.remove('spinning');
@@ -5254,6 +5358,7 @@
             // 2. 同步悬浮胶囊面板
             if (musicDisplayTitle) musicDisplayTitle.textContent = track.title;
             if (musicDisplayArtist) musicDisplayArtist.textContent = track.artist;
+            if (durTimeEl) durTimeEl.textContent = trackDur;
             if (capsuleName) capsuleName.textContent = `BGM: ${track.title}`;
             if (capsuleBtn) {
                 if (isBgmPlaying) capsuleBtn.classList.add('playing');
@@ -5286,13 +5391,17 @@
                     syncMusicUI();
                 }).catch(err => {
                     console.warn('Playback error or gesture needed:', err);
+                    if (err.name === 'AbortError') {
+                        // 切歌引起的瞬态中断，保持状态，不重置界面
+                        return;
+                    }
                     isBgmPlaying = false;
                     syncMusicUI();
                 });
             }
         }
 
-        // 载入并播放曲目 (毫秒级平滑切歌，显式 load 消除移动端缓冲中断)
+        // 载入并播放曲目 (毫秒级平滑切歌，移除引发 AbortError 的多余 load() 规避移动端崩溃)
         function loadAndPlay(index, autoPlay = true) {
             bgmIndex = (index + bgmPlaylist.length) % bgmPlaylist.length;
             const track = bgmPlaylist[bgmIndex];
@@ -5301,13 +5410,20 @@
             isChangingTrack = true;
             try { bgmAudio.pause(); } catch(e) {}
             bgmAudio.src = track.src;
-            try { bgmAudio.load(); } catch(e) {}
+
+            // 立即重置视觉进度与时间显示，给用户即刻响应反馈
+            if (!isDraggingSeek) {
+                if (heroProgressFill) heroProgressFill.style.width = '0%';
+                if (progressFill) progressFill.style.width = '0%';
+                if (heroCurTime) heroCurTime.textContent = '00:00';
+                if (curTimeEl) curTimeEl.textContent = '00:00';
+            }
             syncMusicUI();
 
             if (autoPlay) {
                 safeExecutePlay();
             }
-            setTimeout(() => { isChangingTrack = false; }, 350);
+            setTimeout(() => { isChangingTrack = false; }, 300);
         }
 
         // 默认初始化装载第 1 首曲目
@@ -5418,24 +5534,147 @@
             });
         }
 
+        // ================= 进度条丝滑拖拽/寻址系统 (支持桌面端鼠标拖拽与移动端触控滑动，100% 响应) =================
+        let isDraggingSeek = false;
+        function setupProgressScrubber(bgEl, fillEl, curEl, durEl) {
+            if (!bgEl) return;
+
+            function getProgress(clientX) {
+                const rect = bgEl.getBoundingClientRect();
+                if (rect.width <= 0) return 0;
+                return Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+            }
+
+            function getAudioDuration() {
+                if (bgmAudio && bgmAudio.duration && !isNaN(bgmAudio.duration) && bgmAudio.duration > 0) {
+                    return bgmAudio.duration;
+                }
+                return getTrackDurationSec(bgmIndex);
+            }
+
+            function updateVisuals(pct) {
+                const totalDur = getAudioDuration();
+                const curSecs = pct * totalDur;
+                const curStr = formatAudioTime(curSecs);
+                const pctStr = (pct * 100) + '%';
+
+                if (heroProgressFill) heroProgressFill.style.width = pctStr;
+                if (progressFill) progressFill.style.width = pctStr;
+                if (heroCurTime) heroCurTime.textContent = curStr;
+                if (curTimeEl) curTimeEl.textContent = curStr;
+            }
+
+            function applySeek(pct) {
+                if (!bgmAudio) return;
+                const totalDur = getAudioDuration();
+                if (totalDur > 0) {
+                    bgmAudio.currentTime = pct * totalDur;
+                }
+            }
+
+            // Pointer Events (全平台统一触控与鼠标事件)
+            bgEl.addEventListener('pointerdown', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                isDraggingSeek = true;
+                try { bgEl.setPointerCapture(e.pointerId); } catch(err) {}
+                const pct = getProgress(e.clientX);
+                updateVisuals(pct);
+            });
+
+            bgEl.addEventListener('pointermove', (e) => {
+                if (!isDraggingSeek) return;
+                e.preventDefault();
+                e.stopPropagation();
+                const pct = getProgress(e.clientX);
+                updateVisuals(pct);
+            });
+
+            function endSeek(e) {
+                if (!isDraggingSeek) return;
+                e.preventDefault();
+                e.stopPropagation();
+                isDraggingSeek = false;
+                try { bgEl.releasePointerCapture(e.pointerId); } catch(err) {}
+                const pct = getProgress(e.clientX);
+                updateVisuals(pct);
+                applySeek(pct);
+            }
+
+            bgEl.addEventListener('pointerup', endSeek);
+            bgEl.addEventListener('pointercancel', endSeek);
+
+            // 兼顾移动端 Touch 原生触控
+            bgEl.addEventListener('touchstart', (e) => {
+                if (e.touches && e.touches.length > 0) {
+                    e.stopPropagation();
+                    isDraggingSeek = true;
+                    const pct = getProgress(e.touches[0].clientX);
+                    updateVisuals(pct);
+                }
+            }, { passive: false });
+
+            bgEl.addEventListener('touchmove', (e) => {
+                if (isDraggingSeek && e.touches && e.touches.length > 0) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const pct = getProgress(e.touches[0].clientX);
+                    updateVisuals(pct);
+                }
+            }, { passive: false });
+
+            bgEl.addEventListener('touchend', (e) => {
+                if (isDraggingSeek) {
+                    e.stopPropagation();
+                    isDraggingSeek = false;
+                    const clientX = (e.changedTouches && e.changedTouches.length > 0) ? e.changedTouches[0].clientX : 0;
+                    if (clientX) {
+                        const pct = getProgress(clientX);
+                        updateVisuals(pct);
+                        applySeek(pct);
+                    }
+                }
+            });
+        }
+
+        setupProgressScrubber(heroProgressBg, heroProgressFill, heroCurTime, heroDurTime);
+        setupProgressScrubber(progressBg, progressFill, curTimeEl, durTimeEl);
+
         // 音频时间与进度同步
         if (bgmAudio) {
-            bgmAudio.addEventListener('timeupdate', () => {
-                if (bgmAudio.duration) {
-                    const pct = (bgmAudio.currentTime / bgmAudio.duration) * 100;
+            function handleTimeUpdate() {
+                if (isDraggingSeek) return;
+                const totalDur = (bgmAudio.duration && !isNaN(bgmAudio.duration) && bgmAudio.duration > 0)
+                    ? bgmAudio.duration
+                    : getTrackDurationSec(bgmIndex);
+                if (totalDur > 0) {
+                    const pct = Math.min(100, Math.max(0, (bgmAudio.currentTime / totalDur) * 100));
                     const curStr = formatAudioTime(bgmAudio.currentTime);
-                    const durStr = formatAudioTime(bgmAudio.duration);
+                    const durStr = formatAudioTime(totalDur);
 
-                    // Hero 同步
                     if (heroProgressFill) heroProgressFill.style.width = pct + '%';
                     if (heroCurTime) heroCurTime.textContent = curStr;
                     if (heroDurTime) heroDurTime.textContent = durStr;
 
-                    // 悬浮板同步
                     if (progressFill) progressFill.style.width = pct + '%';
                     if (curTimeEl) curTimeEl.textContent = curStr;
                     if (durTimeEl) durTimeEl.textContent = durStr;
                 }
+            }
+
+            bgmAudio.addEventListener('timeupdate', handleTimeUpdate);
+
+            ['loadedmetadata', 'canplay', 'durationchange'].forEach(evt => {
+                bgmAudio.addEventListener(evt, () => {
+                    const totalDur = (bgmAudio.duration && !isNaN(bgmAudio.duration) && bgmAudio.duration > 0)
+                        ? bgmAudio.duration
+                        : getTrackDurationSec(bgmIndex);
+                    if (totalDur > 0) {
+                        const durStr = formatAudioTime(totalDur);
+                        if (heroDurTime) heroDurTime.textContent = durStr;
+                        if (durTimeEl) durTimeEl.textContent = durStr;
+                    }
+                });
             });
 
             bgmAudio.addEventListener('ended', () => {
@@ -5462,35 +5701,34 @@
             });
         }
 
-        // 进度条拖拽/点击寻址
-        function handleSeekClick(bgEl, e) {
-            if (!bgmAudio || !bgmAudio.duration) return;
-            const rect = bgEl.getBoundingClientRect();
-            const clickX = e.clientX - rect.left;
-            const pct = Math.max(0, Math.min(1, clickX / rect.width));
-            bgmAudio.currentTime = pct * bgmAudio.duration;
-        }
-        if (heroProgressBg) heroProgressBg.addEventListener('click', (e) => handleSeekClick(heroProgressBg, e));
-        if (progressBg) progressBg.addEventListener('click', (e) => handleSeekClick(progressBg, e));
-
-        // 音量调节联动 (纯净赛博微拟态 SVG 矢量渲染)
+        // ================= 音量调节联动 (纯净赛博微拟态 SVG 矢量渲染 + 双端自适应) =================
         function handleVolumeChange(v) {
-            if (!bgmAudio) return;
-            bgmAudio.volume = v;
-            const svgIcon = v === 0 ? CYBER_SVG_VOL_MUTE : (v < 0.5 ? CYBER_SVG_VOL_LOW : CYBER_SVG_VOL_HIGH);
+            v = Math.max(0, Math.min(1, parseFloat(v) || 0));
+            if (bgmAudio) bgmAudio.volume = v;
+            const svgIcon = v === 0 ? CYBER_SVG_VOL_MUTE : (v < 0.4 ? CYBER_SVG_VOL_LOW : CYBER_SVG_VOL_HIGH);
             if (heroMuteIcon) heroMuteIcon.innerHTML = svgIcon;
             if (muteIcon) muteIcon.innerHTML = svgIcon;
             if (heroVolSlider) heroVolSlider.value = v;
             if (volSlider) volSlider.value = v;
         }
-        if (heroVolSlider) heroVolSlider.addEventListener('input', (e) => handleVolumeChange(parseFloat(e.target.value)));
-        if (volSlider) volSlider.addEventListener('input', (e) => handleVolumeChange(parseFloat(e.target.value)));
+
+        ['input', 'change'].forEach(evt => {
+            if (heroVolSlider) heroVolSlider.addEventListener(evt, (e) => handleVolumeChange(e.target.value));
+            if (volSlider) volSlider.addEventListener(evt, (e) => handleVolumeChange(e.target.value));
+        });
+
+        // 首次初始化音量状态 (手机端 0.08 防误触，电脑端 0.25)
+        handleVolumeChange(defaultVolume);
 
         // 静音切换
         function toggleMute() {
             if (!bgmAudio) return;
-            if (bgmAudio.volume > 0) handleVolumeChange(0);
-            else handleVolumeChange(0.25);
+            if (bgmAudio.volume > 0) {
+                previousVolume = bgmAudio.volume;
+                handleVolumeChange(0);
+            } else {
+                handleVolumeChange(previousVolume > 0 ? previousVolume : defaultVolume);
+            }
         }
         if (heroMuteIcon) heroMuteIcon.addEventListener('click', toggleMute);
         if (muteIcon) muteIcon.addEventListener('click', toggleMute);
