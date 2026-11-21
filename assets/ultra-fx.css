@@ -1,0 +1,929 @@
+/* ==========================================================================
+   SherlockYzz // Ultra FX Layer v2.0 (WebGL2 + Mode-Reactive Cyber Glass UI)
+   ========================================================================== */
+
+/* 1. Top-level @property 注册：支持渐变光斑半径与棱镜旋角平滑过渡 */
+@property --spot-inner {
+    syntax: "<length-percentage>";
+    inherits: true;
+    initial-value: 0px;
+}
+
+@property --spot-outer {
+    syntax: "<length-percentage>";
+    inherits: true;
+    initial-value: 0px;
+}
+
+@property --holo-angle {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 0deg;
+}
+
+/* 2. 五大 3D 模式全局主题光影变量联动 */
+body {
+    --mode-accent: #00f0ff;
+    --mode-accent-2: #ff758c;
+    --mode-glow: rgba(0, 240, 255, 0.45);
+}
+
+body[data-visual-mode="0"] {
+    --mode-accent: #00f0ff;
+    --mode-accent-2: #ff758c;
+    --mode-glow: rgba(0, 240, 255, 0.48);
+}
+
+body[data-visual-mode="1"] {
+    --mode-accent: #ff3388;
+    --mode-accent-2: #00f0ff;
+    --mode-glow: rgba(255, 51, 136, 0.50);
+}
+
+body[data-visual-mode="2"] {
+    --mode-accent: #a855f7;
+    --mode-accent-2: #fbbf24;
+    --mode-glow: rgba(168, 85, 247, 0.50);
+}
+
+body[data-visual-mode="3"] {
+    --mode-accent: #10b981;
+    --mode-accent-2: #00f0ff;
+    --mode-glow: rgba(16, 185, 129, 0.50);
+}
+
+body[data-visual-mode="4"] {
+    --mode-accent: #ff758c;
+    --mode-accent-2: #38bdf8;
+    --mode-glow: rgba(255, 117, 140, 0.52);
+}
+
+/* 3. WebGL2 超维背景画布与前景画布分层融合 */
+#webgl-stage {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    display: block;
+    z-index: 0;
+    pointer-events: none;
+}
+
+body.webgl-active::before {
+    opacity: 0;
+}
+
+/* 4. 原生 CSS Scroll-Driven 滚动进度激光条（联动当前模式配色） */
+#scroll-progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2.5px;
+    background: linear-gradient(90deg, var(--mode-accent), var(--violet) 50%, var(--mode-accent-2));
+    box-shadow: 0 0 12px var(--mode-glow), 0 0 24px rgba(255, 117, 140, 0.4);
+    transform-origin: 0 50%;
+    transform: scaleX(0);
+    z-index: 120;
+    pointer-events: none;
+}
+
+@keyframes grow-scroll-laser {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: scroll()) {
+        #scroll-progress-bar {
+            animation: grow-scroll-laser auto linear;
+            /* 必须写在 animation 简写之后 */
+            animation-timeline: scroll(root block);
+        }
+    }
+}
+
+/* 5. 修复既有的重叠/换行布局瑕疵 */
+/* 5a. 桌面端：首屏内已有大型音乐盒胶囊，滚动离开首屏后再优雅浮现左下角迷你胶囊（并置于遥测栏上方） */
+@media (min-width: 769px) {
+    .music-box-widget {
+        bottom: 50px !important;
+        opacity: 0;
+        pointer-events: none !important;
+        transform: translateY(14px);
+        transition: opacity 0.28s ease, transform 0.28s ease;
+    }
+    body.scrolled-past-hero .music-box-widget {
+        opacity: 1;
+        pointer-events: auto !important;
+        transform: translateY(0);
+    }
+    .telemetry-bar {
+        bottom: 10px !important;
+        padding: 5px 14px !important;
+        font-size: 0.68rem !important;
+    }
+}
+
+/* 5b. Hero 区 SCROLL DOWN 改入常规流底部居中，彻底不压住 QUOTES & CREED 跑马灯；同时优化 980px 以下桌面/笔记本视口 Hero 留白，彻底避开左下角遥测栏 */
+.hero-section .scroll-hint {
+    position: static;
+    transform: none;
+    left: auto;
+    bottom: auto;
+    margin: 6px auto 0;
+}
+
+@media (min-width: 769px) and (max-height: 980px) {
+    .hero-section {
+        justify-content: flex-start !important;
+        padding-top: 72px !important;
+        padding-bottom: 58px !important;
+    }
+    .top-visual-dock-wrapper {
+        margin-bottom: 12px !important;
+    }
+    .hero-main-row {
+        margin-bottom: 10px !important;
+    }
+    .hero-left-info {
+        gap: 10px !important;
+    }
+    .hero-title {
+        font-size: clamp(2.15rem, 3.5vw, 3.25rem) !important;
+        line-height: 1.06 !important;
+    }
+    .hero-left-info .terminal-callout {
+        margin-bottom: 8px !important;
+    }
+    .hero-left-info .hero-badges {
+        margin-bottom: 10px !important;
+    }
+    .hero-actions .btn-primary,
+    .hero-actions .btn-secondary {
+        padding: 10px 18px !important;
+        font-size: 0.84rem !important;
+    }
+    .hero-lyric-bar {
+        margin-top: 10px !important;
+    }
+    .hero-section .scroll-hint {
+        margin: 6px auto 0 !important;
+    }
+}
+
+/* 5c. 顶栏与移动端 Dock 紧凑排版，杜绝折行与横向裁切 */
+.hud-nav .brand-zone,
+.hud-nav .hud-status-bar,
+.hud-nav .hud-controls,
+.hud-nav .hud-btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+    .hud-nav {
+        padding: 8px 12px !important;
+        gap: 6px;
+    }
+    .hud-nav .brand-jp-badge,
+    .hud-nav a.hud-btn {
+        display: none !important;
+    }
+    .hud-nav .brand-zone {
+        font-size: 0.72rem;
+        gap: 6px;
+    }
+    .hud-nav .hud-btn {
+        padding: 4px 8px !important;
+        font-size: 0.68rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .top-visual-dock {
+        height: auto !important;
+        padding: 5px 6px !important;
+        overflow: hidden !important;
+    }
+    .top-visual-dock .dock-btn-group {
+        display: grid !important;
+        grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+        gap: 4px !important;
+        width: 100% !important;
+    }
+    .top-visual-dock .dock-mode-btn {
+        width: 100% !important;
+        min-width: 0 !important;
+        padding: 6px 2px !important;
+        font-size: 0.66rem !important;
+        gap: 0 !important;
+        overflow: hidden !important;
+        justify-content: center !important;
+    }
+    .top-visual-dock .dock-mode-btn .cyber-svg-icon {
+        display: none !important;
+    }
+}
+
+/* 6. 右侧极客章节航标轨道（1200-1499px 紧凑纯点不遮音乐盒，>=1500px 展开标签） */
+.section-rail {
+    position: fixed;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 95;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 8px;
+    border-radius: 20px;
+    background: rgba(6, 10, 22, 0.62);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    pointer-events: auto;
+}
+
+@media (min-width: 1200px) {
+    .section-rail {
+        display: flex;
+    }
+}
+
+.rail-link {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    padding: 3px 4px;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.rail-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    flex-shrink: 0;
+}
+
+.rail-label {
+    opacity: 0.55;
+    transition: opacity 0.2s ease;
+}
+
+@media (min-width: 1200px) and (max-width: 1519px) {
+    .rail-label {
+        display: none;
+    }
+    .section-rail:hover .rail-label {
+        display: inline;
+        opacity: 0.9;
+    }
+}
+
+.rail-link:hover,
+.rail-link.is-active {
+    color: #ffffff;
+}
+
+.rail-link:hover .rail-label,
+.rail-link.is-active .rail-label {
+    opacity: 1;
+}
+
+.rail-link.is-active .rail-dot {
+    background: var(--mode-accent);
+    border-color: #ffffff;
+    transform: scale(1.35);
+    box-shadow: 0 0 10px var(--mode-glow);
+}
+
+/* 7. 桌面端丝滑磁吸光环准星（GPU 合成层 translate3d） */
+#cyber-cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 34px;
+    height: 34px;
+    margin-left: -17px;
+    margin-top: -17px;
+    border-radius: 50%;
+    border: 1.5px solid var(--mode-accent);
+    box-shadow: 0 0 14px var(--mode-glow);
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0;
+    transition: width 0.18s ease, height 0.18s ease, margin 0.18s ease, border-color 0.25s ease, opacity 0.2s ease, background-color 0.18s ease;
+    will-change: transform;
+}
+
+#cyber-cursor-ring.is-hovering {
+    width: 48px;
+    height: 48px;
+    margin-left: -24px;
+    margin-top: -24px;
+    border-color: var(--mode-accent-2);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+    #cyber-cursor-ring {
+        display: none !important;
+    }
+}
+
+/* 8. 英雄区全息视觉质感升级 */
+@keyframes holo-spin {
+    from { --holo-angle: 0deg; }
+    to { --holo-angle: 360deg; }
+}
+
+@keyframes hero-shimmer-sweep {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes spin-slow-ring {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.profile-avatar-box {
+    background: conic-gradient(
+        from var(--holo-angle, 0deg),
+        var(--mode-accent),
+        var(--violet),
+        var(--mode-accent-2),
+        var(--amber),
+        var(--mode-accent)
+    );
+    box-shadow: 0 0 28px var(--mode-glow), 0 0 48px rgba(255, 117, 140, 0.24);
+}
+
+.profile-avatar-box::after {
+    content: "";
+    position: absolute;
+    inset: -7px;
+    border-radius: 50%;
+    border: 1px dashed rgba(0, 240, 255, 0.5);
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .profile-avatar-box {
+        animation: holo-spin 7s linear infinite;
+    }
+    .profile-avatar-box::after {
+        animation: spin-slow-ring 18s linear infinite reverse;
+    }
+}
+
+.hero-title {
+    text-shadow:
+        0 6px 28px rgba(0, 0, 0, 0.94),
+        0 0 24px var(--mode-glow),
+        0 0 52px rgba(168, 85, 247, 0.24);
+}
+
+.hero-title .cn-name {
+    background-size: 220% auto;
+    background-image: linear-gradient(120deg, #ffffff 0%, var(--mode-accent) 34%, #e879f9 64%, var(--mode-accent-2) 84%, #ffffff 100%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .hero-title .cn-name {
+        animation: hero-shimmer-sweep 8s ease-in-out infinite;
+    }
+}
+
+.top-visual-dock {
+    background: linear-gradient(135deg, rgba(10, 15, 32, 0.78), rgba(16, 22, 44, 0.62));
+    border: 1px solid color-mix(in srgb, var(--mode-accent) 55%, rgba(255, 255, 255, 0.15));
+    box-shadow:
+        0 12px 34px rgba(0, 0, 0, 0.52),
+        0 0 26px color-mix(in srgb, var(--mode-glow) 60%, transparent),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    transition: border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.hero-capsule-music-box {
+    --audio-level: 0;
+    background: linear-gradient(145deg, rgba(11, 17, 34, 0.76), rgba(17, 24, 46, 0.64));
+    border-color: color-mix(in srgb, var(--mode-accent) 48%, rgba(255, 255, 255, 0.16));
+    box-shadow:
+        0 18px 46px rgba(0, 0, 0, 0.7),
+        0 0 calc(24px + var(--audio-level, 0) * 34px) color-mix(in srgb, var(--mode-accent) calc(22% + var(--audio-level, 0) * 36%), transparent),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+.capsule-disc-vinyl {
+    box-shadow:
+        0 0 calc(12px + var(--audio-level, 0) * 28px) rgba(0, 240, 255, calc(0.35 + var(--audio-level, 0) * 0.5)),
+        0 0 calc(20px + var(--audio-level, 0) * 36px) rgba(255, 117, 140, calc(0.15 + var(--audio-level, 0) * 0.4));
+    transition: box-shadow 0.12s ease-out;
+}
+
+/* 9. 黑曜晶体卡片升级 + 指针全息光斑 & 棱镜描边 */
+.bento-card {
+    background:
+        radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(155deg, rgba(16, 24, 46, 0.72), rgba(9, 14, 28, 0.64));
+    background-size: 18px 18px, 100% 100%;
+    box-shadow:
+        0 14px 36px rgba(0, 0, 0, 0.48),
+        inset 0 1px 0 rgba(255, 255, 255, 0.13);
+}
+
+.bento-card,
+.tech-stack-card,
+.hero-capsule-music-box {
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+    --spot-inner: 0px;
+    --spot-outer: 0px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .bento-card::before,
+    .tech-stack-card::after,
+    .hero-capsule-music-box::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        pointer-events: none;
+        z-index: 2;
+        transition: --spot-inner 0.24s ease-out, --spot-outer 0.24s ease-out, opacity 0.24s ease-out;
+        background: radial-gradient(
+            circle 340px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            color-mix(in srgb, var(--mode-accent) 18%, transparent) 0%,
+            rgba(168, 85, 247, 0.09) 42%,
+            color-mix(in srgb, var(--mode-accent-2) 6%, transparent) 68%,
+            transparent 100%
+        );
+        -webkit-mask-image: radial-gradient(
+            circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            black var(--spot-inner, 0px),
+            transparent var(--spot-outer, 0px)
+        );
+        mask-image: radial-gradient(
+            circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            black var(--spot-inner, 0px),
+            transparent var(--spot-outer, 0px)
+        );
+        mask-repeat: no-repeat;
+        -webkit-mask-repeat: no-repeat;
+        opacity: 0;
+    }
+
+    .bento-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        padding: 1px;
+        pointer-events: none;
+        z-index: 3;
+        background: radial-gradient(
+            circle 250px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            var(--mode-accent),
+            var(--mode-accent-2) 48%,
+            transparent 80%
+        );
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.26s ease;
+    }
+
+    .bento-card:hover,
+    .tech-stack-card:hover,
+    .hero-capsule-music-box:hover {
+        --spot-inner: 110px;
+        --spot-outer: 340px;
+    }
+
+    .bento-card:hover::before,
+    .tech-stack-card:hover::after,
+    .hero-capsule-music-box:hover::before,
+    .bento-card:hover::after {
+        opacity: 1;
+    }
+}
+
+/* 10. 首屏下方重型板块延迟渲染 */
+#tech-stack,
+#exploring,
+#about {
+    content-visibility: auto;
+    contain-intrinsic-size: auto none auto 820px;
+}
+
+/* 11. 优雅滚动入场编排 */
+@media (prefers-reduced-motion: no-preference) {
+    .reveal-ready .reveal-item {
+        opacity: 0;
+        transform: translateY(22px);
+        transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-ready .reveal-item.is-revealed {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================================================
+   12. v3.0 全站 UI 布局与交互质感升级（0 功能删减）
+   ========================================================================== */
+
+/* 12a. 顶部 HUD 胶囊章节快捷导航（>=1240px 显示，平板与手机隐藏绝不挤占） */
+.hud-quick-nav {
+    display: none;
+    align-items: center;
+    gap: 4px;
+    padding: 4px;
+    border-radius: 999px;
+    background: rgba(12, 18, 34, 0.66);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+@media (min-width: 1340px) {
+    .hud-quick-nav {
+        display: inline-flex;
+    }
+}
+
+.hud-nav-link {
+    position: relative;
+    padding: 5px 11px;
+    border-radius: 999px;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-family: var(--font-sans);
+    font-size: 0.76rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hud-nav-link:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.hud-nav-link.is-active {
+    color: #ffffff;
+    background: color-mix(in srgb, var(--mode-accent) 18%, rgba(255, 255, 255, 0.06));
+    box-shadow: 0 0 14px color-mix(in srgb, var(--mode-glow) 55%, transparent), inset 0 0 0 1px color-mix(in srgb, var(--mode-accent) 48%, transparent);
+}
+
+/* 12b. Hero 终端名言栏点击提示 + 主按钮高光扫光 + 樱花散华呼吸光 */
+.terminal-callout {
+    justify-content: space-between;
+    cursor: pointer;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+}
+
+.terminal-callout:hover {
+    border-color: color-mix(in srgb, var(--mode-accent) 60%, rgba(255, 255, 255, 0.2));
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55), 0 0 18px color-mix(in srgb, var(--mode-glow) 40%, transparent);
+}
+
+.terminal-callout-main {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    flex: 1;
+}
+
+.term-kbd-hint {
+    flex-shrink: 0;
+    padding: 2px 7px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+}
+
+.btn-primary {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, transparent 25%, rgba(255, 255, 255, 0.28) 50%, transparent 75%);
+    transform: translateX(-130%);
+    transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+}
+
+.btn-primary:hover::after {
+    transform: translateX(130%);
+}
+
+#hero-sakura-btn {
+    background: linear-gradient(135deg, rgba(255, 117, 140, 0.16), rgba(168, 85, 247, 0.10)) !important;
+    border-color: rgba(255, 117, 140, 0.52) !important;
+    box-shadow: 0 0 18px rgba(255, 117, 140, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+#hero-sakura-btn:hover {
+    background: linear-gradient(135deg, rgba(255, 117, 140, 0.28), rgba(0, 240, 255, 0.14)) !important;
+    box-shadow: 0 6px 26px rgba(255, 117, 140, 0.38);
+    color: #ffffff !important;
+}
+
+/* 12c. Hero 音乐盒实时微频谱柱（与 --audio-level 联动） */
+.jukebox-mini-eq {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 2.5px;
+    height: 14px;
+    padding: 0 6px;
+}
+
+.jukebox-mini-eq i {
+    display: block;
+    width: 2.5px;
+    height: 4px;
+    border-radius: 2px;
+    background: linear-gradient(to top, var(--mode-accent), var(--mode-accent-2));
+    opacity: 0.45;
+    transform-origin: bottom center;
+    transition: opacity 0.25s ease, transform 0.15s ease;
+}
+
+@keyframes eq-dance-soft {
+    0%, 100% { transform: scaleY(0.32); }
+    50% { transform: scaleY(1); }
+}
+
+.hero-capsule-music-box.is-playing .jukebox-mini-eq i {
+    opacity: 0.96;
+    height: calc(10px + var(--audio-level, 0) * 6px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .hero-capsule-music-box.is-playing .jukebox-mini-eq i:nth-child(1) { animation: eq-dance-soft 0.72s ease-in-out infinite 0.00s; }
+    .hero-capsule-music-box.is-playing .jukebox-mini-eq i:nth-child(2) { animation: eq-dance-soft 0.58s ease-in-out infinite 0.12s; }
+    .hero-capsule-music-box.is-playing .jukebox-mini-eq i:nth-child(3) { animation: eq-dance-soft 0.84s ease-in-out infinite 0.24s; }
+    .hero-capsule-music-box.is-playing .jukebox-mini-eq i:nth-child(4) { animation: eq-dance-soft 0.64s ease-in-out infinite 0.08s; }
+    .hero-capsule-music-box.is-playing .jukebox-mini-eq i:nth-child(5) { animation: eq-dance-soft 0.76s ease-in-out infinite 0.30s; }
+    .hero-capsule-music-box.is-playing .jukebox-mini-eq i:nth-child(6) { animation: eq-dance-soft 0.60s ease-in-out infinite 0.18s; }
+    .hero-capsule-music-box.is-playing .jukebox-mini-eq i:nth-child(7) { animation: eq-dance-soft 0.88s ease-in-out infinite 0.05s; }
+    .hero-capsule-music-box.is-playing .jukebox-mini-eq i:nth-child(8) { animation: eq-dance-soft 0.68s ease-in-out infinite 0.22s; }
+}
+
+/* 12d. 章节标题秩序线升级 */
+.section-header {
+    position: relative;
+}
+
+.section-tag {
+    color: var(--mode-accent);
+}
+
+.section-tag::before {
+    background: linear-gradient(90deg, var(--mode-accent), var(--mode-accent-2));
+    width: 26px;
+    height: 2px;
+    border-radius: 2px;
+    box-shadow: 0 0 10px var(--mode-glow);
+}
+
+/* 12e. 工程项目领域筛选胶囊条 & 指标微条 */
+.project-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin: -18px 0 26px;
+}
+
+.project-filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: rgba(12, 18, 36, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    color: var(--text-sub);
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: border-color 0.22s ease, background-color 0.22s ease, color 0.22s ease, transform 0.18s ease, box-shadow 0.22s ease;
+}
+
+.project-filter-btn:hover {
+    color: #ffffff;
+    border-color: color-mix(in srgb, var(--mode-accent) 55%, rgba(255, 255, 255, 0.2));
+    transform: translateY(-1px);
+}
+
+.project-filter-btn.is-active {
+    color: #ffffff;
+    background: color-mix(in srgb, var(--mode-accent) 20%, rgba(12, 18, 36, 0.9));
+    border-color: var(--mode-accent);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--mode-glow) 55%, transparent);
+}
+
+.filter-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 18px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--text-dim);
+}
+
+.project-filter-btn.is-active .filter-count {
+    background: color-mix(in srgb, var(--mode-accent) 28%, rgba(255, 255, 255, 0.14));
+    color: #ffffff;
+}
+
+.bento-card.is-filter-hidden {
+    display: none !important;
+}
+
+@media (min-width: 993px) {
+    .bento-grid.is-filtered .bento-card[data-project-cat]:not([data-project-cat="always"]) {
+        grid-column: span 6;
+    }
+}
+
+.card-metrics-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 14px 0 6px;
+}
+
+.metric-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 7px;
+    background: rgba(0, 240, 255, 0.07);
+    border: 1px solid color-mix(in srgb, var(--mode-accent) 32%, rgba(255, 255, 255, 0.08));
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: #e2e8f0;
+    letter-spacing: 0.02em;
+}
+
+.metric-chip-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--mode-accent);
+    box-shadow: 0 0 8px var(--mode-accent);
+}
+
+.bento-card .card-link span:last-child {
+    display: inline-block;
+    transition: transform 0.22s ease;
+}
+
+.bento-card:hover .card-link span:last-child {
+    transform: translateX(4px);
+}
+
+.stack-pill {
+    transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.stack-pill:hover {
+    border-color: color-mix(in srgb, var(--mode-accent) 55%, rgba(255, 255, 255, 0.2));
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* 12f. QQ 一键复制与霓虹 Toast */
+#qq-copy-card {
+    cursor: pointer;
+    user-select: none;
+}
+
+.copy-chip-badge {
+    margin-left: 6px;
+    padding: 2px 7px;
+    border-radius: 6px;
+    background: rgba(0, 240, 255, 0.14);
+    border: 1px solid rgba(0, 240, 255, 0.35);
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    color: var(--cyan);
+    letter-spacing: 0.04em;
+    vertical-align: middle;
+}
+
+#cyber-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 84px;
+    transform: translate(-50%, 16px);
+    z-index: 2500;
+    padding: 10px 20px;
+    border-radius: 999px;
+    background: rgba(8, 14, 30, 0.92);
+    border: 1px solid var(--mode-accent);
+    box-shadow: 0 12px 34px rgba(0, 0, 0, 0.65), 0 0 24px var(--mode-glow);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    color: #ffffff;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.24s ease, transform 0.24s ease;
+}
+
+#cyber-toast.is-visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+/* 12g. 结尾诗句星光礼赞框质感升维 */
+.final-creed-box {
+    position: relative;
+    background:
+        radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--mode-accent) 14%, transparent), transparent 65%),
+        linear-gradient(155deg, rgba(14, 21, 44, 0.78), rgba(8, 12, 26, 0.88)) !important;
+    border-color: color-mix(in srgb, var(--mode-accent-2) 44%, rgba(255, 255, 255, 0.12)) !important;
+    box-shadow:
+        0 18px 48px rgba(0, 0, 0, 0.62),
+        0 0 34px color-mix(in srgb, var(--mode-glow) 42%, transparent),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14) !important;
+}
+
+.creed-epilogue-tag {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    color: var(--mode-accent);
+    opacity: 0.88;
+    margin-bottom: 2px;
+}
+
+/* 12h. 音乐盒双端进度条禁用原生滚动接管与选中，保障拖拽零干扰 */
+.capsule-progress-bg,
+.music-progress-bar-bg {
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* 13. 减弱动效偏好完整兜底 */
+@media (prefers-reduced-motion: reduce) {
+    .bento-card::before,
+    .tech-stack-card::after,
+    .hero-capsule-music-box::before,
+    .bento-card::after,
+    .btn-primary::after {
+        transition: none !important;
+    }
+    .reveal-ready .reveal-item {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+    .profile-avatar-box,
+    .profile-avatar-box::after,
+    .hero-title .cn-name,
+    .dock-led,
+    .jukebox-mini-eq i {
+        animation: none !important;
+    }
+}

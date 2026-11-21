@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -13,7 +13,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://sherlockyzz.github.io/">
     <meta property="og:title" content="SherlockYzz // 折木柯南 - 个人智能实验室">
-    <meta property="og:description" content="探寻算法逻辑与二次元交互美学的交汇处。原生 Canvas 2D 动力学空间透视与高能粒子演算、Web Audio 实时声学频谱、二次元流光音乐盒与全栈交互工程。">
+    <meta property="og:description" content="探寻算法逻辑与二次元交互美学的交汇处。WebGL2 GLSL 实时着色器与 3D 动力学粒子演算、Web Audio 实时声学频谱、二次元流光音乐盒与全栈交互工程。">
     <meta property="og:image" content="https://sherlockyzz.github.io/avatar.png">
     <meta property="og:image:width" content="460">
     <meta property="og:image:height" content="460">
@@ -24,14 +24,16 @@
     <meta name="twitter:card" content="summary">
     <meta name="twitter:url" content="https://sherlockyzz.github.io/">
     <meta name="twitter:title" content="SherlockYzz // 折木柯南 - 个人智能实验室">
-    <meta name="twitter:description" content="探寻算法逻辑与二次元交互美学的交汇处。原生 Canvas 2D 动力学空间透视与高能粒子演算、Web Audio 实时声学频谱、二次元流光音乐盒与全栈交互工程。">
+    <meta name="twitter:description" content="探寻算法逻辑与二次元交互美学的交汇处。WebGL2 GLSL 实时着色器与 3D 动力学粒子演算、Web Audio 实时声学频谱、二次元流光音乐盒与全栈交互工程。">
     <meta name="twitter:image" content="https://sherlockyzz.github.io/avatar.png">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300f0ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polygon points='12 2 2 7 12 12 22 7 12 2'/><polyline points='2 17 12 22 22 17'/><polyline points='2 12 12 17 22 12'/></svg>">
 
-    <!-- Google Fonts 纯美学极速字体栈 (仅保留西文微量字形，CJK 采用原生高刷系统字体，零网络阻塞) -->
+    <!-- Google Fonts 异步非阻塞加载（国内直连零首屏阻塞，CJK 采用原生系统高刷字体） -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet"></noscript>
+    <link rel="stylesheet" href="assets/ultra-fx.css">
 
     <style>
         :root {
@@ -3551,11 +3553,29 @@
 </head>
 <body>
 
-    <!-- 全局自适应 3D 动力学多模式 Canvas -->
+    <!-- WebGL2 超维 GPU 着色器宇宙画布 -->
+    <canvas id="webgl-stage" aria-hidden="true"></canvas>
+
+    <!-- 全局自适应 3D 动力学前景 Canvas -->
     <canvas id="viewport-canvas"></canvas>
 
     <!-- 鼠标流光粒子画布 -->
     <canvas id="fx-canvas"></canvas>
+
+    <!-- 顶部原生 CSS 滚动进度激光条 -->
+    <div id="scroll-progress-bar" aria-hidden="true"></div>
+
+    <!-- 桌面端磁吸光环准星 -->
+    <div id="cyber-cursor-ring" aria-hidden="true"></div>
+
+    <!-- 桌面端右侧极客章节导航轨道 -->
+    <nav class="section-rail" aria-label="页面章节导航">
+        <a href="#hero" class="rail-link is-active" data-rail="hero"><span class="rail-label">01 HERO</span><span class="rail-dot"></span></a>
+        <a href="#projects" class="rail-link" data-rail="projects"><span class="rail-label">02 WORK</span><span class="rail-dot"></span></a>
+        <a href="#tech-stack" class="rail-link" data-rail="tech-stack"><span class="rail-label">03 STACK</span><span class="rail-dot"></span></a>
+        <a href="#exploring" class="rail-link" data-rail="exploring"><span class="rail-label">04 PATH</span><span class="rail-dot"></span></a>
+        <a href="#about" class="rail-link" data-rail="about"><span class="rail-label">05 ABOUT</span><span class="rail-dot"></span></a>
+    </nav>
 
     <!-- 顶部 HUD 导航栏 -->
     <header class="hud-nav">
@@ -3564,6 +3584,14 @@
             <span>SherlockYzz // 2026</span>
             <span class="brand-jp-badge">電脳二次元</span>
         </a>
+
+        <nav class="hud-quick-nav" aria-label="顶栏快捷章节导航">
+            <a href="#hero" class="hud-nav-link is-active" data-rail="hero">首页</a>
+            <a href="#projects" class="hud-nav-link" data-rail="projects">项目</a>
+            <a href="#tech-stack" class="hud-nav-link" data-rail="tech-stack">技术栈</a>
+            <a href="#exploring" class="hud-nav-link" data-rail="exploring">探索</a>
+            <a href="#about" class="hud-nav-link" data-rail="about">关于</a>
+        </nav>
 
         <div class="hud-status-bar">
             <span class="clock-display" id="clock-display">CST 00:00:00</span>
@@ -3576,6 +3604,11 @@
             <button class="hud-btn" id="audio-toggle-btn" title="点击开启赛博音乐与合成声景">
                 <canvas class="audio-spectrum-canvas" id="audio-spectrum" width="38" height="14"></canvas>
                 <span id="audio-btn-label">OFF</span>
+            </button>
+
+            <!-- 背景动态特效暂停/恢复按钮（符合 WCAG 2.2.2 动效控制规范） -->
+            <button class="hud-btn active" id="fx-motion-toggle" title="暂停或恢复 3D 背景动态渲染">
+                <span id="fx-motion-label">FX: ON</span>
             </button>
 
             <!-- 呼出黑客终端 HUD -->
@@ -3596,7 +3629,7 @@
         <span class="telemetry-sep" id="telemetry-cursor-sep" style="color: rgba(255,255,255,0.1);">|</span>
         <span class="telemetry-item">FPS: <strong id="telemetry-fps">60.0</strong></span>
         <span style="color: rgba(255,255,255,0.1);">|</span>
-        <span class="telemetry-item">ENGINE: <strong>3D KINETIC DYNAMICS</strong></span>
+        <span class="telemetry-item">ENGINE: <strong id="telemetry-engine-name">3D KINETIC DYNAMICS</strong></span>
         <span style="color: rgba(255,255,255,0.1);">|</span>
         <span class="telemetry-item">AGENT: <strong style="color:var(--green);">AUTONOMOUS</strong></span>
     </div>
@@ -3631,7 +3664,7 @@
         <!-- 音乐盒折叠胶囊控件 (含黑胶、歌名、迷你播放/暂停、下一首、声波) -->
         <div class="music-capsule-btn" id="music-capsule-btn" title="点击展开音乐盒控制台">
             <span class="music-vinyl-icon" id="capsule-disc-icon" title="播放/暂停"></span>
-            <span class="music-capsule-text" id="capsule-song-name">BGM: 月声尽，心灯明</span>
+            <span class="music-capsule-text" id="capsule-song-name">BGM: GATE OF STEINER</span>
             <button class="capsule-mini-btn" id="capsule-mini-play" title="播放/暂停">
                 <svg class="cyber-svg-icon" viewBox="0 0 24 24"><polygon points="6 4 18 12 6 20 6 4"/></svg>
             </button>
@@ -3656,8 +3689,8 @@
             <div class="music-body">
                 <div class="music-big-disc" id="music-big-disc"></div>
                 <div class="music-info">
-                    <div class="music-song-name" id="music-display-title">月声尽，心灯明</div>
-                    <div class="music-song-artist" id="music-display-artist">《鸣潮》心月狐主题曲</div>
+                    <div class="music-song-name" id="music-display-title">GATE OF STEINER</div>
+                    <div class="music-song-artist" id="music-display-artist">《命运石之门》插曲</div>
                 </div>
             </div>
             <div class="music-progress-box">
@@ -3666,7 +3699,7 @@
                 </div>
                 <div class="music-time-row">
                     <span id="music-cur-time">00:00</span>
-                    <span id="music-dur-time">00:00</span>
+                    <span id="music-dur-time">04:12</span>
                 </div>
             </div>
             <div class="music-controls-row">
@@ -3683,8 +3716,8 @@
             <!-- 10 首曲目抽屉列表 -->
             <div class="music-playlist-drawer" id="music-playlist-drawer"></div>
         </div>
-        <!-- 核心音频元素 (preload="auto" 后台静默流式缓冲当前曲目，拖拽寻址 0 卡顿) -->
-        <audio id="global-bgm-audio" src="audio/track_01.mp3" preload="auto" playsinline webkit-playsinline></audio>
+        <!-- 核心音频元素 (preload="auto" + 全内存 Blob 预取加速，拖拽寻址 0 卡顿) -->
+        <audio id="global-bgm-audio" src="audio/track_08.mp3" preload="auto" playsinline webkit-playsinline></audio>
     </div>
 
     <!-- 页面内容层 -->
@@ -3770,10 +3803,13 @@
                         </p>
 
                         <!-- 终端打字机名言栏 -->
-                        <div class="terminal-callout" style="max-width: 580px; margin: 4px 0 6px 0;">
-                            <span class="term-prompt">&gt;</span>
-                            <span class="term-text" id="typewriter-target">少年何妨梦摘星，敢挽桑弓射玉衡。</span>
-                            <span class="cursor-blink"></span>
+                        <div class="terminal-callout" id="hero-callout-bar" title="点击打开交互式命令终端 [按 ~]" style="max-width: 580px; margin: 4px 0 6px 0;">
+                            <span class="terminal-callout-main">
+                                <span class="term-prompt">&gt;</span>
+                                <span class="term-text" id="typewriter-target">少年何妨梦摘星，敢挽桑弓射玉衡。</span>
+                                <span class="cursor-blink"></span>
+                            </span>
+                            <span class="term-kbd-hint">PRESS ~</span>
                         </div>
 
                         <!-- 核心标签栏 -->
@@ -3821,6 +3857,7 @@
                                     <span class="capsule-pulse-dot"></span>
                                     <span>CLOUD MUSIC JUKEBOX</span>
                                 </div>
+                                <span class="jukebox-mini-eq" id="jukebox-mini-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
                                 <span class="capsule-counter" id="hero-track-counter">1 / 10 TRACKS</span>
                             </div>
 
@@ -3832,12 +3869,12 @@
                                 </div>
 
                                 <div class="capsule-meta-box">
-                                    <div class="capsule-song-tag" id="hero-song-tag">《鸣潮》心月狐主题曲</div>
-                                    <div class="capsule-song-title" id="hero-song-title">月声尽，心灯明</div>
+                                    <div class="capsule-song-tag" id="hero-song-tag">《命运石之门》插曲</div>
+                                    <div class="capsule-song-title" id="hero-song-title">GATE OF STEINER</div>
                                     <div class="capsule-progress-box">
                                         <div class="capsule-time-row">
                                             <span id="hero-cur-time">00:00</span>
-                                            <span id="hero-dur-time">03:48</span>
+                                            <span id="hero-dur-time">04:12</span>
                                         </div>
                                         <div class="capsule-progress-bg" id="hero-progress-bg">
                                             <div class="capsule-progress-fill" id="hero-progress-fill"></div>
@@ -3909,9 +3946,29 @@
                     <p class="section-desc">涵盖二次元多模态桌面智能体、数字文物 3D 拟真、文化创意代码艺术及高标准高校开源知识生态。</p>
                 </div>
 
-                <div class="bento-grid">
+                <!-- 项目领域快速筛选胶囊栏 -->
+                <div class="project-filter-bar" role="group" aria-label="工程项目领域筛选">
+                    <button type="button" class="project-filter-btn is-active" data-filter="all" aria-pressed="true">
+                        <span>全部作品</span>
+                        <span class="filter-count">7</span>
+                    </button>
+                    <button type="button" class="project-filter-btn" data-filter="ai" aria-pressed="false">
+                        <span>AI 智能体</span>
+                        <span class="filter-count">3</span>
+                    </button>
+                    <button type="button" class="project-filter-btn" data-filter="visual" aria-pressed="false">
+                        <span>3D &amp; 视觉</span>
+                        <span class="filter-count">2</span>
+                    </button>
+                    <button type="button" class="project-filter-btn" data-filter="oss" aria-pressed="false">
+                        <span>开源 &amp; 科研</span>
+                        <span class="filter-count">2</span>
+                    </button>
+                </div>
+
+                <div class="bento-grid" id="projects-bento-grid">
                     <!-- 项目 1: AI 二次元桌宠 (大卡片 Span 8) -->
-                    <article class="bento-card card-span-8 interactive-card">
+                    <article class="bento-card card-span-8 interactive-card" data-project-cat="ai">
                         <div>
                             <div class="card-top">
                                 <span class="card-index">PROJECT // 01 · DESKTOP AGENT</span>
@@ -3921,6 +3978,11 @@
                             <p class="card-desc">
                                 桌面常驻智能交互伴侣。基于 Electron 与 Live2D SDK 打造轻量级高帧率动画管线，深度融合自主多代理工作流与本地/云端大模型 Function Calling，实现多角色自主感知、桌面协同操作与细腻的情感化语音交互。
                             </p>
+                            <div class="card-metrics-strip">
+                                <span class="metric-chip"><span class="metric-chip-dot"></span>60 FPS Live2D Pipeline</span>
+                                <span class="metric-chip"><span class="metric-chip-dot"></span>Multi-Agent Tool Calling</span>
+                                <span class="metric-chip"><span class="metric-chip-dot"></span>Realtime TTS Resonance</span>
+                            </div>
                             <div class="card-stack">
                                 <span class="stack-pill">Electron</span>
                                 <span class="stack-pill">TypeScript</span>
@@ -3940,7 +4002,7 @@
                     </article>
 
                     <!-- 项目 2: 天青泥火 (中卡片 Span 4) -->
-                    <article class="bento-card card-span-4 interactive-card">
+                    <article class="bento-card card-span-4 interactive-card" data-project-cat="visual">
                         <div>
                             <div class="card-top">
                                 <span class="card-index">PROJECT // 02 · XERJ INDEXED</span>
@@ -3950,6 +4012,10 @@
                             <p class="card-desc">
                                 获评为全球高质量开源范本，正式入选开源 AI 搜索引擎 XERJ Corpus Hub 标杆参考实现。基于 Three.js r128 原生打造双器同台矩阵对比、100x 景深微距显微镜、全息剖面与双层清漆物理渲染。
                             </p>
+                            <div class="card-metrics-strip">
+                                <span class="metric-chip"><span class="metric-chip-dot"></span>XERJ Corpus Hub Selected</span>
+                                <span class="metric-chip"><span class="metric-chip-dot"></span>100× PBR Zoom</span>
+                            </div>
                             <div class="card-stack">
                                 <span class="stack-pill">Three.js r128</span>
                                 <span class="stack-pill">XERJ Reference</span>
@@ -3967,7 +4033,7 @@
                     </article>
 
                     <!-- 项目 3: 赛博养Gemini · 双子星伴生体 (中卡片 Span 6) -->
-                    <article class="bento-card card-span-6 interactive-card">
+                    <article class="bento-card card-span-6 interactive-card" data-project-cat="ai">
                         <div>
                             <div class="card-top">
                                 <span class="card-index">PROJECT // 03 · MULTIMODAL AGENT</span>
@@ -3995,7 +4061,7 @@
                     </article>
 
                     <!-- 项目 4: 华夏岁时盛典 (中卡片 Span 6) -->
-                    <article class="bento-card card-span-6 interactive-card">
+                    <article class="bento-card card-span-6 interactive-card" data-project-cat="visual">
                         <div>
                             <div class="card-top">
                                 <span class="card-index">PROJECT // 04 · CREATIVE CODE</span>
@@ -4022,7 +4088,7 @@
                     </article>
 
                     <!-- 项目 5: HENU 开源资料站 (中卡片 Span 6) -->
-                    <article class="bento-card card-span-6 interactive-card">
+                    <article class="bento-card card-span-6 interactive-card" data-project-cat="oss">
                         <div>
                             <div class="card-top">
                                 <span class="card-index">PROJECT // 05 · OPEN SOURCE</span>
@@ -4049,7 +4115,7 @@
                     </article>
 
                     <!-- 项目 6: 开封府政务与文旅私有化 (卡片 Span 6) -->
-                    <article class="bento-card card-span-6 interactive-card">
+                    <article class="bento-card card-span-6 interactive-card" data-project-cat="ai">
                         <div>
                             <div class="card-top">
                                 <span class="card-index">PROJECT // 06 · ENTERPRISE AI</span>
@@ -4073,7 +4139,7 @@
                     </article>
 
                     <!-- 项目 7: 常微分方程核心考点解析 (卡片 Span 12) -->
-                    <article class="bento-card card-span-6 interactive-card">
+                    <article class="bento-card card-span-6 interactive-card" data-project-cat="oss">
                         <div>
                             <div class="card-top">
                                 <span class="card-index">PROJECT // 07 · MATHEMATICS</span>
@@ -4099,7 +4165,7 @@
                     </article>
 
                     <!-- 项目 7 / 街机时刻: ARCADE TIME (大卡片 Span 12) -->
-                    <article class="bento-card card-span-12 interactive-card arcade-bento-card" id="arcade-bento-card">
+                    <article class="bento-card card-span-12 interactive-card arcade-bento-card" id="arcade-bento-card" data-project-cat="always">
                         <div class="arcade-card-inner">
                             <!-- 头部状态栏 -->
                             <div class="arcade-header">
@@ -4493,10 +4559,10 @@
                                 如果你也对计算机探索、多模态 AI、二次元交互或者音乐运动感兴趣，欢迎随时与我交流探讨！
                             </p>
                             <div class="connect-badges-row">
-                                <div class="connect-badge-item">
+                                <div class="connect-badge-item" id="qq-copy-card" role="button" tabindex="0" data-copy="38524908" title="点击一键复制 QQ 号">
                                     <span class="connect-icon"><svg class="cyber-svg-icon icon-cyan" viewBox="0 0 24 24"><ellipse cx="12" cy="13" rx="6" ry="8"/><circle cx="12" cy="7" r="4"/><path d="M11 7h2l-1 2z"/><path d="M6 13c-1.5 2-1 5 0 6m12-6c1.5 2 1 5 0 6"/><circle cx="10" cy="6" r="0.8" fill="currentColor"/><circle cx="14" cy="6" r="0.8" fill="currentColor"/><path d="M9 21c-1 0-2-.5-2-1m8 1c1 0 2-.5 2-1"/></svg></span>
                                     <div class="connect-meta">
-                                        <span class="connect-label">QQ 联络</span>
+                                        <span class="connect-label">QQ 联络 <span class="copy-chip-badge" id="qq-copy-badge">复制</span></span>
                                         <strong class="connect-value">38524908</strong>
                                     </div>
                                 </div>
@@ -4521,6 +4587,7 @@
                     <!-- 结尾诗句收束 -->
                     <div class="card-span-12 final-creed-container">
                         <div class="final-creed-box">
+                            <div class="creed-epilogue-tag">EPILOGUE // STARLIGHT ARCHIVE</div>
                             <div class="creed-verse-row">
                                 <span class="creed-line">风起于青萍之末，浪积累于波澜之间。</span>
                             </div>
@@ -4537,6 +4604,9 @@
 
         </div>
     </main>
+
+    <!-- 全局轻盈霓虹反馈 Toast -->
+    <div id="cyber-toast" role="status" aria-live="polite"></div>
 
     <!-- ================= 极简页脚 ================= -->
     <footer class="site-footer">
@@ -4623,7 +4693,13 @@
     <!-- ============================================================
        核心生成艺术、二次元偶灵与动力学引擎
        ============================================================ -->
+    <script src="assets/webgl-cosmos-engine.js"></script>
     <script>
+        // 提前声明全局音频/模式共享状态，彻底杜绝 TDZ 初始化顺序报错
+        let isBgmPlaying = false;
+        const bgmAudio = document.getElementById('global-bgm-audio');
+        document.body.dataset.visualMode = '0';
+
         // ================= 1. 实时时钟 HUD =================
         function updateClock() {
             const clockEl = document.getElementById('clock-display');
@@ -4678,6 +4754,8 @@
         let synthOscs = [];
         let analyser = null;
         let audioDataArray = null;
+        let bgmMediaSource = null;
+        let bgmMediaSourceFailed = false;
 
         function initAudio() {
             if (audioCtx) return;
@@ -4693,6 +4771,21 @@
 
             masterGain.connect(analyser);
             analyser.connect(audioCtx.destination);
+        }
+
+        function attachBgmAnalyser() {
+            if (bgmMediaSource || bgmMediaSourceFailed) return;
+            if (location.protocol !== 'http:' && location.protocol !== 'https:') return;
+            try {
+                initAudio();
+                const bgmEl = document.getElementById('global-bgm-audio');
+                if (!bgmEl || !audioCtx || !analyser) return;
+                bgmMediaSource = audioCtx.createMediaElementSource(bgmEl);
+                bgmMediaSource.connect(analyser);
+            } catch (err) {
+                bgmMediaSourceFailed = true;
+                console.warn('[Audio] MediaElementSource fallback to pulse:', err);
+            }
         }
 
         // 萌系二次元 / 科技风音效发生器 (短促二次元灵动提示音)
@@ -4790,7 +4883,8 @@
         function renderSpectrum() {
             requestAnimationFrame(renderSpectrum);
             sCtx.clearRect(0, 0, 38, 14);
-            if (!isAudioPlaying || !analyser) {
+            const hasLiveBgm = (typeof isBgmPlaying !== 'undefined' && isBgmPlaying);
+            if ((!isAudioPlaying && !hasLiveBgm) || !analyser) {
                 // 待机平息呼吸线
                 sCtx.fillStyle = 'rgba(255, 255, 255, 0.2)';
                 for (let i = 0; i < 6; i++) {
@@ -4802,8 +4896,12 @@
             analyser.getByteFrequencyData(audioDataArray);
             const barCount = 6;
             const step = Math.floor(audioDataArray.length / barCount);
+            const nowT = performance.now() * 0.006;
             for (let i = 0; i < barCount; i++) {
-                const val = audioDataArray[i * step] || 0;
+                let val = audioDataArray[i * step] || 0;
+                if (val === 0 && hasLiveBgm && !bgmMediaSource) {
+                    val = 80 + Math.sin(nowT + i * 0.9) * 65;
+                }
                 const h = Math.max(2, (val / 255) * 12);
                 sCtx.fillStyle = i % 2 === 0 ? '#00f0ff' : '#ff758c';
                 sCtx.fillRect(i * 6 + 2, 14 - h, 3, h);
@@ -5649,11 +5747,14 @@
         // 视口相机震颤动力学 (Screen Shake)
         let screenShake = 0;
 
-        // 鼠标姿态与遥测
+        // 鼠标姿态与遥测（支持鼠标视差 + 按住拖拽 3D 视角惯性旋转）
         let mouseX = width * 0.5, mouseY = height * 0.5;
         let prevMouseX = width * 0.5, prevMouseY = height * 0.5;
         let mouseSpeedX = 0, mouseSpeedY = 0;
         let targetRotX = 0.2, targetRotY = 0.3;
+        let dragOffsetRotX = 0, dragOffsetRotY = 0;
+        let dragVelX = 0, dragVelY = 0;
+        let canDragOrbit = false;
         let rotX = 0.2, rotY = 0.3;
 
         // 长按引力坍缩奇点与超新星蓄力状态
@@ -5709,15 +5810,25 @@
             mouseScreenY = e.clientY;
             if (coordsEl) coordsEl.textContent = `[${Math.round(e.clientX)}, ${Math.round(e.clientY)}]`;
 
-            mouseSpeedX = (e.clientX - prevMouseX) * 0.45;
-            mouseSpeedY = (e.clientY - prevMouseY) * 0.45;
+            const rawDx = e.clientX - prevMouseX;
+            const rawDy = e.clientY - prevMouseY;
+            mouseSpeedX = rawDx * 0.45;
+            mouseSpeedY = rawDy * 0.45;
             prevMouseX = e.clientX;
             prevMouseY = e.clientY;
 
             const nx = (e.clientX / width - 0.5) * 2;
             const ny = (e.clientY / height - 0.5) * 2;
-            targetRotY = nx * 0.45;
-            targetRotX = -ny * 0.35 + 0.15;
+            if (isPointerDown && canDragOrbit) {
+                const dxRot = (rawDx / Math.max(width, 1)) * 4.5;
+                const dyRot = (rawDy / Math.max(height, 1)) * 3.4;
+                dragOffsetRotY += dxRot;
+                dragOffsetRotX = Math.max(-1.1, Math.min(1.1, dragOffsetRotX + dyRot));
+                dragVelY = dxRot * 0.65;
+                dragVelX = dyRot * 0.65;
+            }
+            targetRotY = nx * 0.48 + dragOffsetRotY;
+            targetRotX = -ny * 0.36 + 0.15 + dragOffsetRotX;
 
             // 记录平滑光刃拖尾节点 (附带高精时间戳，支持静止后渐隐消散)
             mouseTrail.push({
@@ -5859,6 +5970,9 @@
 
             // 2. 全景相机高能震颤
             screenShake = 16.0;
+            if (window.__WEBGL_COSMOS__ && window.__WEBGL_COSMOS__.active) {
+                window.__WEBGL_COSMOS__.triggerShockwave(originX, originY, 1.85);
+            }
 
             // 3. 释放双重超能量子光环（高光粉樱环 + 赛博青光环）
             shockwaves.push({
@@ -5972,9 +6086,10 @@
             }
         }
 
-        // 鼠标按下：触发点击冲击波，并开启引力坍缩蓄力
+        // 鼠标按下：触发点击冲击波，并开启引力坍缩蓄力 + 背景 3D 拖拽旋转
         window.addEventListener('pointerdown', (e) => {
             isPointerDown = true;
+            canDragOrbit = !(e.target && e.target.closest && e.target.closest('button, a, input, .hero-capsule-music-box, .music-card-modal, .anime-companion-widget, .terminal-modal, .arcade-modal, .bento-card, .tech-stack-card'));
             pointerDownTime = performance.now();
             pointerDownX = e.clientX;
             pointerDownY = e.clientY;
@@ -5995,6 +6110,9 @@
 
             // 画面强烈物理震颤
             screenShake = Math.max(screenShake, 5.0);
+            if (window.__WEBGL_COSMOS__ && window.__WEBGL_COSMOS__.active) {
+                window.__WEBGL_COSMOS__.triggerShockwave(e.clientX, e.clientY, 0.85);
+            }
 
             // 喷射36颗高初速辐射星尘
             spawnBlastSparks(e.clientX, e.clientY, 36, false);
@@ -6037,18 +6155,22 @@
 
                 spawnBlastSparks(e.clientX, e.clientY, 80, true);
                 playSciFiAudio(220, 0.45, 'triangle', true);
+                if (window.__WEBGL_COSMOS__ && window.__WEBGL_COSMOS__.active) {
+                    window.__WEBGL_COSMOS__.triggerShockwave(e.clientX, e.clientY, 1.6);
+                }
             }
             isPointerDown = false;
             chargeRatio = 0;
         });
 
-                // ================= 3D 视觉模式切换总控制器 (彻底修复 12345 切换) =================
+                // ================= 3D 视觉模式切换总控制器 (彻底修复 12345 切换 + 全站主题色联动) =================
         let previousMode = 0;
         function switchVisualMode(modeIndex) {
             if (currentMode !== 4) {
                 previousMode = currentMode;
             }
             currentMode = modeIndex;
+            document.body.dataset.visualMode = String(modeIndex);
 
             // 1. 同步更新所有顶部模式切换坞与备用按钮的激活态
             document.querySelectorAll('.dock-mode-btn, .mode-opt').forEach((btn) => {
@@ -6057,7 +6179,11 @@
                 else btn.classList.remove('selected');
             });
 
-            // 2. 模式切换声效与小幅相机呼吸
+            // 2. 模式切换声效与小幅相机呼吸 + 同步 WebGL2 着色器模式平滑融合与时空跃迁冲击波
+            if (window.__WEBGL_COSMOS__ && window.__WEBGL_COSMOS__.active) {
+                window.__WEBGL_COSMOS__.setMode(modeIndex);
+                window.__WEBGL_COSMOS__.triggerShockwave(width * 0.5, height * 0.46, 1.15);
+            }
             playSciFiAudio(600 + modeIndex * 140, 0.08, 'sine', false);
             screenShake = Math.max(screenShake, 3.5);
         }
@@ -6125,28 +6251,113 @@
         }
         const matrixChars = '0123456789ABCDEFSHERLOCKAGENT01アイウエオカキクケコサシスセソタチツテト🌸✨⚡';
 
-                // ---------- 3. 全局常驻三维赛博樱花散华模型 (升级至 560 瓣高密度浪漫花海，移动端自适应调优) ----------
-        const SAKURA_COUNT = (typeof window !== 'undefined' && window.innerWidth <= 768) ? 220 : 560;
+        // ---------- 3. 全局常驻三维赛博樱花散华引擎（离屏高清透光花瓣 Sprite + 三层景深纵深） ----------
+        const sakuraSprites = (() => {
+            const variants = [
+                { core: '#fff5f8', mid: '#ff9eb5', edge: '#ff5c8a', stroke: 'rgba(255, 224, 236, 0.92)', glow: 'rgba(255, 117, 140, 0.45)', vein: 'rgba(255, 255, 255, 0.48)' }, // 0: softPink
+                { core: '#ffffff', mid: '#ffe6f0', edge: '#ffb8d0', stroke: 'rgba(255, 255, 255, 0.95)', glow: 'rgba(255, 196, 220, 0.50)', vein: 'rgba(255, 160, 190, 0.35)' }, // 1: luminousWhite
+                { core: '#ffd1dc', mid: '#ff6b98', edge: '#e11d48', stroke: 'rgba(255, 190, 210, 0.90)', glow: 'rgba(244, 63, 94, 0.45)', vein: 'rgba(255, 235, 240, 0.38)' },  // 2: deepSakura
+                { core: '#e6ffff', mid: '#5eead4', edge: '#00f0ff', stroke: 'rgba(224, 255, 255, 0.95)', glow: 'rgba(0, 240, 255, 0.52)', vein: 'rgba(255, 255, 255, 0.45)' },   // 3: cyberCyan
+                { core: '#fffbeb', mid: '#fde047', edge: '#ff758c', stroke: 'rgba(255, 245, 200, 0.98)', glow: 'rgba(251, 191, 36, 0.58)', vein: 'rgba(255, 255, 255, 0.58)' }   // 4: goldBurst
+            ];
+            return variants.map((cfg) => {
+                const off = document.createElement('canvas');
+                off.width = 72;
+                off.height = 72;
+                const octx = off.getContext('2d');
+                if (!octx) return off;
+
+                octx.translate(36, 36);
+
+                // 外圈柔和光晕（预烘焙至贴图，运行时零 shadowBlur 开销）
+                const halo = octx.createRadialGradient(0, 0, 4, 0, 0, 34);
+                halo.addColorStop(0, cfg.glow);
+                halo.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                octx.fillStyle = halo;
+                octx.beginPath();
+                octx.arc(0, 0, 34, 0, Math.PI * 2);
+                octx.fill();
+
+                // 饱满双曲率二次元花瓣轮廓（带优雅顶角缺口）
+                const s = 17;
+                octx.beginPath();
+                octx.moveTo(0, -s * 1.15);
+                octx.bezierCurveTo(-s * 1.05, -s * 0.45, -s * 1.28, s * 0.65, -s * 0.36, s * 1.25);
+                octx.lineTo(0, s * 0.88);
+                octx.lineTo(s * 0.36, s * 1.25);
+                octx.bezierCurveTo(s * 1.28, s * 0.65, s * 1.05, -s * 0.45, 0, -s * 1.15);
+                octx.closePath();
+
+                const fillGrad = octx.createRadialGradient(0, -s * 0.35, 1, 0, s * 0.25, s * 1.35);
+                fillGrad.addColorStop(0, cfg.core);
+                fillGrad.addColorStop(0.55, cfg.mid);
+                fillGrad.addColorStop(1, cfg.edge);
+                octx.fillStyle = fillGrad;
+                octx.fill();
+
+                octx.lineWidth = 1.2;
+                octx.strokeStyle = cfg.stroke;
+                octx.stroke();
+
+                // 花脉微光细节
+                octx.beginPath();
+                octx.moveTo(0, -s * 0.9);
+                octx.quadraticCurveTo(-s * 0.08, 0, 0, s * 0.72);
+                octx.moveTo(0, -s * 0.3);
+                octx.quadraticCurveTo(-s * 0.32, s * 0.15, -s * 0.28, s * 0.62);
+                octx.moveTo(0, -s * 0.3);
+                octx.quadraticCurveTo(s * 0.32, s * 0.15, s * 0.28, s * 0.62);
+                octx.strokeStyle = cfg.vein;
+                octx.lineWidth = 0.8;
+                octx.stroke();
+
+                return off;
+            });
+        })();
+
+        const SAKURA_COUNT = (typeof window !== 'undefined' && window.innerWidth <= 768) ? 75 : 150;
         const sakuraPetals = [];
         for (let i = 0; i < SAKURA_COUNT; i++) {
+            const layerRoll = Math.random();
+            let depthLayer = 1; // 0: 近景大花瓣, 1: 中景主力, 2: 远景飘絮
+            let zVal = (Math.random() - 0.5) * 440;
+            let petalSize = 8.0 + Math.random() * 6.0;
+            if (layerRoll < 0.15) {
+                depthLayer = 0;
+                zVal = -430 + Math.random() * 190;
+                petalSize = 13.0 + Math.random() * 8.0;
+            } else if (layerRoll > 0.70) {
+                depthLayer = 2;
+                zVal = 200 + Math.random() * 280;
+                petalSize = 5.5 + Math.random() * 3.5;
+            }
+
+            const hueRoll = Math.random();
+            let spriteIdx = 0;
+            if (hueRoll > 0.84) spriteIdx = 3;      // 16% 冰青赛博荧光樱
+            else if (hueRoll > 0.66) spriteIdx = 2; // 18% 深绯霓虹樱
+            else if (hueRoll > 0.42) spriteIdx = 1; // 24% 纯白通透晚樱
+
             sakuraPetals.push({
-                x: (Math.random() - 0.5) * 2000,
-                y: (Math.random() - 0.5) * 1600,
-                z: (Math.random() - 0.5) * 1000,
-                vx: 0.7 + Math.random() * 1.5,
-                vy: 0.8 + Math.random() * 1.6,
-                vz: (Math.random() - 0.5) * 0.6,
+                x: (Math.random() - 0.5) * 1900,
+                y: (Math.random() - 0.5) * 1500,
+                z: zVal,
+                vx: 0.65 + Math.random() * 1.35,
+                vy: 0.75 + Math.random() * 1.45,
+                vz: (Math.random() - 0.5) * 0.5,
                 blastVx: 0,
                 blastVy: 0,
                 blastVz: 0,
                 rotPitch: Math.random() * Math.PI * 2,
                 rotYaw: Math.random() * Math.PI * 2,
                 rotRoll: Math.random() * Math.PI * 2,
-                pitchSpeed: 0.02 + Math.random() * 0.035,
-                yawSpeed: 0.015 + Math.random() * 0.025,
-                size: 6.5 + Math.random() * 8.5,
-                notch: 0.2 + Math.random() * 0.2, // 逼真花瓣缺口曲率
-                colorType: Math.random() // 双色渐变：75% 霓虹樱粉，25% 赛博青光
+                pitchSpeed: 0.02 + Math.random() * 0.032,
+                yawSpeed: 0.014 + Math.random() * 0.024,
+                size: petalSize,
+                depthLayer: depthLayer,
+                spriteIdx: spriteIdx,
+                notch: 0.2 + Math.random() * 0.2,
+                colorType: hueRoll
             });
         }
 
@@ -6177,10 +6388,78 @@
 
         let lastFrameTime = performance.now();
         let startTime = performance.now();
+        let mainRafId = 0;
+        const hasWebGLCosmos = Boolean(window.__WEBGL_COSMOS__ && window.__WEBGL_COSMOS__.active);
+        if (hasWebGLCosmos) {
+            document.body.classList.add('webgl-active');
+            const engEl = document.getElementById('telemetry-engine-name');
+            if (engEl) {
+                engEl.textContent = window.__WEBGL_COSMOS__.isWebGL2
+                    ? 'WEBGL2 SHADER + 3D KINETIC'
+                    : 'WEBGL SHADER + 3D KINETIC';
+            }
+        }
+
+        const bgPauseReasons = new Set();
+        const fxToggleBtn = document.getElementById('fx-motion-toggle');
+        const fxToggleLabel = document.getElementById('fx-motion-label');
+        const reducedMotionMq = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+        if (reducedMotionMq && reducedMotionMq.matches) {
+            bgPauseReasons.add('reduced-motion');
+        }
+
+        function syncBgFxPlayback() {
+            const shouldPause = bgPauseReasons.size > 0;
+            if (hasWebGLCosmos) {
+                window.__WEBGL_COSMOS__.setPaused(shouldPause);
+            }
+            if (shouldPause) {
+                if (mainRafId) {
+                    cancelAnimationFrame(mainRafId);
+                    mainRafId = 0;
+                }
+            } else if (!mainRafId) {
+                lastFrameTime = performance.now();
+                mainRafId = requestAnimationFrame(mainRenderLoop);
+            }
+            if (fxToggleBtn && fxToggleLabel) {
+                const userPaused = bgPauseReasons.has('user') || bgPauseReasons.has('reduced-motion');
+                fxToggleBtn.classList.toggle('active', !userPaused);
+                fxToggleLabel.textContent = userPaused ? 'FX: PAUSE' : 'FX: ON';
+            }
+        }
+
+        window.__SET_BG_FX_PAUSED__ = function (reason, paused) {
+            if (paused) bgPauseReasons.add(reason);
+            else bgPauseReasons.delete(reason);
+            syncBgFxPlayback();
+        };
+
+        if (fxToggleBtn) {
+            fxToggleBtn.addEventListener('click', () => {
+                if (bgPauseReasons.has('user') || bgPauseReasons.has('reduced-motion')) {
+                    bgPauseReasons.delete('user');
+                    bgPauseReasons.delete('reduced-motion');
+                } else {
+                    bgPauseReasons.add('user');
+                }
+                syncBgFxPlayback();
+            });
+        }
+
+        document.addEventListener('visibilitychange', () => {
+            window.__SET_BG_FX_PAUSED__('hidden', document.hidden);
+        });
+
+        const heroPlayerForAudioFx = document.getElementById('hero-cloud-player');
 
         // ================= 主渲染循环动力学 (Main 60FPS Loop) =================
         function mainRenderLoop(now) {
-            requestAnimationFrame(mainRenderLoop);
+            if (bgPauseReasons.size > 0) {
+                mainRafId = 0;
+                return;
+            }
+            mainRafId = requestAnimationFrame(mainRenderLoop);
             const dt = (now - lastFrameTime) * 0.001;
             lastFrameTime = now;
             const dtRatio = Math.min(2.5, Math.max(0.2, dt / (1 / 60)));
@@ -6195,9 +6474,19 @@
                 lastFpsUpdate = now;
             }
 
-            // 柔和阻尼跟踪相机旋转
-            rotX += (targetRotX - rotX) * 0.05 * dtRatio;
-            rotY += (targetRotY - rotY) * 0.05 * dtRatio;
+            // 拖拽惯性旋转动量衰减 + 柔和阻尼跟踪相机旋转
+            if (!isPointerDown && (Math.abs(dragVelX) > 0.0005 || Math.abs(dragVelY) > 0.0005)) {
+                dragOffsetRotY += dragVelY * dtRatio;
+                dragOffsetRotX = Math.max(-1.1, Math.min(1.1, dragOffsetRotX + dragVelX * dtRatio));
+                dragVelX *= Math.pow(0.93, dtRatio);
+                dragVelY *= Math.pow(0.93, dtRatio);
+                const nxNow = (mouseX / Math.max(width, 1) - 0.5) * 2;
+                const nyNow = (mouseY / Math.max(height, 1) - 0.5) * 2;
+                targetRotY = nxNow * 0.48 + dragOffsetRotY;
+                targetRotX = -nyNow * 0.36 + 0.15 + dragOffsetRotX;
+            }
+            rotX += (targetRotX - rotX) * 0.07 * dtRatio;
+            rotY += (targetRotY - rotY) * 0.07 * dtRatio;
 
             // 相机震颤衰减与位置计算
             let shakeOffsetX = 0, shakeOffsetY = 0;
@@ -6207,9 +6496,15 @@
                 screenShake *= Math.pow(0.88, dtRatio);
             }
 
-            // 清理主图层与特效图层 (模式 3 骇客矩阵使用半透明拖尾蒙版，实现经典绿意代码雨拖尾)
+            // 清理主图层与特效图层 (模式 3 骇客矩阵使用 destination-out 透明渐变拖尾，透出下方 WebGL2 电路背景)
             if (currentMode !== 3) {
                 ctx.clearRect(0, 0, width, height);
+            } else if (hasWebGLCosmos) {
+                ctx.save();
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.16)';
+                ctx.fillRect(0, 0, width, height);
+                ctx.restore();
             } else {
                 ctx.fillStyle = 'rgba(3, 7, 18, 0.22)';
                 ctx.fillRect(0, 0, width, height);
@@ -6225,17 +6520,27 @@
             // 检测真实声学 FFT 频谱低音能量，注入震撼低音共振张缩
             let beatPulse = 1.0;
             let audioBassEnergy = 0;
+            let audioMidEnergy = 0;
             if (typeof analyser !== 'undefined' && analyser && typeof audioDataArray !== 'undefined' && audioDataArray) {
                 try {
                     analyser.getByteFrequencyData(audioDataArray);
                     const bassSum = audioDataArray[0] + audioDataArray[1] + audioDataArray[2] + audioDataArray[3];
+                    const midSum = audioDataArray[6] + audioDataArray[7] + audioDataArray[8] + audioDataArray[9];
                     audioBassEnergy = bassSum / (4 * 255);
+                    audioMidEnergy = midSum / (4 * 255);
                 } catch(e) {}
             }
             if (audioBassEnergy > 0.04) {
                 beatPulse = 1.0 + audioBassEnergy * 0.42;
             } else if (typeof isBgmPlaying !== 'undefined' && isBgmPlaying) {
+                const synthPulse = 0.28 + 0.18 * Math.sin(now * 0.006);
+                audioBassEnergy = synthPulse;
+                audioMidEnergy = 0.22 + 0.15 * Math.cos(now * 0.0045);
                 beatPulse = 1.0 + Math.sin(now * 0.006) * 0.12;
+            }
+
+            if (heroPlayerForAudioFx) {
+                heroPlayerForAudioFx.style.setProperty('--audio-level', Math.min(1, audioBassEnergy * 1.35).toFixed(3));
             }
 
             // 引力奇点蓄力进度计算
@@ -6244,14 +6549,32 @@
                 chargeRatio = Math.min(1.0, holdDuration / 600);
             }
 
+            if (hasWebGLCosmos) {
+                const docMaxScroll = Math.max(1, document.documentElement.scrollHeight - height);
+                const scrollNorm = Math.min(1, Math.max(0, (window.scrollY || 0) / docMaxScroll));
+                window.__WEBGL_COSMOS__.updateState({
+                    rotX: rotX,
+                    rotY: rotY,
+                    mouseX: mouseX,
+                    mouseY: mouseY,
+                    charge: chargeRatio,
+                    bass: audioBassEnergy,
+                    mid: audioMidEnergy,
+                    scroll: scrollNorm,
+                    shake: Math.min(1.0, screenShake / 16.0)
+                });
+            }
+
             // ================= 模式 0: 量子引力核心与全息粒子云 =================
             if (currentMode === 0) {
-                const coreGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 320 * beatPulse);
-                coreGrad.addColorStop(0, 'rgba(0, 240, 255, 0.16)');
-                coreGrad.addColorStop(0.35, 'rgba(168, 85, 247, 0.08)');
-                coreGrad.addColorStop(1, 'transparent');
-                ctx.fillStyle = coreGrad;
-                ctx.fillRect(0, 0, width, height);
+                if (!hasWebGLCosmos) {
+                    const coreGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 320 * beatPulse);
+                    coreGrad.addColorStop(0, 'rgba(0, 240, 255, 0.16)');
+                    coreGrad.addColorStop(0.35, 'rgba(168, 85, 247, 0.08)');
+                    coreGrad.addColorStop(1, 'transparent');
+                    ctx.fillStyle = coreGrad;
+                    ctx.fillRect(0, 0, width, height);
+                }
 
                 const projectedPts = [];
                 for (let i = 0; i < coreParticles.length; i++) {
@@ -6325,8 +6648,8 @@
                 }
             }
 
-            // ================= 模式 1: 赛博空间上下双层镜像网格隧道 (绝不空洞！立体霓虹视界) =================
-            else if (currentMode === 1) {
+            // ================= 模式 1: 赛博空间上下双层镜像网格隧道 (WebGL2 在线时由 GPU 全权渲染) =================
+            else if (currentMode === 1 && !hasWebGLCosmos) {
                 const gridCols = 36, gridRows = 28, cellW = 44, cellH = 44;
                 ctx.save();
                 
@@ -6401,41 +6724,127 @@
                 ctx.restore();
             }
 
-            // ================= 模式 2: 超维拓扑流线组 =================
-            // ================= 模式 2: 超维拓扑流线组 (移动端动态 LOD 降载 72%) =================
+            // ================= 模式 2: 微分拓扑莫比乌斯参数流形 + 4π 单侧测地线节点脉冲 =================
             else if (currentMode === 2) {
                 const isMobile = width <= 768;
-                const streamCount = isMobile ? 28 : 56;
-                const ptsPerStream = isMobile ? 45 : 80;
-                for (let i = 0; i < streamCount; i++) {
-                    const v = (i / streamCount) * Math.PI * 2;
+                const R = isMobile ? 168 : 236;
+                const W = isMobile ? 54 : 82;
+                const tiltXY = -(0.32 + Math.sin(t * 0.16) * 0.10);
+                const cosXY = Math.cos(tiltXY), sinXY = Math.sin(tiltXY);
+                const tiltYZ = -0.18;
+                const cosYZ = Math.cos(tiltYZ), sinYZ = Math.sin(tiltYZ);
+                const spinY = -t * 0.22;
+                const cosSpin = Math.cos(spinY), sinSpin = Math.sin(spinY);
+                const twistPhase = t * 0.26;
+
+                function projectMobiusPt(uParam, vParam) {
+                    const halfAngle = uParam * 0.5 + twistPhase;
+                    const radial = R + vParam * Math.cos(halfAngle);
+                    const lx = radial * Math.cos(uParam);
+                    const lz = radial * Math.sin(uParam);
+                    const ly = vParam * Math.sin(halfAngle);
+                    // 按 WebGL mobiusTransform 精确逆序变换并翻转至 Canvas2D Y-down 坐标，与 GPU 流形同轴外包络共振
+                    const y1 = ly * cosYZ - lz * sinYZ;
+                    const z1 = ly * sinYZ + lz * cosYZ;
+                    const x2 = lx * cosXY - y1 * sinXY;
+                    const y2 = lx * sinXY + y1 * cosXY;
+                    const fx = x2 * cosSpin - z1 * sinSpin;
+                    const fz = x2 * sinSpin + z1 * cosSpin;
+                    return project3D(fx, -y2, fz, cx, cy);
+                }
+
+                ctx.save();
+                ctx.globalCompositeOperation = 'lighter';
+                const alphaBoost = hasWebGLCosmos ? 1.0 : 1.55;
+
+                // 1) 正交法向截面直纹线（Ruled Surface Generators）
+                const ruledCount = isMobile ? 20 : 32;
+                ctx.lineWidth = hasWebGLCosmos ? 0.85 : 1.1;
+                ctx.strokeStyle = `rgba(168, 85, 247, ${0.24 * alphaBoost})`;
+                ctx.beginPath();
+                for (let k = 0; k < ruledCount; k++) {
+                    const u = (k / ruledCount) * Math.PI * 2;
+                    const pStart = projectMobiusPt(u, -W);
+                    const pEnd = projectMobiusPt(u, W);
+                    if (pStart && pEnd) {
+                        ctx.moveTo(pStart.x, pStart.y);
+                        ctx.lineTo(pEnd.x, pEnd.y);
+                    }
+                }
+                ctx.stroke();
+
+                // 2) 中心测地基准圆环 (v = 0, u ∈ [0, 2π]) + 5 条绕双圈 4π 闭合单侧等参流线 (等效 11 条拓扑等位线)
+                const segPts = isMobile ? 64 : 112;
+                const centerProjPts = [];
+                ctx.beginPath();
+                let centerStarted = false;
+                for (let j = 0; j <= segPts; j++) {
+                    const u = (j / segPts) * Math.PI * 2;
+                    const pt = projectMobiusPt(u, 0);
+                    if (pt) {
+                        centerProjPts.push(pt);
+                        if (!centerStarted) { ctx.moveTo(pt.x, pt.y); centerStarted = true; }
+                        else { ctx.lineTo(pt.x, pt.y); }
+                    }
+                }
+                ctx.strokeStyle = `rgba(251, 191, 36, ${0.34 * alphaBoost})`;
+                ctx.lineWidth = 1.1;
+                ctx.stroke();
+
+                const loopSteps = isMobile ? 84 : 140;
+                for (let band = 1; band <= 5; band++) {
+                    const vVal = (band / 5) * W;
+                    const isBoundary = (band === 5);
                     ctx.beginPath();
                     let started = false;
-                    for (let j = 0; j <= ptsPerStream; j++) {
-                        const u = (j / ptsPerStream) * Math.PI * 2;
-                        const rMain = 195 + Math.sin(t * 0.42) * 60 + Math.sin(u * 2 + t) * 45;
-                        const rCross = 80 + Math.cos(t * 0.31) * 35 + Math.cos(v * 3 - t * 0.8) * 28;
-                        const twist = u * 2 + v + t * 0.6;
-                        const px = (rMain + rCross * Math.cos(twist)) * Math.cos(u + t * 0.16);
-                        const py = (rMain + rCross * Math.cos(twist)) * Math.sin(u + t * 0.16) * 0.8 + Math.sin(u * 3 + t) * 35;
-                        const pz = rCross * Math.sin(twist) * 2.2 + Math.cos(u * 2 + t * 0.5) * 60;
-                        const proj = project3D(px, py, pz, cx, cy);
-                        if (proj) {
-                            if (!started) { ctx.moveTo(proj.x, proj.y); started = true; }
-                            else { ctx.lineTo(proj.x, proj.y); }
+                    for (let j = 0; j <= loopSteps; j++) {
+                        const u = (j / loopSteps) * Math.PI * 4;
+                        const pt = projectMobiusPt(u, vVal);
+                        if (pt) {
+                            if (!started) { ctx.moveTo(pt.x, pt.y); started = true; }
+                            else { ctx.lineTo(pt.x, pt.y); }
                         }
                     }
-                    const ratio = i / streamCount;
-                    ctx.strokeStyle = ratio < 0.5 ? 'rgba(0, 240, 255, 0.35)' : 'rgba(255, 117, 140, 0.32)';
-                    ctx.lineWidth = 0.95;
+                    if (isBoundary) {
+                        ctx.strokeStyle = `rgba(0, 240, 255, ${0.52 * alphaBoost})`;
+                        ctx.lineWidth = 1.45;
+                    } else {
+                        ctx.strokeStyle = band % 2 === 0
+                            ? `rgba(0, 240, 255, ${0.24 * alphaBoost})`
+                            : `rgba(255, 117, 140, ${0.22 * alphaBoost})`;
+                        ctx.lineWidth = 0.85;
+                    }
                     ctx.stroke();
                 }
+
+                // 3) 16 颗沿 4π 单侧测地线连续飞驰的发光数学节点脉冲
+                const nodeCount = isMobile ? 10 : 16;
+                for (let k = 0; k < nodeCount; k++) {
+                    const uNode = (k / nodeCount) * Math.PI * 4 + t * 0.88;
+                    const vNode = (k % 3 === 0 ? 0.92 : (k % 3 === 1 ? 0.45 : -0.72)) * W;
+                    const pt = projectMobiusPt(uNode, vNode);
+                    if (pt && pt.scale > 0.15) {
+                        const nr = Math.max(1.8, 3.6 * pt.scale);
+                        ctx.beginPath();
+                        ctx.arc(pt.x, pt.y, nr * 2.8, 0, Math.PI * 2);
+                        ctx.fillStyle = k % 2 === 0 ? 'rgba(0, 240, 255, 0.26)' : 'rgba(251, 191, 36, 0.28)';
+                        ctx.fill();
+
+                        ctx.beginPath();
+                        ctx.arc(pt.x, pt.y, nr, 0, Math.PI * 2);
+                        ctx.fillStyle = '#ffffff';
+                        ctx.fill();
+                    }
+                }
+                ctx.restore();
             }
 
             // ================= 模式 3: 矩阵数字雨 (带 3D 摄像机倾角与景深联动) =================
             else if (currentMode === 3) {
-                ctx.fillStyle = 'rgba(3, 4, 8, 0.14)';
-                ctx.fillRect(0, 0, width, height);
+                if (!hasWebGLCosmos) {
+                    ctx.fillStyle = 'rgba(3, 4, 8, 0.14)';
+                    ctx.fillRect(0, 0, width, height);
+                }
                 ctx.font = '13px JetBrains Mono, monospace';
                 ctx.save();
                 ctx.translate(rotY * 95, -(rotX - 0.15) * 75);
@@ -6453,11 +6862,12 @@
                 ctx.restore();
             }
 
-            // ================= 模式 4: 超维星轨跃迁 (航向舵视线偏角联动与 dtRatio 归一化) =================
+            // ================= 模式 4: 超维星轨跃迁 (WebGL2 在线时由 GPU 虫洞隧道主渲染，前景叠少量高光流光星尘) =================
             else if (currentMode === 4) {
                 if (!window.warpStars) {
                     window.warpStars = [];
-                    for (let s = 0; s < 450; s++) {
+                    const starTotal = hasWebGLCosmos ? 120 : 450;
+                    for (let s = 0; s < starTotal; s++) {
                         window.warpStars.push({
                             x: (Math.random() - 0.5) * 1600,
                             y: (Math.random() - 0.5) * 1200,
@@ -6502,18 +6912,31 @@
                 ctx.restore();
             }
 
-            // ================= 4. 全局常驻三维赛博樱花散华 (Zero-GC 原位景深光栅化流水线) =================
+            // ================= 4. 全局常驻三维赛博樱花散华 (高清 Sprite 景深光栅化流水线) =================
             const mouseSpeed = Math.hypot(mouseSpeedX, mouseSpeedY);
             if (sakuraBurstTimer > 0) {
-                sakuraBurstTimer -= dtRatio;
+                sakuraBurstTimer = Math.max(0, sakuraBurstTimer - dtRatio);
             }
-            // 模式差异化落樱密度：大招爆发时拉满全量千本樱；常态下按模式呈现
+            const burstRatio = sakuraBurstTimer > 0 ? Math.min(1, sakuraBurstTimer / 260) : 0;
+
+            // 散华爆发期：屏幕边缘柔和樱霞氛围晕光（平滑衰减，无闪烁）
+            if (burstRatio > 0.01) {
+                const maxR = Math.hypot(width, height) * 0.58;
+                const vig = ctx.createRadialGradient(width * 0.5, height * 0.5, maxR * 0.35, width * 0.5, height * 0.5, maxR);
+                vig.addColorStop(0, 'rgba(255, 117, 140, 0)');
+                vig.addColorStop(0.75, `rgba(255, 117, 140, ${(0.08 * burstRatio).toFixed(3)})`);
+                vig.addColorStop(1, `rgba(255, 117, 140, ${(0.24 * burstRatio).toFixed(3)})`);
+                ctx.fillStyle = vig;
+                ctx.fillRect(0, 0, width, height);
+            }
+
+            // 全模式饱满常驻樱花密度：0/4 满编 100%，1/2 保持 65%，3 保留 34% 赛博荧光樱穿行矩阵
             const activeSakuraLimit = (sakuraBurstTimer > 0) ? sakuraPetals.length :
-                                      (currentMode === 3) ? 0 : 
-                                      (currentMode === 1 || currentMode === 2) ? Math.floor(sakuraPetals.length * 0.15) : 
-                                      (currentMode === 4 ? sakuraPetals.length : Math.floor(sakuraPetals.length * 0.85));
+                                      (currentMode === 3) ? Math.floor(sakuraPetals.length * 0.34) :
+                                      (currentMode === 1 || currentMode === 2) ? Math.floor(sakuraPetals.length * 0.65) :
+                                      sakuraPetals.length;
             const scrollY = window.scrollY || window.pageYOffset || 0;
-            const scrollFade = Math.max(0.22, 1.0 - (scrollY / (height * 0.85)) * 0.78);
+            const scrollFade = Math.max(0.45, 1.0 - (scrollY / (height * 0.85)) * 0.55);
 
             // Phase 1: 物理移动更新与 3D 投影预计算
             for (let i = 0; i < activeSakuraLimit; i++) {
@@ -6567,45 +6990,37 @@
                 p.projDepth = proj ? proj.depth : -9999;
             }
 
-            // Phase 2: 零 GC 原位原生排序 (基于 V8 原生 Timsort，远在前、近在后，0堆内存分配)
+            // Phase 2: 零 GC 原位原生排序 (远在前、近在后)
             sakuraPetals.sort((a, b) => b.projDepth - a.projDepth);
 
-            // Phase 3: 先远后近光栅化绘制 (彻底消除前后穿模)
+            // Phase 3: 使用预烘焙高清透光花瓣贴图快速绘制
             for (let i = 0; i < activeSakuraLimit; i++) {
                 const p = sakuraPetals[i];
                 const proj = p.proj;
                 if (proj && p.projDepth > 10) {
-                    const depthAlpha = Math.max(0.18, Math.min(0.96, 1 - (proj.depth - 280) / 780)) * scrollFade;
+                    const baseAlpha = Math.max(0.36, Math.min(1.0, 1.15 - (proj.depth - 220) / 860));
+                    const depthAlpha = Math.min(1, baseAlpha * scrollFade * (burstRatio > 0 ? 1.15 : 1.0));
+
+                    let useIdx = p.spriteIdx;
+                    if (currentMode === 3 && burstRatio <= 0.02 && (i % 4 !== 0)) {
+                        useIdx = 3; // 矩阵模式常态偏赛博冰青荧光樱
+                    } else if (burstRatio > 0.02 && p.depthLayer === 0 && (i % 2 === 0)) {
+                        useIdx = 4; // 散华大招近景金粉星樱
+                    }
+
+                    const sprite = sakuraSprites[useIdx] || sakuraSprites[0];
+                    const drawSize = p.size * 1.88;
+                    const pitchScale = Math.max(0.18, Math.abs(Math.cos(p.rotPitch)));
+
                     ctx.save();
+                    ctx.globalAlpha = depthAlpha;
+                    if (burstRatio > 0.05 && p.depthLayer === 0) {
+                        ctx.globalCompositeOperation = 'lighter';
+                    }
                     ctx.translate(proj.x, proj.y);
                     ctx.rotate(p.rotYaw);
-                    ctx.scale(Math.cos(p.rotPitch) * proj.scale, proj.scale);
-
-                    // 绘制唯美双曲率、带微凹缺口的二次元赛博樱花花瓣
-                    ctx.beginPath();
-                    ctx.moveTo(0, 0);
-                    ctx.bezierCurveTo(-p.size * 0.75, -p.size * 1.2, -p.size * 1.35, -p.size * 0.2, -p.size * p.notch, p.size * 1.1);
-                    ctx.lineTo(0, p.size * 0.85);
-                    ctx.lineTo(p.size * p.notch, p.size * 1.1);
-                    ctx.bezierCurveTo(p.size * 1.35, -p.size * 0.2, p.size * 0.75, -p.size * 1.2, 0, 0);
-
-                    if (p.colorType < 0.75) {
-                        ctx.fillStyle = `rgba(255, 117, 140, ${depthAlpha * 0.85})`;
-                        ctx.strokeStyle = `rgba(255, 184, 198, ${depthAlpha * 0.95})`;
-                    } else {
-                        ctx.fillStyle = `rgba(0, 240, 255, ${depthAlpha * 0.8})`;
-                        ctx.strokeStyle = `rgba(255, 255, 255, ${depthAlpha * 0.9})`;
-                    }
-                    if (sakuraBurstTimer > 0) {
-                        ctx.shadowColor = 'rgba(255, 117, 140, 0.9)';
-                        ctx.shadowBlur = Math.min(14, 14 * (sakuraBurstTimer / 260));
-                    }
-                    ctx.lineWidth = 0.85;
-                    ctx.fill();
-                    ctx.stroke();
-                    if (sakuraBurstTimer > 0) {
-                        ctx.shadowBlur = 0;
-                    }
+                    ctx.scale(pitchScale * proj.scale, proj.scale);
+                    ctx.drawImage(sprite, -drawSize, -drawSize, drawSize * 2, drawSize * 2);
                     ctx.restore();
                 }
             }
@@ -6755,29 +7170,284 @@
             }
         }
 
-        requestAnimationFrame(mainRenderLoop);
+        syncBgFxPlayback();
+        if (bgPauseReasons.size > 0) {
+            mainRenderLoop(performance.now());
+        }
 
-        // ================= 7. 卡片 3D 悬浮视差阻尼 =================
-        document.querySelectorAll('.interactive-card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                const rotateX = (-y / rect.height) * 8;
-                const rotateY = (x / rect.width) * 8;
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
-            });
-        });
+        // ================= 7. 卡片 3D 悬浮视差 + 全息光斑追踪 + 滚动进度回退 + 渐显编排 =================
+        (function initInteractiveCardsAndScrollFx() {
+            const canHoverFine = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+            const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const holoTargets = document.querySelectorAll('.bento-card, .tech-stack-card, .hero-capsule-music-box');
+
+            if (canHoverFine) {
+                let rectCache = new WeakMap();
+                window.addEventListener('scroll', () => { rectCache = new WeakMap(); }, { passive: true });
+                const ro = typeof ResizeObserver !== 'undefined'
+                    ? new ResizeObserver(() => { rectCache = new WeakMap(); })
+                    : null;
+
+                holoTargets.forEach(el => {
+                    if (ro) ro.observe(el);
+                    let rafPending = false;
+                    let lastEvt = null;
+
+                    el.addEventListener('pointerenter', () => {
+                        rectCache.set(el, el.getBoundingClientRect());
+                    });
+
+                    el.addEventListener('pointermove', (e) => {
+                        lastEvt = e;
+                        if (rafPending) return;
+                        rafPending = true;
+                        requestAnimationFrame(() => {
+                            rafPending = false;
+                            if (!lastEvt) return;
+                            let rect = rectCache.get(el);
+                            if (!rect) {
+                                rect = el.getBoundingClientRect();
+                                rectCache.set(el, rect);
+                            }
+                            if (rect.width <= 0 || rect.height <= 0) return;
+
+                            const px = ((lastEvt.clientX - rect.left) / rect.width) * 100;
+                            const py = ((lastEvt.clientY - rect.top) / rect.height) * 100;
+                            el.style.setProperty('--mouse-x', `${px.toFixed(2)}%`);
+                            el.style.setProperty('--mouse-y', `${py.toFixed(2)}%`);
+
+                            if (!prefersReduced && el.classList.contains('interactive-card')) {
+                                const cx = lastEvt.clientX - rect.left - rect.width * 0.5;
+                                const cy = lastEvt.clientY - rect.top - rect.height * 0.5;
+                                const rotateX = (-cy / rect.height) * 6.5;
+                                const rotateY = (cx / rect.width) * 6.5;
+                                el.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-4px)`;
+                            }
+                        });
+                    });
+
+                    el.addEventListener('pointerleave', () => {
+                        lastEvt = null;
+                        if (el.classList.contains('interactive-card')) {
+                            el.style.transform = prefersReduced
+                                ? ''
+                                : 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+                        }
+                    });
+                });
+            }
+
+            // 原生 Scroll-Driven 进度条在旧版浏览器中的轻量回退
+            const progressBar = document.getElementById('scroll-progress-bar');
+            const supportsScrollTimeline = typeof CSS !== 'undefined' && CSS.supports && CSS.supports('animation-timeline', 'scroll()');
+            if (progressBar && !supportsScrollTimeline && !prefersReduced) {
+                let scrollRaf = false;
+                const updateBar = () => {
+                    scrollRaf = false;
+                    const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+                    const pct = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+                    progressBar.style.transform = `scaleX(${pct.toFixed(4)})`;
+                };
+                window.addEventListener('scroll', () => {
+                    if (!scrollRaf) {
+                        scrollRaf = true;
+                        requestAnimationFrame(updateBar);
+                    }
+                }, { passive: true });
+                updateBar();
+            }
+
+            // 首屏下方内容卡片渐显（严格保留最终可见状态与无障碍可读性）
+            const revealTargets = document.querySelectorAll('#projects .bento-card, #tech-stack .tech-stack-card, #exploring .bento-card, #about .bento-card, #about .skill-tile');
+            if (!prefersReduced && typeof IntersectionObserver !== 'undefined' && revealTargets.length > 0) {
+                document.documentElement.classList.add('reveal-ready');
+                revealTargets.forEach((el, idx) => {
+                    el.classList.add('reveal-item');
+                    el.style.transitionDelay = `${Math.min(idx % 4, 3) * 60}ms`;
+                });
+                const io = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-revealed');
+                            io.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+                revealTargets.forEach(el => io.observe(el));
+            }
+
+            // 右侧章节导航轨道滚动高亮 + 离开首屏后才浮现左下角迷你音乐胶囊
+            const heroElForMiniBar = document.getElementById('hero');
+            if (heroElForMiniBar && typeof IntersectionObserver !== 'undefined') {
+                const heroVisIo = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        document.body.classList.toggle('scrolled-past-hero', !entry.isIntersecting);
+                    });
+                }, { threshold: 0.18 });
+                heroVisIo.observe(heroElForMiniBar);
+            }
+
+            const railLinks = Array.from(document.querySelectorAll('.section-rail .rail-link'));
+            const hudNavLinks = Array.from(document.querySelectorAll('.hud-quick-nav .hud-nav-link'));
+            const railSections = ['hero', 'projects', 'tech-stack', 'exploring', 'about']
+                .map(id => document.getElementById(id))
+                .filter(Boolean);
+            if ((railLinks.length > 0 || hudNavLinks.length > 0) && railSections.length > 0 && typeof IntersectionObserver !== 'undefined') {
+                const railIo = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const id = entry.target.id;
+                            railLinks.forEach(a => a.classList.toggle('is-active', a.dataset.rail === id));
+                            hudNavLinks.forEach(a => a.classList.toggle('is-active', a.dataset.rail === id));
+                        }
+                    });
+                }, { rootMargin: '-35% 0px -45% 0px', threshold: 0.01 });
+                railSections.forEach(sec => railIo.observe(sec));
+            }
+
+            // Hero 终端名言栏点击也可呼出交互式终端
+            const heroCalloutBar = document.getElementById('hero-callout-bar');
+            if (heroCalloutBar && typeof openTerminal === 'function') {
+                heroCalloutBar.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openTerminal();
+                });
+            }
+
+            // 工程项目领域筛选交互（街机实验室始终常驻，0 功能删减）
+            const filterBtns = Array.from(document.querySelectorAll('.project-filter-btn'));
+            const projectsGrid = document.getElementById('projects-bento-grid');
+            const projectCards = projectsGrid
+                ? Array.from(projectsGrid.querySelectorAll('.bento-card[data-project-cat]'))
+                : [];
+            if (filterBtns.length > 0 && projectsGrid && projectCards.length > 0) {
+                filterBtns.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const targetFilter = btn.getAttribute('data-filter') || 'all';
+                        filterBtns.forEach(b => {
+                            const active = (b === btn);
+                            b.classList.toggle('is-active', active);
+                            b.setAttribute('aria-pressed', active ? 'true' : 'false');
+                        });
+                        projectsGrid.classList.toggle('is-filtered', targetFilter !== 'all');
+                        projectCards.forEach(card => {
+                            const cat = card.getAttribute('data-project-cat');
+                            const matched = (targetFilter === 'all' || cat === 'always' || cat === targetFilter);
+                            card.classList.toggle('is-filter-hidden', !matched);
+                            if (matched) {
+                                card.classList.add('is-revealed');
+                            }
+                        });
+                    });
+                });
+            }
+
+            // 全局轻盈霓虹 Toast 与 QQ 一键复制交互
+            let toastTimer = 0;
+            function showCyberToast(msg) {
+                const toastEl = document.getElementById('cyber-toast');
+                if (!toastEl) return;
+                toastEl.textContent = msg;
+                toastEl.classList.add('is-visible');
+                if (toastTimer) clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => {
+                    toastEl.classList.remove('is-visible');
+                }, 2400);
+            }
+
+            const qqCopyCard = document.getElementById('qq-copy-card');
+            if (qqCopyCard) {
+                const copyQqAction = (e) => {
+                    if (e) e.stopPropagation();
+                    const qqNum = qqCopyCard.getAttribute('data-copy') || '38524908';
+                    const badge = document.getElementById('qq-copy-badge');
+                    const onCopied = () => {
+                        showCyberToast(`✓ 已复制 QQ 号：${qqNum}`);
+                        if (typeof playSciFiAudio === 'function') playSciFiAudio(780, 0.08, 'sine', false);
+                        if (badge) {
+                            badge.textContent = '已复制 ✓';
+                            setTimeout(() => { badge.textContent = '复制'; }, 1800);
+                        }
+                    };
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(qqNum).then(onCopied).catch(() => {
+                            try {
+                                const ta = document.createElement('textarea');
+                                ta.value = qqNum;
+                                ta.style.position = 'fixed';
+                                ta.style.opacity = '0';
+                                document.body.appendChild(ta);
+                                ta.select();
+                                document.execCommand('copy');
+                                document.body.removeChild(ta);
+                            } catch (err) {}
+                            onCopied();
+                        });
+                    } else {
+                        try {
+                            const ta = document.createElement('textarea');
+                            ta.value = qqNum;
+                            ta.style.position = 'fixed';
+                            ta.style.opacity = '0';
+                            document.body.appendChild(ta);
+                            ta.select();
+                            document.execCommand('copy');
+                            document.body.removeChild(ta);
+                        } catch (err) {}
+                        onCopied();
+                    }
+                };
+                qqCopyCard.addEventListener('click', copyQqAction);
+                qqCopyCard.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        copyQqAction(e);
+                    }
+                });
+            }
+
+            // 桌面端磁吸光环准星（GPU translate3d）
+            const cursorRing = document.getElementById('cyber-cursor-ring');
+            if (cursorRing && canHoverFine && !prefersReduced) {
+                let ringX = window.innerWidth * 0.5;
+                let ringY = window.innerHeight * 0.5;
+                let targetRingX = ringX;
+                let targetRingY = ringY;
+                let ringRaf = 0;
+
+                const tickRing = () => {
+                    ringX += (targetRingX - ringX) * 0.24;
+                    ringY += (targetRingY - ringY) * 0.24;
+                    cursorRing.style.transform = `translate3d(${ringX.toFixed(1)}px, ${ringY.toFixed(1)}px, 0)`;
+                    if (Math.abs(targetRingX - ringX) > 0.35 || Math.abs(targetRingY - ringY) > 0.35) {
+                        ringRaf = requestAnimationFrame(tickRing);
+                    } else {
+                        ringRaf = 0;
+                    }
+                };
+
+                window.addEventListener('pointermove', (e) => {
+                    targetRingX = e.clientX;
+                    targetRingY = e.clientY;
+                    cursorRing.style.opacity = '0.85';
+                    const isHoverInteractive = Boolean(e.target && e.target.closest && e.target.closest('a, button, input, .interactive-card, .tech-stack-card, .rail-link'));
+                    cursorRing.classList.toggle('is-hovering', isHoverInteractive);
+                    if (!ringRaf) ringRaf = requestAnimationFrame(tickRing);
+                }, { passive: true });
+
+                document.addEventListener('mouseleave', () => {
+                    cursorRing.style.opacity = '0';
+                });
+            }
+        })();
 
                 // ================= 8. 二次元毛玻璃音乐盒控制器 (Hero CloudPlayer + 悬浮胶囊 双端深度联动) =================
         const bgmPlaylist = [
-            { title: "月声尽，心灯明", artist: "《鸣潮》心月狐主题曲", src: "audio/track_01.mp3", duration: "03:48", lyric: "「月声尽，心灯明，踏遍万水千山长夜有光」" },
+            { title: "GATE OF STEINER", artist: "《命运石之门》插曲", src: "audio/track_08.mp3", duration: "04:12", lyric: "「So there's no meaning in our world, if we can't find a way out」" },
             { title: "I Really Want to Stay at Your House", artist: "《赛博朋克：边缘行者》插曲", src: "audio/track_04.mp3", duration: "04:06", lyric: "「So get away, another way to feel what you didn't want yourself to know」" },
             { title: "One more time, One more chance", artist: "《秒速5厘米》主题曲 · 山崎将义", src: "audio/track_07.mp3", duration: "05:34", lyric: "「いつでも捜しているよ，どっかに君の姿を」" },
-            { title: "GATE OF STEINER", artist: "《命运石之门》插曲", src: "audio/track_08.mp3", duration: "04:12", lyric: "「So there's no meaning in our world, if we can't find a way out」" },
+            { title: "月声尽，心灯明", artist: "《鸣潮》心月狐主题曲", src: "audio/track_01.mp3", duration: "03:48", lyric: "「月声尽，心灯明，踏遍万水千山长夜有光」" },
             { title: "優しさの理由", artist: "《冰菓》OP1 · ChouCho", src: "audio/track_09.mp3", duration: "04:13", lyric: "「君の声が届いたから，僕の胸に響いたから」" },
             { title: "ユキトキ", artist: "《我的青春恋爱物语果然有问题》OP1", src: "audio/track_10.mp3", duration: "04:29", lyric: "「陽だまりに隠れた 咲かない花，君の手で触れて」" },
             { title: "奇迹 (キセキ)", artist: "《擅长捉弄的高木同学》回忆曲", src: "audio/track_02.mp3", duration: "01:36", lyric: "「明日、今日よりも好きになれる，溢れる想いが止まらない」" },
@@ -6787,16 +7457,54 @@
         ];
 
         let bgmIndex = 0;
-        let isBgmPlaying = false;
         let isLoopSingle = false;
         let userWantsPlayback = false; // 用户明确期望播放 (唯一真实意志信标)
-        let playSessionId = 0;         // 单调递增的播放会话标记，彻底根除 300ms 竞争
+        let playSessionId = 0;         // 单调递增的播放会话标记，彻底根除竞争
         let isChangingTrack = false;   // 正在切歌过渡期
-        let isBuffering = false;       // 移动端网络缓冲中
+        let isBuffering = false;       // 网络缓冲中
         let audioPrimed = false;       // 手势解锁标记
         let playlistsInitialized = false; // 列表 DOM 单次渲染标记，避免点击瞬间 DOM 节点被销毁重建
 
-        const bgmAudio = document.getElementById('global-bgm-audio');
+        // 全内存 Blob 预取缓存（http/https 下将整首 MP3 预缓存为本地 blob: URL，实现零延迟任意秒切）
+        const trackBlobCache = new Map();
+        const trackFetchPromises = new Map();
+        let activeTrackRawSrc = bgmPlaylist[0].src;
+        let isDraggingSeek = false;
+        let isSeekingBuffer = false;
+        let wasPlayingBeforeSeek = false;
+        let pendingSeekSec = null;
+        let seekLockUntil = 0;
+
+        function prefetchTrackBlob(rawSrc) {
+            if (!rawSrc) return Promise.resolve('');
+            if (window.location.protocol !== 'http:' && window.location.protocol !== 'https:') {
+                return Promise.resolve(rawSrc);
+            }
+            if (trackBlobCache.has(rawSrc)) {
+                return Promise.resolve(trackBlobCache.get(rawSrc));
+            }
+            if (trackFetchPromises.has(rawSrc)) {
+                return trackFetchPromises.get(rawSrc);
+            }
+            const p = fetch(rawSrc, { cache: 'force-cache' })
+                .then((res) => {
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    return res.blob();
+                })
+                .then((blob) => {
+                    const blobUrl = URL.createObjectURL(blob);
+                    trackBlobCache.set(rawSrc, blobUrl);
+                    trackFetchPromises.delete(rawSrc);
+                    return blobUrl;
+                })
+                .catch(() => {
+                    trackFetchPromises.delete(rawSrc);
+                    return rawSrc;
+                });
+            trackFetchPromises.set(rawSrc, p);
+            return p;
+        }
+
         const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(navigator.userAgent) || window.innerWidth <= 768;
         // 默认初始化音量 (手机端 0.35 适中听感，电脑端 0.25)
         const defaultVolume = isMobileDevice ? 0.35 : 0.25;
@@ -6959,6 +7667,9 @@
                 if (isBgmPlaying) heroVinylDisc.classList.add('spinning');
                 else heroVinylDisc.classList.remove('spinning');
             }
+            if (heroCloudPlayer) {
+                heroCloudPlayer.classList.toggle('is-playing', isBgmPlaying);
+            }
 
             // 2. 同步悬浮胶囊面板
             if (musicDisplayTitle) musicDisplayTitle.textContent = track.title;
@@ -6982,6 +7693,9 @@
         // ================= 原生流式音频调度器 (规范 HTML5 Audio 手势起播，零卡顿零带宽浪费) =================
         function safeExecutePlay() {
             if (!bgmAudio) return;
+            if (typeof attachBgmAnalyser === 'function') {
+                attachBgmAnalyser();
+            }
             if (audioCtx && audioCtx.state === 'suspended') {
                 audioCtx.resume().catch(() => {});
             }
@@ -7001,16 +7715,35 @@
             }
         }
 
-        // 载入并播放曲目 (原生 206 Partial Content 流式播放，0ms 瞬时响应)
+        // 载入并播放曲目 (优先命中全内存 blob: 缓存，0ms 瞬时起播与瞬时拖拽)
         function loadAndPlay(index, autoPlay = true) {
             bgmIndex = (index + bgmPlaylist.length) % bgmPlaylist.length;
             const track = bgmPlaylist[bgmIndex];
             if (!bgmAudio) return;
 
+            activeTrackRawSrc = track.src;
+            pendingSeekSec = null;
+            seekLockUntil = 0;
+            isSeekingBuffer = false;
+            wasPlayingBeforeSeek = false;
             isChangingTrack = true;
+
             try { bgmAudio.pause(); } catch(e) {}
 
-            bgmAudio.src = track.src;
+            const cachedBlob = trackBlobCache.get(track.src);
+            if (cachedBlob) {
+                bgmAudio.src = cachedBlob;
+            } else {
+                bgmAudio.src = track.src;
+                prefetchTrackBlob(track.src);
+            }
+            try { bgmAudio.load(); } catch(e) {}
+
+            // 顺带在空闲窗口后台预取下一首，保障切歌体验
+            const nextTrack = bgmPlaylist[(bgmIndex + 1) % bgmPlaylist.length];
+            if (nextTrack && nextTrack.src !== track.src) {
+                setTimeout(() => { prefetchTrackBlob(nextTrack.src); }, 250);
+            }
 
             // 立即重置视觉进度与时间显示，给用户即刻响应反馈
             if (!isDraggingSeek) {
@@ -7027,11 +7760,18 @@
                 isBgmPlaying = false;
                 syncMusicUI();
             }
-            setTimeout(() => { isChangingTrack = false; }, 300);
+            setTimeout(() => { isChangingTrack = false; }, 120);
         }
 
-        // 默认初始化装载第 1 首曲目信息 (只同步纯静态 UI)
+        // 默认初始化装载第 1 首曲目信息，并后台预取首曲至内存 Blob（拖拽寻址零卡顿）
         syncMusicUI();
+        prefetchTrackBlob(bgmPlaylist[0].src).then((blobUrl) => {
+            if (!blobUrl || !String(blobUrl).startsWith('blob:')) return;
+            if (activeTrackRawSrc === bgmPlaylist[0].src && bgmAudio && bgmAudio.paused && pendingSeekSec === null && !String(bgmAudio.src).startsWith('blob:')) {
+                bgmAudio.src = blobUrl;
+                try { bgmAudio.load(); } catch (e) {}
+            }
+        });
 
         // 播放/暂停总控 (精准响应，真实感知音频状态)
         function togglePlayPause() {
@@ -7125,28 +7865,26 @@
             });
         }
 
-        // ================= 进度条丝滑拖拽/寻址系统 (支持桌面端鼠标拖拽与移动端触控滑动，100% 响应) =================
-        let isDraggingSeek = false;
-        let isSeekingBuffer = false;
-        let wasPlayingBeforeSeek = false;
-
+        // ================= 进度条丝滑拖拽/寻址系统 (零延迟、零回弹、一拉即播状态机) =================
         function setupProgressScrubber(bgEl, fillEl, curEl, durEl) {
             if (!bgEl) return;
+            let lastDragPct = 0;
 
             function getProgress(clientX) {
                 const rect = bgEl.getBoundingClientRect();
-                if (rect.width <= 0) return 0;
+                if (rect.width <= 0) return lastDragPct;
                 return Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
             }
 
             function getAudioDuration() {
-                if (bgmAudio && bgmAudio.duration && !isNaN(bgmAudio.duration) && bgmAudio.duration > 0) {
+                if (bgmAudio && bgmAudio.duration && !isNaN(bgmAudio.duration) && isFinite(bgmAudio.duration) && bgmAudio.duration > 0) {
                     return bgmAudio.duration;
                 }
                 return getTrackDurationSec(bgmIndex);
             }
 
             function updateVisuals(pct) {
+                lastDragPct = pct;
                 const totalDur = getAudioDuration();
                 const curSecs = pct * totalDur;
                 const curStr = formatAudioTime(curSecs);
@@ -7161,100 +7899,143 @@
             function applySeek(pct) {
                 if (!bgmAudio) return;
                 const totalDur = getAudioDuration();
-                if (totalDur > 0) {
-                    const targetSec = Math.max(0, Math.min(totalDur - 0.5, pct * totalDur));
-                    isSeekingBuffer = true;
+                if (totalDur <= 0) return;
+
+                const targetSec = Math.max(0, Math.min(Math.max(0, totalDur - 0.25), pct * totalDur));
+                pendingSeekSec = targetSec;
+                isSeekingBuffer = true;
+                seekLockUntil = performance.now() + 2000;
+                wasPlayingBeforeSeek = true;
+
+                // 立即锁定进度条 UI，杜绝松手回跳
+                updateVisuals(targetSec / totalDur);
+
+                // 如果当前曲目的内存 Blob 已预取完毕但尚未切过去，立即切换至 zero-latency blob: 源并在 loadedmetadata 时落地跳转
+                const cachedBlob = trackBlobCache.get(activeTrackRawSrc);
+                if (cachedBlob && !String(bgmAudio.src).startsWith('blob:')) {
+                    isChangingTrack = true;
+                    try { bgmAudio.pause(); } catch (e) {}
+                    bgmAudio.src = cachedBlob;
+                    try { bgmAudio.load(); } catch (e) {}
+                    if (typeof attachBgmAnalyser === 'function') attachBgmAnalyser();
+                    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
+                    isBgmPlaying = true;
+                    syncMusicUI();
+                    return;
+                }
+
+                if (bgmAudio.readyState >= 1) {
                     try {
                         bgmAudio.currentTime = targetSec;
                     } catch(err) {
                         console.warn('[Audio] seek error:', err);
                     }
-
-                    // 若拖拽前正在播放，或者处于已开播状态，立即确保续播！
-                    if (wasPlayingBeforeSeek || isBgmPlaying) {
-                        isBgmPlaying = true;
-                        syncMusicUI();
-                        safeExecutePlay();
-                    }
+                    isBgmPlaying = true;
+                    syncMusicUI();
+                    safeExecutePlay();
+                } else {
+                    try { bgmAudio.load(); } catch (e) {}
+                    isBgmPlaying = true;
+                    syncMusicUI();
+                    safeExecutePlay();
                 }
-                setTimeout(() => {
-                    isSeekingBuffer = false;
-                }, 400);
             }
 
-            // Pointer Events (全平台统一触控与鼠标事件)
-            bgEl.addEventListener('pointerdown', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                isDraggingSeek = true;
-                isSeekingBuffer = true;
-                wasPlayingBeforeSeek = !bgmAudio.paused || isBgmPlaying;
-                try { bgEl.setPointerCapture(e.pointerId); } catch(err) {}
-                const pct = getProgress(e.clientX);
-                updateVisuals(pct);
-            });
-
-            bgEl.addEventListener('pointermove', (e) => {
-                if (!isDraggingSeek) return;
-                e.preventDefault();
-                e.stopPropagation();
-                const pct = getProgress(e.clientX);
-                updateVisuals(pct);
-            });
-
-            function endSeek(e) {
-                if (!isDraggingSeek) return;
-                e.preventDefault();
-                e.stopPropagation();
-                isDraggingSeek = false;
-                try { bgEl.releasePointerCapture(e.pointerId); } catch(err) {}
-                const pct = getProgress(e.clientX);
-                updateVisuals(pct);
-                applySeek(pct);
-            }
-
-            bgEl.addEventListener('pointerup', endSeek);
-            bgEl.addEventListener('pointercancel', endSeek);
-
-            // 针对移动端触摸增强保障
-            bgEl.addEventListener('touchstart', (e) => {
-                if (e.touches && e.touches.length > 0) {
+            // Pointer Events 与旧版 Touch 回退互斥绑定，彻底消除触屏双触发
+            if (window.PointerEvent) {
+                bgEl.addEventListener('pointerdown', (e) => {
+                    if (e.button && e.button !== 0) return;
+                    e.preventDefault();
+                    e.stopPropagation();
                     isDraggingSeek = true;
                     isSeekingBuffer = true;
-                    wasPlayingBeforeSeek = !bgmAudio.paused || isBgmPlaying;
-                    const pct = getProgress(e.touches[0].clientX);
+                    wasPlayingBeforeSeek = true;
+                    try { bgEl.setPointerCapture(e.pointerId); } catch(err) {}
+                    const pct = getProgress(e.clientX);
                     updateVisuals(pct);
-                }
-            }, { passive: true });
+                });
 
-            bgEl.addEventListener('touchmove', (e) => {
-                if (isDraggingSeek && e.touches && e.touches.length > 0) {
-                    const pct = getProgress(e.touches[0].clientX);
+                bgEl.addEventListener('pointermove', (e) => {
+                    if (!isDraggingSeek) return;
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const pct = getProgress(e.clientX);
                     updateVisuals(pct);
-                }
-            }, { passive: true });
+                });
 
-            bgEl.addEventListener('touchend', (e) => {
-                if (isDraggingSeek) {
+                function endPointerSeek(e) {
+                    if (!isDraggingSeek) return;
+                    e.preventDefault();
+                    e.stopPropagation();
                     isDraggingSeek = false;
-                    const clientX = (e.changedTouches && e.changedTouches.length > 0) ? e.changedTouches[0].clientX : 0;
-                    if (clientX) {
-                        const pct = getProgress(clientX);
+                    try { bgEl.releasePointerCapture(e.pointerId); } catch(err) {}
+                    const pct = typeof e.clientX === 'number' ? getProgress(e.clientX) : lastDragPct;
+                    updateVisuals(pct);
+                    applySeek(pct);
+                }
+
+                bgEl.addEventListener('pointerup', endPointerSeek);
+                bgEl.addEventListener('pointercancel', endPointerSeek);
+            } else {
+                bgEl.addEventListener('touchstart', (e) => {
+                    if (e.touches && e.touches.length > 0) {
+                        e.stopPropagation();
+                        isDraggingSeek = true;
+                        isSeekingBuffer = true;
+                        wasPlayingBeforeSeek = true;
+                        const pct = getProgress(e.touches[0].clientX);
+                        updateVisuals(pct);
+                    }
+                }, { passive: true });
+
+                bgEl.addEventListener('touchmove', (e) => {
+                    if (isDraggingSeek && e.touches && e.touches.length > 0) {
+                        e.stopPropagation();
+                        const pct = getProgress(e.touches[0].clientX);
+                        updateVisuals(pct);
+                    }
+                }, { passive: true });
+
+                bgEl.addEventListener('touchend', (e) => {
+                    if (isDraggingSeek) {
+                        e.stopPropagation();
+                        isDraggingSeek = false;
+                        const clientX = (e.changedTouches && e.changedTouches.length > 0) ? e.changedTouches[0].clientX : null;
+                        const pct = clientX !== null ? getProgress(clientX) : lastDragPct;
                         updateVisuals(pct);
                         applySeek(pct);
                     }
-                }
-            }, { passive: true });
+                }, { passive: true });
+            }
         }
 
         setupProgressScrubber(heroProgressBg, heroProgressFill, heroCurTime, heroDurTime);
         setupProgressScrubber(progressBg, progressFill, curTimeEl, durTimeEl);
 
-        // 音频时间与进度同步
+        // 音频时间与进度同步（带显式寻址锁校验，彻底杜绝拖完进度条被旧 currentTime 拉回）
         if (bgmAudio) {
+            function syncDurationUI(totalDur) {
+                if (totalDur > 0 && isFinite(totalDur)) {
+                    const durStr = formatAudioTime(totalDur);
+                    if (heroDurTime) heroDurTime.textContent = durStr;
+                    if (durTimeEl) durTimeEl.textContent = durStr;
+                }
+            }
+
             function handleTimeUpdate() {
                 if (isDraggingSeek) return;
-                const totalDur = (bgmAudio.duration && !isNaN(bgmAudio.duration) && bgmAudio.duration > 0)
+                if (pendingSeekSec !== null) {
+                    const arrived = Math.abs((bgmAudio.currentTime || 0) - pendingSeekSec) < 1.8;
+                    const expired = performance.now() > seekLockUntil;
+                    if (!arrived && !expired) {
+                        return;
+                    }
+                    pendingSeekSec = null;
+                    isSeekingBuffer = false;
+                    seekLockUntil = 0;
+                }
+
+                const totalDur = (bgmAudio.duration && !isNaN(bgmAudio.duration) && isFinite(bgmAudio.duration) && bgmAudio.duration > 0)
                     ? bgmAudio.duration
                     : getTrackDurationSec(bgmIndex);
                 if (totalDur > 0) {
@@ -7274,37 +8055,61 @@
 
             bgmAudio.addEventListener('timeupdate', handleTimeUpdate);
 
-            ['loadedmetadata', 'canplay', 'durationchange'].forEach(evt => {
-                bgmAudio.addEventListener(evt, () => {
-                    const totalDur = (bgmAudio.duration && !isNaN(bgmAudio.duration) && bgmAudio.duration > 0)
-                        ? bgmAudio.duration
-                        : getTrackDurationSec(bgmIndex);
-                    if (totalDur > 0) {
-                        const durStr = formatAudioTime(totalDur);
-                        if (heroDurTime) heroDurTime.textContent = durStr;
-                        if (durTimeEl) durTimeEl.textContent = durStr;
+            bgmAudio.addEventListener('loadedmetadata', () => {
+                const totalDur = (bgmAudio.duration && !isNaN(bgmAudio.duration) && isFinite(bgmAudio.duration) && bgmAudio.duration > 0)
+                    ? bgmAudio.duration
+                    : getTrackDurationSec(bgmIndex);
+                syncDurationUI(totalDur);
+                if (pendingSeekSec !== null && totalDur > 0) {
+                    const clampTarget = Math.min(pendingSeekSec, Math.max(0, totalDur - 0.25));
+                    try {
+                        bgmAudio.currentTime = clampTarget;
+                    } catch (err) {}
+                    isChangingTrack = false;
+                    if (wasPlayingBeforeSeek || isBgmPlaying) {
+                        safeExecutePlay();
                     }
-                });
+                }
+            });
+
+            bgmAudio.addEventListener('durationchange', () => {
+                const totalDur = (bgmAudio.duration && !isNaN(bgmAudio.duration) && isFinite(bgmAudio.duration) && bgmAudio.duration > 0)
+                    ? bgmAudio.duration
+                    : getTrackDurationSec(bgmIndex);
+                syncDurationUI(totalDur);
             });
 
             // 播放真正进入吐数据状态
             bgmAudio.addEventListener('playing', () => {
                 isChangingTrack = false;
-                isSeekingBuffer = false;
+                if (pendingSeekSec === null) {
+                    isSeekingBuffer = false;
+                }
+                wasPlayingBeforeSeek = false;
                 isBgmPlaying = true;
                 syncMusicUI();
             });
 
             // 监听底层 pause 事件 (过滤切歌、拖拽、寻址缓冲带来的虚假暂停)
             bgmAudio.addEventListener('pause', () => {
-                if (isChangingTrack || isDraggingSeek || isSeekingBuffer) return;
+                if (isChangingTrack || isDraggingSeek || isSeekingBuffer || pendingSeekSec !== null) return;
                 isBgmPlaying = false;
                 syncMusicUI();
             });
 
-            // 监听寻址完成 (seeked) 自动平滑续播
+            // 监听寻址完成 (seeked) 解除锁并立即同步位置与续播
             bgmAudio.addEventListener('seeked', () => {
-                isSeekingBuffer = false;
+                if (pendingSeekSec !== null) {
+                    if (Math.abs((bgmAudio.currentTime || 0) - pendingSeekSec) < 2.2) {
+                        pendingSeekSec = null;
+                        isSeekingBuffer = false;
+                        seekLockUntil = 0;
+                        isChangingTrack = false;
+                        handleTimeUpdate();
+                    }
+                } else {
+                    isSeekingBuffer = false;
+                }
                 if ((wasPlayingBeforeSeek || isBgmPlaying) && bgmAudio.paused) {
                     safeExecutePlay();
                 }
@@ -7312,6 +8117,9 @@
 
             // 曲目自然结束播放
             bgmAudio.addEventListener('ended', () => {
+                pendingSeekSec = null;
+                isSeekingBuffer = false;
+                wasPlayingBeforeSeek = false;
                 if (isLoopSingle) {
                     bgmAudio.currentTime = 0;
                     safeExecutePlay();
@@ -7320,11 +8128,21 @@
                 }
             });
 
-            // 智能缓冲异常自愈：当遭遇网络缓冲或跨段寻址时，收到数据即刻自动续播！
+            // 智能缓冲异常自愈：收到数据且如有未完成的 pendingSeekSec 则再校准一次并续播
             bgmAudio.addEventListener('waiting', () => {
                 isBuffering = true;
             });
             bgmAudio.addEventListener('canplay', () => {
+                const totalDur = (bgmAudio.duration && !isNaN(bgmAudio.duration) && isFinite(bgmAudio.duration) && bgmAudio.duration > 0)
+                    ? bgmAudio.duration
+                    : getTrackDurationSec(bgmIndex);
+                syncDurationUI(totalDur);
+                if (pendingSeekSec !== null && bgmAudio.readyState >= 1 && Math.abs((bgmAudio.currentTime || 0) - pendingSeekSec) > 2.0) {
+                    try {
+                        bgmAudio.currentTime = Math.min(pendingSeekSec, Math.max(0, totalDur - 0.25));
+                    } catch (err) {}
+                }
+                isChangingTrack = false;
                 if ((wasPlayingBeforeSeek || isBgmPlaying) && bgmAudio.paused) {
                     safeExecutePlay();
                 }
@@ -7336,13 +8154,16 @@
                         if (bgmAudio.paused && (wasPlayingBeforeSeek || isBgmPlaying)) {
                             safeExecutePlay();
                         }
-                    }, 400);
+                    }, 350);
                 }
             });
 
             // 播放异常捕获与容错
             bgmAudio.addEventListener('error', (e) => {
                 console.warn('[Audio] playback error:', e);
+                pendingSeekSec = null;
+                isSeekingBuffer = false;
+                isChangingTrack = false;
                 isBgmPlaying = false;
                 syncMusicUI();
             });
@@ -7793,6 +8614,9 @@
                     this.modal.classList.add('active');
                 }
                 document.body.classList.add('arcade-active');
+                if (typeof window.__SET_BG_FX_PAUSED__ === 'function') {
+                    window.__SET_BG_FX_PAUSED__('arcade', true);
+                }
             }
 
             closeGame() {
@@ -7816,7 +8640,12 @@
                     setTimeout(() => {
                         this.modal.style.display = 'none';
                         document.body.classList.remove('arcade-active');
+                        if (typeof window.__SET_BG_FX_PAUSED__ === 'function') {
+                            window.__SET_BG_FX_PAUSED__('arcade', false);
+                        }
                     }, 220);
+                } else if (typeof window.__SET_BG_FX_PAUSED__ === 'function') {
+                    window.__SET_BG_FX_PAUSED__('arcade', false);
                 }
 
                 // 3. 音频接力：无缝恢复网页背景音乐
