@@ -3716,8 +3716,8 @@
             <!-- 10 首曲目抽屉列表 -->
             <div class="music-playlist-drawer" id="music-playlist-drawer"></div>
         </div>
-        <!-- 核心音频元素 (preload="auto" + 全内存 Blob 预取加速，拖拽寻址 0 卡顿) -->
-        <audio id="global-bgm-audio" src="audio/track_08.mp3" preload="auto" playsinline webkit-playsinline></audio>
+        <!-- 核心音频元素 (preload="metadata" 避免移动端首屏抢占带宽，原生 HTTP Range 流式起播与精准寻址) -->
+        <audio id="global-bgm-audio" src="audio/track_08.mp3" preload="metadata" playsinline webkit-playsinline></audio>
     </div>
 
     <!-- 页面内容层 -->
@@ -3950,7 +3950,7 @@
                 <div class="project-filter-bar" role="group" aria-label="工程项目领域筛选">
                     <button type="button" class="project-filter-btn is-active" data-filter="all" aria-pressed="true">
                         <span>全部作品</span>
-                        <span class="filter-count">7</span>
+                        <span class="filter-count">8</span>
                     </button>
                     <button type="button" class="project-filter-btn" data-filter="ai" aria-pressed="false">
                         <span>AI 智能体</span>
@@ -3958,7 +3958,7 @@
                     </button>
                     <button type="button" class="project-filter-btn" data-filter="visual" aria-pressed="false">
                         <span>3D &amp; 视觉</span>
-                        <span class="filter-count">2</span>
+                        <span class="filter-count">3</span>
                     </button>
                     <button type="button" class="project-filter-btn" data-filter="oss" aria-pressed="false">
                         <span>开源 &amp; 科研</span>
@@ -3967,68 +3967,67 @@
                 </div>
 
                 <div class="bento-grid" id="projects-bento-grid">
-                    <!-- 项目 1: AI 二次元桌宠 (大卡片 Span 8) -->
+                    <!-- 项目 1: AI 二次元桌宠 v8.1.0 (大卡片 Span 8) -->
                     <article class="bento-card card-span-8 interactive-card" data-project-cat="ai">
                         <div>
                             <div class="card-top">
                                 <span class="card-index">PROJECT // 01 · DESKTOP AGENT</span>
-                                <span class="card-type-tag tag-sakura">LIVE2D × AI AGENT</span>
+                                <span class="card-type-tag tag-sakura">v8.1.0 · MULTI-ENGINE</span>
                             </div>
-                            <h3 class="card-title">AI 二次元桌宠 · Live2D Desktop Companion</h3>
+                            <h3 class="card-title">AI 二次元桌宠 · Anime Desktop Pet (v8.1.0)</h3>
                             <p class="card-desc">
-                                桌面常驻智能交互伴侣。基于 Electron 与 Live2D SDK 打造轻量级高帧率动画管线，深度融合自主多代理工作流与本地/云端大模型 Function Calling，实现多角色自主感知、桌面协同操作与细腻的情感化语音交互。
+                                九大零 OOC 动漫角色全阵容桌面伴侣与轻量化 AI 工作台。融合 Live2D (Cubism 2/4/5) + Three.js 3D VRM（后台静默预热毫秒热切）+ 73 帧精灵表三引擎动态渲染与像素级透明穿透；内置 133 段防叠播原生 CV 配音、12 大云端/本地大模型流式对话、17 种语言代码沙箱、10 款摸鱼街机（含霓虹贪吃蛇）与 BGM 音乐盒，提供中英双语安装包。
                             </p>
                             <div class="card-metrics-strip">
-                                <span class="metric-chip"><span class="metric-chip-dot"></span>60 FPS Live2D Pipeline</span>
-                                <span class="metric-chip"><span class="metric-chip-dot"></span>Multi-Agent Tool Calling</span>
-                                <span class="metric-chip"><span class="metric-chip-dot"></span>Realtime TTS Resonance</span>
+                                <span class="metric-chip"><span class="metric-chip-dot"></span>Live2D + 3D VRM + Sprite</span>
+                                <span class="metric-chip"><span class="metric-chip-dot"></span>9 Characters · 133 CV</span>
+                                <span class="metric-chip"><span class="metric-chip-dot"></span>12 LLMs · 10 Arcade Games</span>
                             </div>
                             <div class="card-stack">
-                                <span class="stack-pill">Electron</span>
-                                <span class="stack-pill">TypeScript</span>
-                                <span class="stack-pill">Live2D Cubism SDK</span>
-                                <span class="stack-pill">LLM Tool-Calling</span>
-                                <span class="stack-pill">Realtime TTS</span>
-                                <span class="stack-pill">Node.js</span>
+                                <span class="stack-pill">Electron 28</span>
+                                <span class="stack-pill">Live2D Cubism 2/4/5</span>
+                                <span class="stack-pill">Three.js VRM</span>
+                                <span class="stack-pill">12 LLMs + Sandbox</span>
+                                <span class="stack-pill">CN / EN Release</span>
                             </div>
                         </div>
                         <div class="card-footer">
-                            <a href="https://github.com/SherlockYzz/anime-desktop-pet" target="_blank" class="card-link">
-                                <span>VIEW SOURCE REPOSITORY</span>
+                            <a href="https://github.com/SherlockYzz/anime-desktop-pet/releases/tag/v8.1.0" target="_blank" class="card-link">
+                                <span>RELEASE v8.1.0 &amp; SOURCE</span>
                                 <span>→</span>
                             </a>
-                            <span class="card-meta-text">Desktop Application</span>
+                            <span class="card-meta-text">Desktop Application · v8.1.0</span>
                         </div>
                     </article>
 
-                    <!-- 项目 2: 天青泥火 (中卡片 Span 4) -->
+                    <!-- 项目 2: 天青泥火 v10.0.0 (中卡片 Span 4) -->
                     <article class="bento-card card-span-4 interactive-card" data-project-cat="visual">
                         <div>
                             <div class="card-top">
                                 <span class="card-index">PROJECT // 02 · XERJ INDEXED</span>
-                                <span class="card-type-tag tag-amber">CORPUS HUB</span>
+                                <span class="card-type-tag tag-amber">v10.0.0 · CORPUS HUB</span>
                             </div>
-                            <h3 class="card-title">「天青泥火」宋瓷 3D 研学空间 (v7.0)</h3>
+                            <h3 class="card-title">「天青泥火」华夏古瓷三维研学空间 (v10.0.0)</h3>
                             <p class="card-desc">
-                                获评为全球高质量开源范本，正式入选开源 AI 搜索引擎 XERJ Corpus Hub 标杆参考实现。基于 Three.js r128 原生打造双器同台矩阵对比、100x 景深微距显微镜、全息剖面与双层清漆物理渲染。
+                                入选全球 AI 原生代码语料库 XERJ Corpus Hub 标杆参考实现。v10.0.0 全量升级真 3D 拉坯与手绘青花点印工坊、智能古琴伴赏与全量 MiMo 3D 语音、B站非遗影像展映、15 件 Blender PBR 古瓷数字孪生、双器同台对比与 100× 光学景深显微镜，并内置移动端 TBDR GPU 极速出图管线与 PWA 离线支持。
                             </p>
                             <div class="card-metrics-strip">
                                 <span class="metric-chip"><span class="metric-chip-dot"></span>XERJ Corpus Hub Selected</span>
-                                <span class="metric-chip"><span class="metric-chip-dot"></span>100× PBR Zoom</span>
+                                <span class="metric-chip"><span class="metric-chip-dot"></span>3D 青花工坊 · 古琴伴赏</span>
                             </div>
                             <div class="card-stack">
-                                <span class="stack-pill">Three.js r128</span>
-                                <span class="stack-pill">XERJ Reference</span>
-                                <span class="stack-pill">100x Microscope</span>
-                                <span class="stack-pill">PBR Clearcoat</span>
+                                <span class="stack-pill">Three.js WebGL</span>
+                                <span class="stack-pill">Blender 5.2 PBR</span>
+                                <span class="stack-pill">100× Microscope</span>
+                                <span class="stack-pill">PWA · MiMo 3D</span>
                             </div>
                         </div>
                         <div class="card-footer">
                             <a href="https://sherlockyzz.github.io/Memories-of-Chinese-Porcelain-Web/" target="_blank" class="card-link">
-                                <span>EXPLORE 3D SPACE</span>
+                                <span>EXPLORE 3D SPACE (v10.0.0)</span>
                                 <span>→</span>
                             </a>
-                            <span class="card-meta-text">Selected Reference</span>
+                            <span class="card-meta-text">XERJ Selected Reference</span>
                         </div>
                     </article>
 
@@ -4039,15 +4038,15 @@
                                 <span class="card-index">PROJECT // 03 · MULTIMODAL AGENT</span>
                                 <span class="card-type-tag tag-violet">AUTONOMOUS AGENT</span>
                             </div>
-                            <h3 class="card-title">Cyber-Gemini Twins · 赛博双子星伴生体</h3>
+                            <h3 class="card-title">Cyber-Hajimi · 赛博养Gemini 伴生代理</h3>
                             <p class="card-desc">
-                                基于 Google Antigravity 原生驱动的 B站全能多模态 AI 伴生代理。集成现代 WBI 动态防爬签名逆向、视频分类自适应深度评分、CC 字幕提炼、直播间实时态势感知与全自动动态互动，零 API 成本架构。
+                                基于 Google Antigravity 原生会话驱动的 B站全能多模态开源 AI 伴生代理（零 API 费用）。全面升级通用开源架构：集成动态 WBI 签名、视频三维多模态分类自适应评分（CC 字幕 + 雪碧图 + 弹幕波峰）、图文专栏与直播间巡航、多图动态发布、12014 风控自愈与早晚双本手记沉淀。
                             </p>
                             <div class="card-stack">
                                 <span class="stack-pill">Google Antigravity</span>
                                 <span class="stack-pill">Python 3.10+</span>
                                 <span class="stack-pill">Dynamic WBI</span>
-                                <span class="stack-pill">Live Danmaku</span>
+                                <span class="stack-pill">Multi-Modal Eval</span>
                                 <span class="stack-pill">MIT License</span>
                             </div>
                         </div>
@@ -4056,15 +4055,42 @@
                                 <span>VIEW SOURCE REPOSITORY</span>
                                 <span>→</span>
                             </a>
-                            <span class="card-meta-text">Desktop Agent</span>
+                            <span class="card-meta-text">Zero-Cost AI Agent</span>
                         </div>
                     </article>
 
-                    <!-- 项目 4: 华夏岁时盛典 (中卡片 Span 6) -->
+                    <!-- 项目 4: PVZ Clean Architecture 重构增强版 (中卡片 Span 6) -->
                     <article class="bento-card card-span-6 interactive-card" data-project-cat="visual">
                         <div>
                             <div class="card-top">
-                                <span class="card-index">PROJECT // 04 · CREATIVE CODE</span>
+                                <span class="card-index">PROJECT // 04 · GAME ENGINE</span>
+                                <span class="card-type-tag tag-cyan">CLEAN ARCHITECTURE</span>
+                            </div>
+                            <h3 class="card-title">Plants vs. Zombies · Clean Architecture 增强版</h3>
+                            <p class="card-desc">
+                                基于 Python 3 与 Pygame 打造的《植物大战僵尸》原版深度复刻与工程化重构。采用 Clean Architecture + 依赖倒置（DIP）与 JSON 全数据驱动架构，完整实现 6 大章节 51 关战役及无尽生存、52 种正统及高阶强化植物、25 种全 AI 僵尸与公平反制体系，配套 59 项无头规则单元测试。
+                            </p>
+                            <div class="card-stack">
+                                <span class="stack-pill">Python 3 · Pygame</span>
+                                <span class="stack-pill">Clean Architecture</span>
+                                <span class="stack-pill">52 Plants · 51 Levels</span>
+                                <span class="stack-pill">59 Unit Tests</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a href="https://github.com/SherlockYzz/PVZ-Gemini-4-Argon" target="_blank" class="card-link">
+                                <span>VIEW GAME REPOSITORY</span>
+                                <span>→</span>
+                            </a>
+                            <span class="card-meta-text">Game Engineering</span>
+                        </div>
+                    </article>
+
+                    <!-- 项目 5: 华夏岁时盛典 (中卡片 Span 6) -->
+                    <article class="bento-card card-span-6 interactive-card" data-project-cat="visual">
+                        <div>
+                            <div class="card-top">
+                                <span class="card-index">PROJECT // 05 · CREATIVE CODE</span>
                                 <span class="card-type-tag tag-sakura">PIXEL ART &amp; AUDIO</span>
                             </div>
                             <h3 class="card-title">华夏岁时盛典 · 沉浸式时令交互系统</h3>
@@ -4087,11 +4113,11 @@
                         </div>
                     </article>
 
-                    <!-- 项目 5: HENU 开源资料站 (中卡片 Span 6) -->
+                    <!-- 项目 6: HENU 开源资料站 (中卡片 Span 6) -->
                     <article class="bento-card card-span-6 interactive-card" data-project-cat="oss">
                         <div>
                             <div class="card-top">
-                                <span class="card-index">PROJECT // 05 · OPEN SOURCE</span>
+                                <span class="card-index">PROJECT // 06 · OPEN SOURCE</span>
                                 <span class="card-type-tag tag-violet">COMMUNITY INFRA</span>
                             </div>
                             <h3 class="card-title">HENU 期末复习公开资料库共建</h3>
@@ -4114,11 +4140,11 @@
                         </div>
                     </article>
 
-                    <!-- 项目 6: 开封府政务与文旅私有化 (卡片 Span 6) -->
+                    <!-- 项目 7: 开封府政务与文旅私有化 (卡片 Span 6) -->
                     <article class="bento-card card-span-6 interactive-card" data-project-cat="ai">
                         <div>
                             <div class="card-top">
-                                <span class="card-index">PROJECT // 06 · ENTERPRISE AI</span>
+                                <span class="card-index">PROJECT // 07 · ENTERPRISE AI</span>
                                 <span class="card-type-tag">SECURE ARCHITECTURE</span>
                             </div>
                             <h3 class="card-title">开封府政务与文旅私有化部署架构</h3>
@@ -4138,11 +4164,11 @@
                         </div>
                     </article>
 
-                    <!-- 项目 7: 常微分方程核心考点解析 (卡片 Span 12) -->
+                    <!-- 项目 8: 常微分方程核心考点解析 (卡片 Span 6) -->
                     <article class="bento-card card-span-6 interactive-card" data-project-cat="oss">
                         <div>
                             <div class="card-top">
-                                <span class="card-index">PROJECT // 07 · MATHEMATICS</span>
+                                <span class="card-index">PROJECT // 08 · MATHEMATICS</span>
                                 <span class="card-type-tag tag-amber">ACADEMIC RESEARCH</span>
                             </div>
                             <h3 class="card-title">常微分方程（ODE）方法论自总结集</h3>
@@ -4775,6 +4801,13 @@
 
         function attachBgmAnalyser() {
             if (bgmMediaSource || bgmMediaSourceFailed) return;
+            // 移动端直接走原生 <audio> 音频管线，避免 iOS Safari / 微信 / Android WebView 下
+            // createMediaElementSource 与 AudioContext 挂起或 Range 寻址冲突导致静音与卡顿
+            const isMobileAudioEnv = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && window.innerWidth <= 1024);
+            if (isMobileAudioEnv) {
+                bgmMediaSourceFailed = true;
+                return;
+            }
             if (location.protocol !== 'http:' && location.protocol !== 'https:') return;
             try {
                 initAudio();
@@ -4884,7 +4917,7 @@
             requestAnimationFrame(renderSpectrum);
             sCtx.clearRect(0, 0, 38, 14);
             const hasLiveBgm = (typeof isBgmPlaying !== 'undefined' && isBgmPlaying);
-            if ((!isAudioPlaying && !hasLiveBgm) || !analyser) {
+            if (!isAudioPlaying && !hasLiveBgm) {
                 // 待机平息呼吸线
                 sCtx.fillStyle = 'rgba(255, 255, 255, 0.2)';
                 for (let i = 0; i < 6; i++) {
@@ -4893,13 +4926,16 @@
                 return;
             }
 
-            analyser.getByteFrequencyData(audioDataArray);
+            const hasAnalyserData = Boolean(analyser && audioDataArray);
+            if (hasAnalyserData) {
+                analyser.getByteFrequencyData(audioDataArray);
+            }
             const barCount = 6;
-            const step = Math.floor(audioDataArray.length / barCount);
+            const step = hasAnalyserData ? Math.floor(audioDataArray.length / barCount) : 1;
             const nowT = performance.now() * 0.006;
             for (let i = 0; i < barCount; i++) {
-                let val = audioDataArray[i * step] || 0;
-                if (val === 0 && hasLiveBgm && !bgmMediaSource) {
+                let val = hasAnalyserData ? (audioDataArray[i * step] || 0) : 0;
+                if (val === 0 && hasLiveBgm) {
                     val = 80 + Math.sin(nowT + i * 0.9) * 65;
                 }
                 const h = Math.max(2, (val / 255) * 12);
@@ -5647,12 +5683,14 @@
                 appendTermLine('  4. Creative Tech (AI Manga Pipelines, Multimodal Dev, Game Dev, HCI)', 'sakura');
             },
             projects: () => {
-                appendTermLine('1. AI Anime Desktop Pet (Electron + Live2D + LLM Tool-Calling)', 'sakura');
-                appendTermLine('2. Memories of Chinese Porcelain (Three.js WebGL 3D Heritage)', 'green');
-                appendTermLine('3. Mid-Autumn Celebration (Pixel Art & Dynamic Canvas FX)', 'sakura');
-                appendTermLine('4. HENU Final Review Knowledge Base (Open Source Infra)', 'green');
-                appendTermLine('5. Kaifeng Government & Tourism Private Enterprise AI', 'cyan');
-                appendTermLine('6. Differential Equations Theoretical Methodology Archive', 'gold');
+                appendTermLine('1. AI Anime Desktop Pet v8.1.0 (Live2D + 3D VRM + 73f Sprite + 10 Games)', 'sakura');
+                appendTermLine('2. Tianqing Nihuo v10.0.0 (Three.js 3D Porcelain · 3D Pottery · XERJ Selected)', 'green');
+                appendTermLine('3. Cyber-Hajimi Bilibili Agent (Google Antigravity · WBI · Multi-Modal Eval)', 'cyan');
+                appendTermLine('4. Plants vs. Zombies Clean Architecture (52 Plants · 25 Zombies · 51 Levels)', 'green');
+                appendTermLine('5. Mid-Autumn Celebration (Pixel Art & Dynamic Canvas FX)', 'sakura');
+                appendTermLine('6. HENU Final Review Knowledge Base (Open Source Infra)', 'green');
+                appendTermLine('7. Kaifeng Government & Tourism Private Enterprise AI', 'cyan');
+                appendTermLine('8. Differential Equations Theoretical Methodology Archive', 'gold');
             },
             skills: () => {
                 appendTermLine('[AI & Agents]  : Autonomous Agents, Tool Calling, RAG, Prompt Architecture', 'cyan');
@@ -7465,9 +7503,6 @@
         let audioPrimed = false;       // 手势解锁标记
         let playlistsInitialized = false; // 列表 DOM 单次渲染标记，避免点击瞬间 DOM 节点被销毁重建
 
-        // 全内存 Blob 预取缓存（http/https 下将整首 MP3 预缓存为本地 blob: URL，实现零延迟任意秒切）
-        const trackBlobCache = new Map();
-        const trackFetchPromises = new Map();
         let activeTrackRawSrc = bgmPlaylist[0].src;
         let isDraggingSeek = false;
         let isSeekingBuffer = false;
@@ -7475,34 +7510,28 @@
         let pendingSeekSec = null;
         let seekLockUntil = 0;
 
-        function prefetchTrackBlob(rawSrc) {
-            if (!rawSrc) return Promise.resolve('');
-            if (window.location.protocol !== 'http:' && window.location.protocol !== 'https:') {
-                return Promise.resolve(rawSrc);
+        // 将目标秒数安全写入原生 <audio>.currentTime（兼容 seekable 范围边界）
+        function commitSeekTime(targetSec) {
+            if (!bgmAudio || targetSec === null || !isFinite(targetSec)) return false;
+            if (bgmAudio.readyState < 1) return false;
+            const dur = (bgmAudio.duration && isFinite(bgmAudio.duration) && bgmAudio.duration > 0)
+                ? bgmAudio.duration
+                : getTrackDurationSec(bgmIndex);
+            let clamped = Math.max(0, Math.min(Math.max(0, dur - 0.25), targetSec));
+            try {
+                if (bgmAudio.seekable && bgmAudio.seekable.length > 0) {
+                    const seekStart = bgmAudio.seekable.start(0);
+                    const seekEnd = bgmAudio.seekable.end(bgmAudio.seekable.length - 1);
+                    if (isFinite(seekEnd) && seekEnd > seekStart) {
+                        clamped = Math.max(seekStart, Math.min(seekEnd - 0.1, clamped));
+                    }
+                }
+                bgmAudio.currentTime = clamped;
+                return true;
+            } catch (err) {
+                console.warn('[Audio] commitSeekTime failed:', err);
+                return false;
             }
-            if (trackBlobCache.has(rawSrc)) {
-                return Promise.resolve(trackBlobCache.get(rawSrc));
-            }
-            if (trackFetchPromises.has(rawSrc)) {
-                return trackFetchPromises.get(rawSrc);
-            }
-            const p = fetch(rawSrc, { cache: 'force-cache' })
-                .then((res) => {
-                    if (!res.ok) throw new Error('HTTP ' + res.status);
-                    return res.blob();
-                })
-                .then((blob) => {
-                    const blobUrl = URL.createObjectURL(blob);
-                    trackBlobCache.set(rawSrc, blobUrl);
-                    trackFetchPromises.delete(rawSrc);
-                    return blobUrl;
-                })
-                .catch(() => {
-                    trackFetchPromises.delete(rawSrc);
-                    return rawSrc;
-                });
-            trackFetchPromises.set(rawSrc, p);
-            return p;
         }
 
         const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(navigator.userAgent) || window.innerWidth <= 768;
@@ -7690,32 +7719,46 @@
             renderPlaylists();
         }
 
-        // ================= 原生流式音频调度器 (规范 HTML5 Audio 手势起播，零卡顿零带宽浪费) =================
-        function safeExecutePlay() {
+        // ================= 原生流式音频调度器 (手势同步起播 + Range 瞬时寻址，彻底解决移动端卡顿与拖拽失灵) =================
+        function safeExecutePlay(seekTargetOnPlay = null) {
             if (!bgmAudio) return;
-            if (typeof attachBgmAnalyser === 'function') {
+            const mySession = ++playSessionId;
+            userWantsPlayback = true;
+
+            if (!isMobileDevice && typeof attachBgmAnalyser === 'function') {
                 attachBgmAnalyser();
             }
-            if (audioCtx && audioCtx.state === 'suspended') {
+            if (!isMobileDevice && audioCtx && audioCtx.state === 'suspended') {
                 audioCtx.resume().catch(() => {});
             }
+
             const playPromise = bgmAudio.play();
             if (playPromise !== undefined) {
                 playPromise.then(() => {
+                    if (mySession !== playSessionId) return;
+                    audioPrimed = true;
                     isBgmPlaying = true;
+                    // iOS Safari 首次起播时可能把预设的 currentTime 重置回 0，此处二次校准落地
+                    const desiredSec = seekTargetOnPlay !== null ? seekTargetOnPlay : pendingSeekSec;
+                    if (desiredSec !== null && bgmAudio.readyState >= 1 && Math.abs((bgmAudio.currentTime || 0) - desiredSec) > 1.5) {
+                        commitSeekTime(desiredSec);
+                    }
                     syncMusicUI();
                 }).catch(err => {
-                    if (err.name === 'AbortError') {
+                    if (mySession !== playSessionId) return;
+                    if (err && err.name === 'AbortError') {
                         return;
                     }
                     console.warn('[Audio] play rejected:', err);
                     isBgmPlaying = false;
+                    userWantsPlayback = false;
+                    isBuffering = false;
                     syncMusicUI();
                 });
             }
         }
 
-        // 载入并播放曲目 (优先命中全内存 blob: 缓存，0ms 瞬时起播与瞬时拖拽)
+        // 载入并播放曲目 (直接走原生 HTTP Range 流式播放，不抢占全量带宽，保持手势内同步起播)
         function loadAndPlay(index, autoPlay = true) {
             bgmIndex = (index + bgmPlaylist.length) % bgmPlaylist.length;
             const track = bgmPlaylist[bgmIndex];
@@ -7728,21 +7771,16 @@
             wasPlayingBeforeSeek = false;
             isChangingTrack = true;
 
-            try { bgmAudio.pause(); } catch(e) {}
-
-            const cachedBlob = trackBlobCache.get(track.src);
-            if (cachedBlob) {
-                bgmAudio.src = cachedBlob;
-            } else {
+            const currentAttrSrc = bgmAudio.getAttribute('src') || '';
+            if (currentAttrSrc !== track.src) {
+                try { bgmAudio.pause(); } catch(e) {}
+                bgmAudio.setAttribute('src', track.src);
                 bgmAudio.src = track.src;
-                prefetchTrackBlob(track.src);
-            }
-            try { bgmAudio.load(); } catch(e) {}
-
-            // 顺带在空闲窗口后台预取下一首，保障切歌体验
-            const nextTrack = bgmPlaylist[(bgmIndex + 1) % bgmPlaylist.length];
-            if (nextTrack && nextTrack.src !== track.src) {
-                setTimeout(() => { prefetchTrackBlob(nextTrack.src); }, 250);
+                if (!autoPlay) {
+                    try { bgmAudio.load(); } catch(e) {}
+                }
+            } else if (bgmAudio.readyState >= 1) {
+                try { bgmAudio.currentTime = 0; } catch(e) {}
             }
 
             // 立即重置视觉进度与时间显示，给用户即刻响应反馈
@@ -7752,38 +7790,40 @@
                 if (heroCurTime) heroCurTime.textContent = '00:00';
                 if (curTimeEl) curTimeEl.textContent = '00:00';
             }
-            syncMusicUI();
 
             if (autoPlay) {
+                isBgmPlaying = true;
+                syncMusicUI();
                 safeExecutePlay();
             } else {
+                userWantsPlayback = false;
                 isBgmPlaying = false;
                 syncMusicUI();
             }
-            setTimeout(() => { isChangingTrack = false; }, 120);
+            setTimeout(() => { isChangingTrack = false; }, 160);
         }
 
-        // 默认初始化装载第 1 首曲目信息，并后台预取首曲至内存 Blob（拖拽寻址零卡顿）
+        // 默认初始化装载第 1 首曲目信息（不再在首屏预取全量 Blob 抢占移动端带宽）
         syncMusicUI();
-        prefetchTrackBlob(bgmPlaylist[0].src).then((blobUrl) => {
-            if (!blobUrl || !String(blobUrl).startsWith('blob:')) return;
-            if (activeTrackRawSrc === bgmPlaylist[0].src && bgmAudio && bgmAudio.paused && pendingSeekSec === null && !String(bgmAudio.src).startsWith('blob:')) {
-                bgmAudio.src = blobUrl;
-                try { bgmAudio.load(); } catch (e) {}
-            }
-        });
 
         // 播放/暂停总控 (精准响应，真实感知音频状态)
         function togglePlayPause() {
             if (!bgmAudio) return;
             if (isBgmPlaying || !bgmAudio.paused) {
+                userWantsPlayback = false;
+                pendingSeekSec = null;
+                isSeekingBuffer = false;
+                wasPlayingBeforeSeek = false;
                 try { bgmAudio.pause(); } catch(e) {}
                 isBgmPlaying = false;
                 syncMusicUI();
             } else {
-                if (!bgmAudio.src || bgmAudio.src === '' || bgmAudio.src === window.location.href) {
+                const track = bgmPlaylist[bgmIndex];
+                if (!bgmAudio.getAttribute('src') || !bgmAudio.src || bgmAudio.src === window.location.href) {
                     loadAndPlay(bgmIndex, true);
                 } else {
+                    isBgmPlaying = true;
+                    syncMusicUI();
                     safeExecutePlay();
                 }
             }
@@ -7904,41 +7944,28 @@
                 const targetSec = Math.max(0, Math.min(Math.max(0, totalDur - 0.25), pct * totalDur));
                 pendingSeekSec = targetSec;
                 isSeekingBuffer = true;
-                seekLockUntil = performance.now() + 2000;
+                seekLockUntil = performance.now() + 2500;
                 wasPlayingBeforeSeek = true;
 
                 // 立即锁定进度条 UI，杜绝松手回跳
                 updateVisuals(targetSec / totalDur);
 
-                // 如果当前曲目的内存 Blob 已预取完毕但尚未切过去，立即切换至 zero-latency blob: 源并在 loadedmetadata 时落地跳转
-                const cachedBlob = trackBlobCache.get(activeTrackRawSrc);
-                if (cachedBlob && !String(bgmAudio.src).startsWith('blob:')) {
-                    isChangingTrack = true;
-                    try { bgmAudio.pause(); } catch (e) {}
-                    bgmAudio.src = cachedBlob;
-                    try { bgmAudio.load(); } catch (e) {}
-                    if (typeof attachBgmAnalyser === 'function') attachBgmAnalyser();
-                    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
-                    isBgmPlaying = true;
-                    syncMusicUI();
-                    return;
+                // 确保音频源已挂载
+                const curTrack = bgmPlaylist[bgmIndex];
+                if (curTrack && (!bgmAudio.getAttribute('src') || !bgmAudio.src || bgmAudio.src === window.location.href)) {
+                    bgmAudio.setAttribute('src', curTrack.src);
+                    bgmAudio.src = curTrack.src;
                 }
 
+                // 若 metadata 已就绪，立刻同步写入 currentTime
                 if (bgmAudio.readyState >= 1) {
-                    try {
-                        bgmAudio.currentTime = targetSec;
-                    } catch(err) {
-                        console.warn('[Audio] seek error:', err);
-                    }
-                    isBgmPlaying = true;
-                    syncMusicUI();
-                    safeExecutePlay();
-                } else {
-                    try { bgmAudio.load(); } catch (e) {}
-                    isBgmPlaying = true;
-                    syncMusicUI();
-                    safeExecutePlay();
+                    commitSeekTime(targetSec);
                 }
+
+                // 在用户松手的同步手势窗口内立刻发起播放（若之前未解锁，可顺带触发加载与起播）
+                isBgmPlaying = true;
+                syncMusicUI();
+                safeExecutePlay(targetSec);
             }
 
             // Pointer Events 与旧版 Touch 回退互斥绑定，彻底消除触屏双触发
@@ -7969,7 +7996,9 @@
                     e.stopPropagation();
                     isDraggingSeek = false;
                     try { bgEl.releasePointerCapture(e.pointerId); } catch(err) {}
-                    const pct = typeof e.clientX === 'number' ? getProgress(e.clientX) : lastDragPct;
+                    // pointercancel 时部分移动端浏览器 clientX 可能为 0，优先沿用最后一次有效拖拽比例
+                    const useEventX = (e.type === 'pointerup' && typeof e.clientX === 'number' && (e.clientX !== 0 || lastDragPct === 0));
+                    const pct = useEventX ? getProgress(e.clientX) : lastDragPct;
                     updateVisuals(pct);
                     applySeek(pct);
                 }
@@ -7990,11 +8019,12 @@
 
                 bgEl.addEventListener('touchmove', (e) => {
                     if (isDraggingSeek && e.touches && e.touches.length > 0) {
+                        e.preventDefault();
                         e.stopPropagation();
                         const pct = getProgress(e.touches[0].clientX);
                         updateVisuals(pct);
                     }
-                }, { passive: true });
+                }, { passive: false });
 
                 bgEl.addEventListener('touchend', (e) => {
                     if (isDraggingSeek) {
@@ -8061,14 +8091,14 @@
                     : getTrackDurationSec(bgmIndex);
                 syncDurationUI(totalDur);
                 if (pendingSeekSec !== null && totalDur > 0) {
-                    const clampTarget = Math.min(pendingSeekSec, Math.max(0, totalDur - 0.25));
-                    try {
-                        bgmAudio.currentTime = clampTarget;
-                    } catch (err) {}
+                    commitSeekTime(pendingSeekSec);
                     isChangingTrack = false;
-                    if (wasPlayingBeforeSeek || isBgmPlaying) {
-                        safeExecutePlay();
-                    }
+                }
+            });
+
+            bgmAudio.addEventListener('loadeddata', () => {
+                if (pendingSeekSec !== null && bgmAudio.readyState >= 1 && Math.abs((bgmAudio.currentTime || 0) - pendingSeekSec) > 1.5) {
+                    commitSeekTime(pendingSeekSec);
                 }
             });
 
@@ -8082,7 +8112,16 @@
             // 播放真正进入吐数据状态
             bgmAudio.addEventListener('playing', () => {
                 isChangingTrack = false;
-                if (pendingSeekSec === null) {
+                isBuffering = false;
+                if (pendingSeekSec !== null) {
+                    if (Math.abs((bgmAudio.currentTime || 0) - pendingSeekSec) > 1.8) {
+                        commitSeekTime(pendingSeekSec);
+                    } else {
+                        pendingSeekSec = null;
+                        isSeekingBuffer = false;
+                        seekLockUntil = 0;
+                    }
+                } else {
                     isSeekingBuffer = false;
                 }
                 wasPlayingBeforeSeek = false;
@@ -8110,7 +8149,7 @@
                 } else {
                     isSeekingBuffer = false;
                 }
-                if ((wasPlayingBeforeSeek || isBgmPlaying) && bgmAudio.paused) {
+                if ((wasPlayingBeforeSeek || userWantsPlayback) && bgmAudio.paused) {
                     safeExecutePlay();
                 }
             });
@@ -8137,16 +8176,22 @@
                     ? bgmAudio.duration
                     : getTrackDurationSec(bgmIndex);
                 syncDurationUI(totalDur);
-                if (pendingSeekSec !== null && bgmAudio.readyState >= 1 && Math.abs((bgmAudio.currentTime || 0) - pendingSeekSec) > 2.0) {
-                    try {
-                        bgmAudio.currentTime = Math.min(pendingSeekSec, Math.max(0, totalDur - 0.25));
-                    } catch (err) {}
+                if (pendingSeekSec !== null && bgmAudio.readyState >= 1 && Math.abs((bgmAudio.currentTime || 0) - pendingSeekSec) > 1.8) {
+                    commitSeekTime(pendingSeekSec);
                 }
                 isChangingTrack = false;
-                if ((wasPlayingBeforeSeek || isBgmPlaying) && bgmAudio.paused) {
+                if ((wasPlayingBeforeSeek || userWantsPlayback) && bgmAudio.paused) {
                     safeExecutePlay();
                 }
                 isBuffering = false;
+            });
+            bgmAudio.addEventListener('error', () => {
+                isBuffering = false;
+                isChangingTrack = false;
+                isSeekingBuffer = false;
+                pendingSeekSec = null;
+                isBgmPlaying = false;
+                syncMusicUI();
             });
             bgmAudio.addEventListener('stalled', () => {
                 if ((wasPlayingBeforeSeek || isBgmPlaying) && bgmAudio.paused) {
@@ -8324,16 +8369,16 @@
                 iconSvg: '<svg viewBox="0 0 24 24" class="cyber-svg-icon" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 3 2 21 22 21 12 3"/><line x1="2" y1="12" x2="22" y2="12" stroke-dasharray="2,2"/></svg>'
             },
             {
-                id: 'sudoku',
-                title: '极意数独',
-                englishTitle: 'Sudoku',
-                subtitle: '9×9 纯粹数理演绎 · 4 大难度梯度',
-                tags: ['数理逻辑', '四阶难度', '笔记演算'],
-                desc: '9×9 纯正逻辑数独解谜。支持简单/普通/困难/专家 4 级难度题库、候选数草稿笔记、即时冲突高亮与单步撤销。',
-                features: ['9×9 纯逻辑题库', '4 级难度阶梯', '草稿笔记模式', '冲突智能检测'],
-                path: 'games/08-数独/index.html',
-                color: '#38bdf8',
-                iconSvg: '<svg viewBox="0 0 24 24" class="cyber-svg-icon" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><circle cx="6" cy="6" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="18" cy="18" r="1.5" fill="currentColor"/></svg>'
+                id: 'neon-snake',
+                title: '霓虹贪吃蛇',
+                englishTitle: 'Neon Snake',
+                subtitle: '20×20 赛博霓虹蛇 · 穿墙/经典双模与金核连击',
+                tags: ['赛博贪吃蛇', '穿墙双模', '连击超频'],
+                desc: '20×20 赛博霓虹光蛇。支持穿墙/经典双模式自由切换、金色超频核限时高分、4 秒连续吃豆 COMBO 倍率与键鼠/滑动双控。',
+                features: ['穿墙 / 经典双模', '金色超频核爆发', '4 秒连击倍率', '双步转向缓冲'],
+                path: 'games/08-霓虹贪吃蛇/index.html',
+                color: '#22d3ee',
+                iconSvg: '<svg viewBox="0 0 24 24" class="cyber-svg-icon" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h8a4 4 0 0 0 0-8H9a3 3 0 0 1 0-6h9"/><circle cx="18" cy="3" r="1.5" fill="currentColor"/><circle cx="19" cy="18" r="2" fill="currentColor"/></svg>'
             },
             {
                 id: 'echo-beats',
