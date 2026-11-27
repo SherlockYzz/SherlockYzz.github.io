@@ -106,11 +106,13 @@
         }
 
         pause() {
+            if (this.isGameOver) return;
             this.isPaused = true;
             document.getElementById('pause-modal')?.classList.add('active');
         }
 
         resume() {
+            if (!this.isPaused) return;
             this.isPaused = false;
             document.getElementById('pause-modal')?.classList.remove('active');
         }
@@ -530,37 +532,8 @@
                 }
             });
 
-            // 触控手柄按钮监听 (移动端/平板/PC - 增强 DAS 自动连发)
-            const bindRepeatBtn = (id, action, initialDelay = 170, repeatInterval = 65) => {
-                const btn = document.getElementById(id);
-                if (!btn) return;
-                let timer = null;
-                let interval = null;
-
-                const stop = () => {
-                    if (timer) clearTimeout(timer);
-                    if (interval) clearInterval(interval);
-                    timer = null;
-                    interval = null;
-                };
-
-                btn.addEventListener('pointerdown', (e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    try { btn.setPointerCapture(e.pointerId); } catch(err) {}
-                    stop();
-                    action();
-                    timer = setTimeout(() => {
-                        interval = setInterval(action, repeatInterval);
-                    }, initialDelay);
-                });
-
-                btn.addEventListener('pointerup', stop);
-                btn.addEventListener('pointercancel', stop);
-                btn.addEventListener('pointerleave', stop);
-            };
-
-            const bindSingleBtn = (id, action) => {
+            // 触控手柄按钮监听 (移动端/平板)
+            const bindBtn = (id, action) => {
                 const btn = document.getElementById(id);
                 if (!btn) return;
                 btn.addEventListener('pointerdown', (e) => {
@@ -570,17 +543,14 @@
                 });
             };
 
-            // 左右移动与慢降：支持长按连续移动 (DAS 工业级体验)
-            bindRepeatBtn('btn-left', () => this.move(-1), 170, 65);
-            bindRepeatBtn('btn-right', () => this.move(1), 170, 65);
-            bindRepeatBtn('btn-down', () => this.softDrop(), 100, 45);
-
-            // 瞬降、旋转、翻转与暂存：单发即刻响应
-            bindSingleBtn('btn-hard-drop', () => this.hardDrop());
-            bindSingleBtn('btn-rotate', () => this.rotate());
-            bindSingleBtn('btn-flip-h', () => this.flipHorizontal());
-            bindSingleBtn('btn-flip-v', () => this.flipVertical());
-            bindSingleBtn('btn-hold', () => this.hold());
+            bindBtn('btn-left', () => this.move(-1));
+            bindBtn('btn-right', () => this.move(1));
+            bindBtn('btn-down', () => this.softDrop());
+            bindBtn('btn-hard-drop', () => this.hardDrop());
+            bindBtn('btn-rotate', () => this.rotate());
+            bindBtn('btn-flip-h', () => this.flipHorizontal());
+            bindBtn('btn-flip-v', () => this.flipVertical());
+            bindBtn('btn-hold', () => this.hold());
 
             // 按钮事件
             document.getElementById('btn-restart')?.addEventListener('click', () => this.restart());
@@ -833,17 +803,8 @@
         }
     }
 
-    function bootLahairo02() {
-        if (!window.LahairoFallingGame && !window.game) {
-            window.LahairoFallingGame = new LahairoFallingGame();
-            window.game = window.LahairoFallingGame;
-        }
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', bootLahairo02);
-    } else {
-        bootLahairo02();
-    }
+    window.addEventListener('DOMContentLoaded', () => {
+        window.LahairoFallingGame = new LahairoFallingGame();
+    });
 
 })(window);

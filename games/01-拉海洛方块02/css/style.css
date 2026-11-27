@@ -121,7 +121,8 @@ body {
     gap: 10px;
     position: relative;
     min-height: 0;
-    margin: 6px 0;
+    overflow: hidden;
+    margin: 4px 0;
 }
 
 .side-panel {
@@ -192,18 +193,15 @@ body {
 
 /* 触控虚拟手柄控制盘 (全端自适应) */
 .gamepad-container {
+    flex-shrink: 0;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 5px;
     background: var(--bg-card);
     backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--border-dim);
     border-radius: 14px;
-    padding: 8px 10px;
-    touch-action: none;
-    user-select: none;
-    -webkit-user-select: none;
+    padding: 6px 8px;
 }
 
 .pad-row {
@@ -215,14 +213,13 @@ body {
 
 .pad-btn {
     flex: 1;
-    min-width: 0;
-    height: 42px;
+    height: 40px;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--border-dim);
     border-radius: 8px;
     color: var(--text-main);
     font-family: var(--font-mono);
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     font-weight: 700;
     display: flex;
     flex-direction: column;
@@ -230,119 +227,27 @@ body {
     align-items: center;
     cursor: pointer;
     transition: all 0.12s ease;
-    white-space: nowrap;
-    touch-action: none;
-}
-.pad-btn span.btn-main {
-    display: inline-flex;
-    align-items: center;
-    gap: 2px;
-    white-space: nowrap;
 }
 .pad-btn span.sub {
     font-size: 0.6rem;
     color: var(--text-dim);
     margin-top: 1px;
-    white-space: nowrap;
 }
 .pad-btn:active {
-    background: rgba(0, 240, 255, 0.25);
+    background: rgba(0, 240, 255, 0.2);
     border-color: var(--cyan);
     transform: scale(0.96);
     color: var(--cyan);
 }
-.pad-btn.accent, .pad-btn.pad-rotate {
-    background: rgba(0, 240, 255, 0.14);
-    border-color: rgba(0, 240, 255, 0.4);
+.pad-btn.accent {
+    background: rgba(0, 240, 255, 0.12);
+    border-color: rgba(0, 240, 255, 0.35);
     color: var(--cyan);
-}
-.pad-btn.action-drop {
-    background: rgba(255, 204, 0, 0.14);
-    border-color: rgba(255, 204, 0, 0.4);
-    color: #ffcc00;
 }
 .pad-btn.action-flip {
     background: rgba(168, 85, 247, 0.12);
     border-color: rgba(168, 85, 247, 0.35);
     color: var(--violet);
-}
-
-/* 移动端与不同屏幕宽窄全覆盖适配 */
-@media (max-width: 500px) {
-    .gamepad-container {
-        padding: 6px 8px;
-        gap: 5px;
-    }
-    .pad-btn {
-        height: 46px;
-        font-size: 0.8rem;
-    }
-    .pad-btn span.sub {
-        display: none !important;
-    }
-    .pad-row-arrows .pad-btn {
-        height: 48px;
-        font-size: 0.85rem;
-    }
-}
-
-@media (max-width: 420px) {
-    .game-viewport {
-        padding: 6px 8px !important;
-    }
-    .brand-title {
-        font-size: 0.82rem !important;
-        letter-spacing: 0.05em !important;
-    }
-    .btn-icon {
-        width: 28px !important;
-        height: 28px !important;
-        font-size: 0.85rem !important;
-    }
-    .play-area {
-        gap: 6px !important;
-    }
-    .side-panel {
-        width: 60px !important;
-        gap: 5px !important;
-    }
-    .panel-box {
-        padding: 4px 2px !important;
-        border-radius: 8px !important;
-    }
-    .panel-title {
-        font-size: 0.62rem !important;
-        letter-spacing: 0.04em !important;
-    }
-    .panel-stat-val {
-        font-size: 0.82rem !important;
-    }
-    .pad-btn {
-        height: 44px !important;
-        font-size: 0.76rem !important;
-    }
-    .pad-row-arrows .pad-btn {
-        height: 46px !important;
-        font-size: 0.8rem !important;
-    }
-}
-
-@media (max-width: 360px) {
-    .game-viewport {
-        padding: 4px 6px !important;
-    }
-    .side-panel {
-        width: 52px !important;
-    }
-    .panel-title {
-        font-size: 0.58rem !important;
-    }
-    .panel-stat-val {
-        font-size: 0.74rem !important;
-    }
-    .pad-btn {
-        font-size: 0.72rem !important;
-    }
 }
 
 .combo-banner {

@@ -1,6 +1,6 @@
 /**
- * 🌉 UniversalBridge - 工业级统一宿主接入桥接器与安全沙盒存储
- * 双向总线通信 (兼容 event / action 双字段广播) + 安全存储 (SafeStorage) + Haptic 触感震动
+ * 🌉 UniversalBridge - 大一统工业级统一宿主接入桥接器与安全沙盒存储
+ * 解决全套 10 款小游戏通信协议并轨、指令别名容错、多源消息防御、可见性自动暂停与分数大一统
  */
 (function(window) {
     'use strict';
@@ -22,10 +22,33 @@
             } catch (e) {
                 this._mem[key] = val;
             }
+        },
+        remove(key) {
+            try {
+                localStorage.removeItem(key);
+            } catch (e) {
+                delete this._mem[key];
+            }
         }
     };
 
-    // 2. 统一宿主事件与数据通信总线
+    // 2. 指令别名映射表
+    const CMD = {
+        PAUSE: 'pause', pause: 'pause',
+        RESUME: 'resume', resume: 'resume',
+        RESTART: 'restart', restart: 'restart',
+        SET_MUTE: 'mute', SET_MUTED: 'mute', setMuted: 'mute',
+        PING: 'ping', ping: 'ping'
+    };
+
+    // 受信任域名白名单 (file:// 的 origin 为 'null')
+    const TRUSTED_ORIGINS = new Set([
+        'null',
+        location.origin,
+        'https://sherlockyzz.github.io'
+    ]);
+
+    // 3. 统一宿主事件与数据通信总线
     class UniversalBridge {
         constructor(gameId = 'mini-game') {
             this.gameId = gameId;
@@ -33,6 +56,7 @@
             this.gameInstance = null;
 
             this._initMessageListener();
+            this._initVisibilityListener();
         }
 
         bindGame(instance) {
@@ -41,41 +65,72 @@
 
         /**
          * 监听宿主 (Electron 桌宠 / 3D 个人空间 / 博客) 下发的控制指令
-         * 兼容 data.action / data.event / data.cmd
+         * 兼容 data.action / data.event / data.cmd 与多字段传参
          */
         _initMessageListener() {
             window.addEventListener('message', (event) => {
-                const data = event.data;
-                if (!data || (data.type !== 'GAME_CONTROL' && data.type !== 'HOST_COMMAND')) return;
+                // 如果处于嵌入状态，只信任来自父窗口的消息
+                if (window.parent && window.parent !== window) {
+                    if (event.source !== window.parent) return;
+                }
+                // Origin 安全校验
+                if (event.origin && !TRUSTED_ORIGINS.has(event.origin)) {
+                    // 若 origin 与当前页面 origin 一致也放行
+                    if (event.origin !== location.origin) return;
+                }
 
-                const command = data.action || data.event || data.cmd;
-                switch (command) {
-                    case 'PAUSE':
-                        if (this.gameInstance?.pause) this.gameInstance.pause();
-                        break;
-                    case 'RESUME':
-                        if (this.gameInstance?.resume) this.gameInstance.resume();
-                        if (this.gameInstance?.audio?.unlock) this.gameInstance.audio.unlock();
-                        break;
-                    case 'RESTART':
-                        if (this.gameInstance?.restart) this.gameInstance.restart();
-                        break;
-                    case 'SET_MUTE':
-                        if (this.gameInstance?.audio) {
-                            this.gameInstance.audio.setMuted(!!data.payload?.muted);
-                        }
-                        break;
+                const data = event.data;
+                if (!data || typeof data !== 'object') return;
+
+                // 目标游戏校验
+                if (data.target && data.target !== this.gameId && data.target !== 'all') return;
+
+                const cmd = CMD[data.action || data.event || data.cmd];
+                const g = this.gameInstance;
+
+                if (cmd === 'mute') {
+                    const isMuted = !!(data.payload?.muted ?? data.value);
+                    (g?.audio || g?.synth)?.setMuted?.(isMuted);
+                } else if (cmd === 'ping') {
+                    this.emit('PONG', { gameId: this.gameId });
+                } else if (cmd && g && typeof g[cmd] === 'function') {
+                    g[cmd]();
+                }
+            });
+        }
+
+        /**
+         * 监听页面可见性切换：切出或切标签页时自动暂停并挂起音频，切回时恢复音频上下文
+         */
+        _initVisibilityListener() {
+            document.addEventListener('visibilitychange', () => {
+                const g = this.gameInstance;
+                if (!g) return;
+                if (document.hidden) {
+                    if (typeof g.pause === 'function') {
+                        g.pause();
+                    }
+                    const audioCtx = (g.audio?.ctx || g.synth?.ctx);
+                    if (audioCtx && typeof audioCtx.suspend === 'function') {
+                        audioCtx.suspend().catch(() => {});
+                    }
+                } else {
+                    const audioCtx = (g.audio?.ctx || g.synth?.ctx);
+                    if (audioCtx && typeof audioCtx.resume === 'function') {
+                        audioCtx.resume().catch(() => {});
+                    }
                 }
             });
         }
 
         /**
          * 广播核心游戏事件到宿主
-         * 同时挂载 event 与 action 两个字段，双协议无缝并轨
+         * 同时带齐 type: 'GAME_EVENT', source: 'mini-game-engine', event 与 action 双字段
          */
         emit(name, payload = {}) {
             const message = {
                 type: 'GAME_EVENT',
+                source: 'mini-game-engine',
                 gameId: this.gameId,
                 event: name,
                 action: name,
@@ -84,11 +139,22 @@
             };
 
             // 1. 发送给父级 Iframe
-            try {
-                if (window.parent && window.parent !== window) {
-                    window.parent.postMessage(message, '*');
+            if (window.parent && window.parent !== window) {
+                let targetOrigin = '*';
+                try {
+                    if (document.referrer) {
+                        targetOrigin = new URL(document.referrer).origin;
+                    }
+                } catch (e) {}
+
+                try {
+                    window.parent.postMessage(message, targetOrigin);
+                } catch (e) {
+                    try {
+                        window.parent.postMessage(message, '*');
+                    } catch (err) {}
                 }
-            } catch (e) {}
+            }
 
             // 2. 本地订阅者回调 (DOM 原生挂载)
             if (this.callbacks[name]) {
@@ -96,10 +162,6 @@
                     try { cb(payload); } catch(err) { console.error(err); }
                 });
             }
-        }
-
-        _notifyHost(name, payload = {}) {
-            this.emit(name, payload);
         }
 
         on(eventName, callback) {
@@ -119,17 +181,29 @@
         }
 
         /**
-         * 分数与存档 API
+         * 统一分数广播与持久化
+         * Payload 汇聚所有历史字段（current, best, score, highScore, currentScore）
          */
         recordScore(score) {
-            const best = this.getHighScore();
-            if (score > best) {
+            const prevHigh = this.getHighScore();
+            const isNewHigh = score > prevHigh;
+            if (isNewHigh) {
                 SafeStorage.set(`${this.gameId}_high_score`, score);
             }
-            const currentBest = Math.max(best, score);
-            this.emit('SCORE_UPDATE', { current: score, best: currentBest });
-            this.emit('ON_SCORE_UPDATE', { current: score, best: currentBest });
-            return currentBest;
+            const best = Math.max(score, prevHigh);
+            const p = {
+                current: score,
+                best: best,
+                score: score,
+                highScore: best,
+                currentScore: score
+            };
+            this.emit('SCORE_UPDATE', p);
+            this.emit('ON_SCORE_UPDATE', p);
+            if (isNewHigh) {
+                this.emit('ON_NEW_HIGH_SCORE', p);
+            }
+            return best;
         }
 
         getHighScore() {

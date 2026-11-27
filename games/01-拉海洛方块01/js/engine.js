@@ -94,12 +94,22 @@
         }
 
         _initDPI() {
-            const rect = this.canvas.getBoundingClientRect();
+            const container = this.canvas.parentElement;
             const dpr = window.devicePixelRatio || 1;
-            const w = rect.width > 0 ? rect.width : (this.canvas.clientWidth || 360);
-            const h = rect.height > 0 ? rect.height : (this.canvas.clientHeight || 360);
-            this.canvas.width = w * dpr;
-            this.canvas.height = h * dpr;
+            let side = 360;
+            if (container) {
+                const cRect = container.getBoundingClientRect();
+                const availW = Math.max(160, cRect.width);
+                const availH = Math.max(160, cRect.height - 4);
+                side = Math.floor(Math.min(availW, availH, 400));
+            } else {
+                const rect = this.canvas.getBoundingClientRect();
+                side = Math.floor(Math.min(rect.width || 360, rect.height || 360, 400));
+            }
+            this.canvas.style.width = `${side}px`;
+            this.canvas.style.height = `${side}px`;
+            this.canvas.width = side * dpr;
+            this.canvas.height = side * dpr;
             this.dpr = dpr;
             this.cellSize = this.canvas.width / this.GRID_SIZE;
             this.dragState.liftOffset = 70 * dpr; // 动态乘以 DPR 防手指遮挡
@@ -196,6 +206,12 @@
             window.addEventListener('resize', () => {
                 this._initDPI();
             });
+            if (typeof ResizeObserver !== 'undefined' && this.canvas.parentElement) {
+                this._boardResizeObserver = new ResizeObserver(() => {
+                    this._initDPI();
+                });
+                this._boardResizeObserver.observe(this.canvas.parentElement);
+            }
 
             // 绑定手牌槽位 Pointerdown
             this.dockElements.forEach((slotEl, idx) => {
@@ -219,6 +235,7 @@
             // 全局移动监听 (带防遮挡与事件穿透隔离)
             window.addEventListener('pointermove', (e) => {
                 if (!this.dragState.active) return;
+                e.preventDefault();
                 e.stopPropagation();
                 const pt = this._getCanvasPoint(e);
                 this.dragState.currX = pt.x;
@@ -708,17 +725,8 @@
     }
 
     // 页面加载自动实例化并暴露到全局
-    function bootLahairo01() {
-        if (!window.LahairoGame && !window.game) {
-            window.LahairoGame = new LahairoGame();
-            window.game = window.LahairoGame;
-        }
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', bootLahairo01);
-    } else {
-        bootLahairo01();
-    }
+    window.addEventListener('DOMContentLoaded', () => {
+        window.LahairoGame = new LahairoGame();
+    });
 
 })(window);

@@ -64,42 +64,40 @@
 
         <!-- 触控虚拟手柄控制盘 (移动端/平板/PC双兼容) -->
         <footer class="gamepad-container">
-            <!-- 顶行：辅助功能区 (暂存 / 镜像 / 倒置 / 瞬降) -->
-            <div class="pad-row pad-row-tools">
+            <div class="pad-row">
                 <button id="btn-hold" class="pad-btn" title="暂存当前块">
-                    <span class="btn-main">📦 暂存</span>
-                    <span class="sub">[C/Shift]</span>
+                    📦 暂存
+                    <span class="sub">[C / Shift]</span>
                 </button>
                 <button id="btn-flip-h" class="pad-btn action-flip" title="左右镜像翻转">
-                    <span class="btn-main">⇋ 镜像</span>
-                    <span class="sub">[Q/F]</span>
+                    ⇋ 左右翻转
+                    <span class="sub">[Q / F]</span>
                 </button>
                 <button id="btn-flip-v" class="pad-btn action-flip" title="上下倒转">
-                    <span class="btn-main">⇅ 倒置</span>
-                    <span class="sub">[E/V]</span>
+                    ⇅ 上下翻转
+                    <span class="sub">[E / V]</span>
                 </button>
-                <button id="btn-hard-drop" class="pad-btn action-drop" title="快速硬下落锁定">
-                    <span class="btn-main">⚡ 瞬降</span>
-                    <span class="sub">[Space]</span>
+                <button id="btn-rotate" class="pad-btn accent" title="旋转 90 度">
+                    ↻ 旋转
+                    <span class="sub">[W / ↑]</span>
                 </button>
             </div>
-            <!-- 底行：主方向与旋转核心盘 (左移 / 慢降 / 右移 / 旋转) -->
-            <div class="pad-row pad-row-arrows">
-                <button id="btn-left" class="pad-btn pad-arrow" title="向左移动 (长按连续移动)">
-                    <span class="btn-main">◀ 左移</span>
-                    <span class="sub">[A/←]</span>
+            <div class="pad-row">
+                <button id="btn-left" class="pad-btn" title="向左移动">
+                    ◀ 左移
+                    <span class="sub">[A / ←]</span>
                 </button>
-                <button id="btn-down" class="pad-btn pad-arrow" title="向下慢降 (长按连续下移)">
-                    <span class="btn-main">▼ 慢降</span>
-                    <span class="sub">[S/↓]</span>
+                <button id="btn-down" class="pad-btn" title="慢速下落">
+                    ▼ 慢降
+                    <span class="sub">[S / ↓]</span>
                 </button>
-                <button id="btn-right" class="pad-btn pad-arrow" title="向右移动 (长按连续移动)">
-                    <span class="btn-main">▶ 右移</span>
-                    <span class="sub">[D/→]</span>
+                <button id="btn-right" class="pad-btn" title="向右移动">
+                    ▶ 右移
+                    <span class="sub">[D / →]</span>
                 </button>
-                <button id="btn-rotate" class="pad-btn accent pad-rotate" title="顺时针旋转 (上键/W)">
-                    <span class="btn-main">↻ 旋转</span>
-                    <span class="sub">[W/↑]</span>
+                <button id="btn-hard-drop" class="pad-btn accent" title="快速硬下落锁定">
+                    ⚡ 瞬降
+                    <span class="sub">[Space]</span>
                 </button>
             </div>
         </footer>
