@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#f7f2e8" />
+  <meta name="description" content="致宗义轩同学的妹妹：Chiikawa 生日立体绘本、森林音乐屋与高考祈愿扭蛋机，祝生日快乐，高考顺利。" />
+  <meta property="og:title" content="Chiikawa 生日绘本 · 致宗义轩同学的妹妹" />
+  <meta property="og:description" content="祝你生日快乐，新岁顺遂，2027 高考顺利。" />
+  <title>Chiikawa 生日绘本 · 致宗义轩同学的妹妹</title>
+  <link rel="icon" type="image/png" href="./assets/chars/chiikawa_idle.png" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <!-- 全屏细碎星尘与纸花画布 -->
+  <canvas id="fx-canvas" class="fx-canvas" aria-hidden="true"></canvas>
+
+  <!-- 和纸绘本主框架 -->
+  <div class="storybook-shell" id="storybook-shell">
+    <!-- 顶部极简装帧工具栏（全线性 SVG 图标，零 Emoji） -->
+    <header class="topbar">
+      <nav class="chapter-pills" role="tablist" aria-label="绘本章节切换">
+        <button type="button" class="pill-btn is-active" role="tab" aria-selected="true" data-goto="0">封面</button>
+        <button type="button" class="pill-btn" role="tab" aria-selected="false" data-goto="1">草坪</button>
+        <button type="button" class="pill-btn" role="tab" aria-selected="false" data-goto="2">音乐屋</button>
+        <button type="button" class="pill-btn" role="tab" aria-selected="false" data-goto="3">扭蛋机</button>
+        <button type="button" class="pill-btn" role="tab" aria-selected="false" data-goto="4">许愿</button>
+      </nav>
+
+      <div class="topbar-actions">
+        <button type="button" class="icon-chip" id="btn-bag" aria-label="打开纪念赏品收纳盒" title="赏品收纳盒">
+          <svg class="ui-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="8" width="18" height="4" rx="1"/>
+            <path d="M12 8v13"/>
+            <path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/>
+            <path d="M7.5 8a2.5 2.5 0 0 1 0-5C10 3 12 8 12 8s2-5 4.5-5a2.5 2.5 0 0 1 0 5"/>
+          </svg>
+          <span class="badge-count" id="bag-count">0/5</span>
+        </button>
+        <button type="button" class="icon-chip" id="btn-sound" aria-label="切换声音" title="声音开关">
+          <svg class="ui-ico" id="sound-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M15.5 8.5a5 5 0 0 1 0 7"/>
+            <path d="M18.5 5.5a9 9 0 0 1 0 13"/>
+          </svg>
+        </button>
+        <button type="button" class="icon-chip" id="btn-motion" aria-label="暂停或恢复动态效果" title="动效开关">
+          <svg class="ui-ico" id="motion-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="6" y="5" width="4" height="14" rx="1"/>
+            <rect x="14" y="5" width="4" height="14" rx="1"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 立体绘本主舞台 -->
+    <main class="book-stage" id="book-stage">
+      <!-- ==================== 第 1 幕：精装绘本封面 ==================== -->
+      <section class="scene scene-cover is-active" data-scene="0" aria-label="第 1 幕 生日绘本封面">
+        <div class="book-page cover-page">
+          <div class="book-frame-line" aria-hidden="true"></div>
+
+          <header class="cover-head" id="cover-title-trigger">
+            <p class="folio-label">CHIIKAWA PICTURE BOOK · EDITION 2027</p>
+            <p class="cover-recipient">致 <span data-bind="recipientName">宗义轩同学的妹妹</span></p>
+            <h1 class="cover-title">生日快乐 · 愿高考顺利</h1>
+            <p class="cover-subtitle">森林立体绘本 · 八音盒音乐屋 · 生日限定扭蛋</p>
+          </header>
+
+          <!-- 水彩立体窗景舞台（真实水彩背景 + 原画角色） -->
+          <div class="cover-window">
+            <div class="cover-window-art">
+              <div class="cover-cast">
+                <button type="button" class="sprite-btn fig-side" data-poke="hachiware" aria-label="点击小八">
+                  <img class="char-img" data-char="hachiware" data-pose="wave" alt="小八" />
+                </button>
+                <button type="button" class="sprite-btn fig-center" data-poke="chiikawa" aria-label="点击吉伊">
+                  <img class="char-img" data-char="chiikawa" data-pose="happy" alt="吉伊" />
+                </button>
+                <button type="button" class="sprite-btn fig-side" data-poke="usagi" aria-label="点击乌萨奇">
+                  <img class="char-img" data-char="usagi" data-pose="happy" alt="乌萨奇" />
+                </button>
+              </div>
+            </div>
+            <p class="cover-caption" id="cover-speech" aria-live="polite">
+              轻触角色可互动。愿新的一岁平安顺遂，明年六月执笔从容。
+            </p>
+          </div>
+
+          <div class="cover-footer">
+            <button type="button" class="btn-editorial" id="btn-open-book">
+              <span>翻开绘本</span>
+              <svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>
+              </svg>
+            </button>
+            <p class="quiet-note">建议开启手机音量，以聆听八音盒伴奏</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== 第 2 幕：水彩草坪野餐 ==================== -->
+      <section class="scene scene-meadow" data-scene="1" aria-label="第 2 幕 晴空草坪野餐">
+        <div class="book-page meadow-page" id="meadow-page">
+          <div class="meadow-backdrop" aria-hidden="true"></div>
+          <div class="meadow-tint" aria-hidden="true"></div>
+
+          <header class="scene-head over-art">
+            <span class="chapter-num">CHAPTER 01</span>
+            <h2>晴空草坪与午后野餐</h2>
+            <p class="scene-lead">点击各位伙伴与四科书签草叶，收集高三文科祝福</p>
+          </header>
+
+          <div class="meadow-content">
+            <!-- 右上角晴空/晚霞切换与书签计数 -->
+            <div class="meadow-meta-bar">
+              <button type="button" class="soft-chip" id="btn-sun">
+                <svg class="ui-ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+                </svg>
+                <span id="sky-mode-text">切换晚霞光影</span>
+              </button>
+              <span class="soft-chip static-chip" id="weed-counter">文科书签 <strong>0</strong> / 4</span>
+            </div>
+
+            <!-- 雅致和纸对白卡 -->
+            <div class="dialogue-card" id="meadow-bubble" aria-live="polite">
+              <span class="dialogue-speaker" id="bubble-speaker">小八</span>
+              <p id="bubble-text">高三复习偶尔会觉得辛苦吧——但总会有办法的！今天先放松一会儿，祝你生日快乐。</p>
+            </div>
+
+            <!-- 原画五角色草坪合影层 -->
+            <div class="meadow-cast">
+              <button type="button" class="meadow-actor" data-meadow-char="rakko" aria-label="点击海獭师傅">
+                <img class="char-img" data-char="rakko" data-pose="idle" alt="海獭师傅" />
+                <span class="actor-label">海獭</span>
+              </button>
+              <button type="button" class="meadow-actor" data-meadow-char="hachiware" aria-label="点击小八">
+                <img class="char-img" data-char="hachiware" data-pose="idle" alt="小八" />
+                <span class="actor-label">小八</span>
+              </button>
+              <button type="button" class="meadow-actor is-lead" data-meadow-char="chiikawa" aria-label="点击吉伊">
+                <img class="char-img" data-char="chiikawa" data-pose="idle" alt="吉伊" />
+                <span class="actor-label">吉伊</span>
+              </button>
+              <button type="button" class="meadow-actor" data-meadow-char="usagi" aria-label="点击乌萨奇">
+                <img class="char-img" data-char="usagi" data-pose="idle" alt="乌萨奇" />
+                <span class="actor-label">乌萨奇</span>
+              </button>
+              <button type="button" class="meadow-actor" data-meadow-char="momonga" aria-label="点击飞鼠">
+                <img class="char-img" data-char="momonga" data-pose="idle" alt="飞鼠" />
+                <span class="actor-label">飞鼠</span>
+              </button>
+            </div>
+
+            <!-- 底部文科四科三叶草书签采集栏 -->
+            <div class="bookmark-row" aria-label="高三文科四科祈愿书签">
+              <button type="button" class="leaf-card" data-weed="0">
+                <span class="leaf-mark" aria-hidden="true"></span>
+                <span class="leaf-name">语文</span>
+                <span class="leaf-sub">笔底春风</span>
+              </button>
+              <button type="button" class="leaf-card" data-weed="1">
+                <span class="leaf-mark" aria-hidden="true"></span>
+                <span class="leaf-name">历史</span>
+                <span class="leaf-sub">史脉清晰</span>
+              </button>
+              <button type="button" class="leaf-card" data-weed="2">
+                <span class="leaf-mark" aria-hidden="true"></span>
+                <span class="leaf-name">政治</span>
+                <span class="leaf-sub">切中肯綮</span>
+              </button>
+              <button type="button" class="leaf-card" data-weed="3">
+                <span class="leaf-mark" aria-hidden="true"></span>
+                <span class="leaf-name">地理</span>
+                <span class="leaf-sub">经纬洞明</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== 第 3 幕：原木森林八音盒音乐屋 ==================== -->
+      <section class="scene scene-music" data-scene="2" aria-label="第 3 幕 森林八音盒音乐屋">
+        <div class="book-page music-page">
+          <div class="music-backdrop" aria-hidden="true"></div>
+
+          <header class="scene-head over-art">
+            <span class="chapter-num">CHAPTER 02</span>
+            <h2>森林木屋 · 八音盒音乐台</h2>
+            <p class="scene-lead">点击木质舞台上的成员开关独立声部，或在下方木琴自由弹奏</p>
+          </header>
+
+          <!-- 曲目与黄铜质感播放控制 -->
+          <div class="music-toolbar">
+            <div class="song-switch" role="group" aria-label="切换乐曲">
+              <button type="button" class="seg-btn is-active" data-song="birthday">生日快乐 · 八音盒</button>
+              <button type="button" class="seg-btn" data-song="meadow">晴空小调 · 舒缓曲</button>
+            </div>
+            <button type="button" class="brass-play-btn" id="btn-music-play">
+              <svg class="ui-ico-sm" id="play-state-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <polygon points="7 5 19 12 7 19 7 5"/>
+              </svg>
+              <span id="music-play-label">开始八音盒合奏</span>
+            </button>
+          </div>
+
+          <!-- 水彩木质舞台角色层（4 位原画角色分管 4 声部） -->
+          <div class="wood-stage" id="pajama-stage">
+            <div class="ensemble-grid">
+              <button type="button" class="ensemble-member is-on" data-track="melody" data-char="chiikawa" aria-pressed="true">
+                <span class="track-pill">主旋律</span>
+                <img class="char-img" data-char="chiikawa" data-pose="idle" alt="吉伊 主旋律" />
+                <span class="track-name">吉伊 · 八音盒</span>
+              </button>
+              <button type="button" class="ensemble-member is-on" data-track="chords" data-char="hachiware" aria-pressed="true">
+                <span class="track-pill">和弦</span>
+                <img class="char-img" data-char="hachiware" data-pose="idle" alt="小八 和弦" />
+                <span class="track-name">小八 · 木吉他</span>
+              </button>
+              <button type="button" class="ensemble-member is-on" data-track="perc" data-char="usagi" aria-pressed="true">
+                <span class="track-pill">节拍</span>
+                <img class="char-img" data-char="usagi" data-pose="idle" alt="乌萨奇 节拍" />
+                <span class="track-name">乌萨奇 · 铃鼓</span>
+              </button>
+              <button type="button" class="ensemble-member is-on" data-track="bass" data-char="shisa" aria-pressed="true">
+                <span class="track-pill">低音</span>
+                <img class="char-img" data-char="shisa" data-pose="idle" alt="狮萨 低音" />
+                <span class="track-name">狮萨 · 暖风铃</span>
+              </button>
+            </div>
+            <div class="music-visualizer" id="music-visualizer" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+
+          <!-- 温润原木手绘 8 音木琴 -->
+          <div class="xylophone-panel">
+            <div class="xylo-header">
+              <span>原木八音阶木琴</span>
+              <button type="button" class="text-action-btn" id="btn-demo-riff">试听生日旋律</button>
+            </div>
+            <div class="xylophone-keys" id="xylophone-keys" role="group" aria-label="8 音木琴">
+              <button type="button" class="xylo-key k1" data-note="C5"><span>1</span><small>Do</small></button>
+              <button type="button" class="xylo-key k2" data-note="D5"><span>2</span><small>Re</small></button>
+              <button type="button" class="xylo-key k3" data-note="E5"><span>3</span><small>Mi</small></button>
+              <button type="button" class="xylo-key k4" data-note="F5"><span>4</span><small>Fa</small></button>
+              <button type="button" class="xylo-key k5" data-note="G5"><span>5</span><small>Sol</small></button>
+              <button type="button" class="xylo-key k6" data-note="A5"><span>6</span><small>La</small></button>
+              <button type="button" class="xylo-key k7" data-note="B5"><span>7</span><small>Si</small></button>
+              <button type="button" class="xylo-key k8" data-note="C6"><span>i</span><small>Do+</small></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== 第 4 幕：日系杂货店风生日限定扭蛋机 ==================== -->
+      <section class="scene scene-gacha" data-scene="3" aria-label="第 4 幕 生日限定扭蛋机">
+        <div class="book-page gacha-page">
+          <div class="book-frame-line" aria-hidden="true"></div>
+
+          <header class="scene-head">
+            <span class="chapter-num">CHAPTER 03</span>
+            <h2>生日限定 · 祈愿纪念扭蛋</h2>
+            <p class="scene-lead">转动黄铜旋钮抽取 5 款限定纪念卡（含可保存的 2027 高考祈愿证）</p>
+          </header>
+
+          <div class="gacha-layout">
+            <!-- 复古陶瓷白 × 雾面玻璃 × 磨砂黄铜扭蛋机 -->
+            <div class="gacha-machine" id="gacha-machine">
+              <div class="gacha-cap-top">
+                <span>BIRTHDAY &amp; 2027 SPECIAL</span>
+              </div>
+
+              <div class="gacha-glass-dome">
+                <div class="glass-sheen" aria-hidden="true"></div>
+                <div class="capsule-pit" id="capsule-pit" aria-hidden="true">
+                  <span class="cap c-rose" style="--x:12%;--y:62%;--r:-16deg;"></span>
+                  <span class="cap c-sky" style="--x:33%;--y:66%;--r:12deg;"></span>
+                  <span class="cap c-butter" style="--x:54%;--y:63%;--r:-8deg;"></span>
+                  <span class="cap c-sage" style="--x:73%;--y:59%;--r:20deg;"></span>
+                  <span class="cap c-linen" style="--x:22%;--y:42%;--r:14deg;"></span>
+                  <span class="cap c-rose" style="--x:45%;--y:43%;--r:-20deg;"></span>
+                  <span class="cap c-sky" style="--x:66%;--y:40%;--r:16deg;"></span>
+                  <span class="cap c-butter" style="--x:36%;--y:24%;--r:-10deg;"></span>
+                </div>
+                <img class="dome-mascot-img char-img" data-char="chiikawa" data-pose="wave" alt="扭蛋机内的吉伊" />
+              </div>
+
+              <div class="gacha-ceramic-body">
+                <div class="gacha-panel">
+                  <span class="brass-slot" aria-hidden="true"></span>
+                  <button type="button" class="brass-knob" id="btn-gacha-spin" aria-label="转动黄铜旋钮抽取扭蛋">
+                    <span class="brass-handle"></span>
+                  </button>
+                  <div class="gacha-counter-pill" id="gacha-progress-text">0 / 5</div>
+                </div>
+
+                <div class="gacha-chute">
+                  <div class="chute-tray">
+                    <div class="dispensed-capsule" id="dispensed-capsule" aria-hidden="true"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="gacha-footer">
+              <button type="button" class="btn-editorial full-w" id="btn-gacha-cta">
+                <span>转动旋钮 · 抽取生日纪念扭蛋</span>
+              </button>
+
+              <div class="prize-shelf" id="prize-mini-shelf" aria-label="5 款限定赏品图鉴">
+                <button type="button" class="shelf-slot" data-prize-id="sp-cert">
+                  <span class="slot-rank">特赏</span>
+                  <span class="slot-title">祈愿纪念证</span>
+                </button>
+                <button type="button" class="shelf-slot" data-prize-id="a-omikuji">
+                  <span class="slot-rank">一赏</span>
+                  <span class="slot-title">文科御守签</span>
+                </button>
+                <button type="button" class="shelf-slot" data-prize-id="b-polaroid">
+                  <span class="slot-rank">二赏</span>
+                  <span class="slot-title">森野拍立得</span>
+                </button>
+                <button type="button" class="shelf-slot" data-prize-id="c-charm">
+                  <span class="slot-rank">三赏</span>
+                  <span class="slot-title">小八书签</span>
+                </button>
+                <button type="button" class="shelf-slot" data-prize-id="d-award">
+                  <span class="slot-rank">四赏</span>
+                  <span class="slot-title">课间小憩券</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== 第 5 幕：靛蓝水彩星空许愿与手写信 ==================== -->
+      <section class="scene scene-wish" data-scene="4" aria-label="第 5 幕 星空许愿与生日信笺">
+        <div class="book-page wish-page" id="wish-page">
+          <div class="wish-backdrop" aria-hidden="true"></div>
+
+          <header class="scene-head wish-head over-art">
+            <span class="chapter-num num-night">FINALE</span>
+            <h2>星夜许愿 · 吹灭生日烛火</h2>
+            <p class="scene-lead" id="wish-status-text">闭上眼睛许个愿望，随后轻轻吹灭蜡烛吧</p>
+          </header>
+
+          <div class="cake-stage" id="cake-stage">
+            <div class="cake-watchers">
+              <img class="watcher-img char-img" data-char="hachiware" data-pose="happy" alt="小八" />
+              <img class="watcher-img is-center char-img" data-char="chiikawa" data-pose="cheer" alt="吉伊" />
+              <img class="watcher-img char-img" data-char="usagi" data-pose="cheer" alt="乌萨奇" />
+            </div>
+
+            <div class="cake-wrap" id="cake-wrap">
+              <div class="candles-row" id="candles-row">
+                <div class="candle c-left">
+                  <span class="flame"></span>
+                  <span class="smoke"></span>
+                  <span class="wax"></span>
+                </div>
+                <div class="candle c-mid">
+                  <span class="flame"></span>
+                  <span class="smoke"></span>
+                  <span class="wax"></span>
+                </div>
+                <div class="candle c-right">
+                  <span class="flame"></span>
+                  <span class="smoke"></span>
+                  <span class="wax"></span>
+                </div>
+              </div>
+              <div class="cake-svg-slot" id="cake-svg-slot"></div>
+            </div>
+
+            <div class="blow-meter-wrap" id="blow-meter-wrap">
+              <div class="blow-meter-track">
+                <div class="blow-meter-fill" id="blow-meter-fill"></div>
+              </div>
+              <span class="blow-meter-label" id="blow-meter-label">可长按下方按钮，或开启麦克风轻轻一吹</span>
+            </div>
+
+            <div class="wish-controls" id="wish-controls">
+              <button type="button" class="wish-btn wish-btn-hold" id="btn-hold-blow">
+                长按吹灭蜡烛
+              </button>
+              <button type="button" class="wish-btn wish-btn-mic" id="btn-mic-blow">
+                开启麦克风吹气
+              </button>
+            </div>
+          </div>
+
+          <!-- 吹灭后展开的典雅特种纸信笺 -->
+          <article class="final-letter" id="final-letter" hidden>
+            <div class="letter-seal" aria-hidden="true">2027<br/>金榜题名</div>
+            <h3 class="letter-heading">致 <span data-bind="recipientName">宗义轩同学的妹妹</span>：</h3>
+            <div class="letter-body" id="letter-body"></div>
+            <footer class="letter-footer">
+              <p class="letter-sign" data-bind="senderSign">—— 哥哥的舍友 敬祝</p>
+              <div class="letter-actions">
+                <button type="button" class="btn-editorial sm" id="btn-open-cert-direct">保存高考祈愿纪念证</button>
+                <button type="button" class="btn-ghost sm" id="btn-relight">重燃蜡烛</button>
+              </div>
+            </footer>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <!-- 底部翻页栏 -->
+    <footer class="book-footer" aria-label="绘本翻页导航">
+      <button type="button" class="nav-btn" id="btn-prev" disabled>上一页</button>
+      <div class="page-indicator" id="page-indicator" aria-live="polite">01 / 05</div>
+      <button type="button" class="nav-btn nav-btn-next" id="btn-next">下一页</button>
+    </footer>
+  </div>
+
+  <!-- ==================== Modal 1：扭蛋开奖与赏品详情 ==================== -->
+  <dialog id="prize-dialog" class="chiikawa-dialog" closedby="any" aria-labelledby="prize-dialog-title">
+    <div class="dialog-card">
+      <button type="button" class="dialog-close-x" data-close-dialog="prize-dialog" aria-label="关闭弹窗">×</button>
+      <div class="prize-rank-pill" id="prize-rank-pill">特赏</div>
+      <h1 id="prize-dialog-title" class="dialog-title">2027 高考祈愿纪念证</h1>
+      <div class="prize-visual" id="prize-visual"></div>
+      <p class="prize-desc" id="prize-desc"></p>
+      <div class="prize-extra" id="prize-extra"></div>
+      <div class="dialog-btn-row" id="prize-dialog-actions">
+        <button type="button" class="btn-editorial sm" data-close-dialog="prize-dialog" autofocus>收好</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ==================== Modal 2：我的赏品收纳盒 ==================== -->
+  <dialog id="bag-dialog" class="chiikawa-dialog" closedby="any" aria-labelledby="bag-dialog-title">
+    <div class="dialog-card">
+      <button type="button" class="dialog-close-x" data-close-dialog="bag-dialog" aria-label="关闭收纳盒">×</button>
+      <h1 id="bag-dialog-title" class="dialog-title">生日纪念赏品收纳盒</h1>
+      <p class="dialog-sub">点击已解锁的赏品可再次查看，或导出高清图片保存到手机相册。</p>
+      <div class="bag-grid" id="bag-grid"></div>
+      <div class="dialog-btn-row">
+        <button type="button" class="btn-editorial sm" data-close-dialog="bag-dialog" autofocus>返回绘本</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ==================== Modal 3：高清纪念卡导出预览 ==================== -->
+  <dialog id="card-dialog" class="chiikawa-dialog" closedby="any" aria-labelledby="card-dialog-title">
+    <div class="dialog-card">
+      <button type="button" class="dialog-close-x" data-close-dialog="card-dialog" aria-label="关闭预览">×</button>
+      <h1 id="card-dialog-title" class="dialog-title">纪念卡片已生成</h1>
+      <p class="dialog-sub">点击下方按钮下载，或在手机端直接长按图片保存至相册。</p>
+      <div class="generated-img-wrap">
+        <img id="generated-card-img" alt="Chiikawa 生日与高考祈愿纪念卡" />
+      </div>
+      <div class="dialog-btn-row">
+        <a id="btn-download-card" class="btn-editorial sm" download="chiikawa-birthday-2027.png" href="#">保存高清图片</a>
+        <button type="button" class="btn-ghost sm" data-close-dialog="card-dialog">关闭</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ==================== Modal 4：快捷称呼定制（连续轻点封面标题 3 次开启） ==================== -->
+  <dialog id="custom-dialog" class="chiikawa-dialog" closedby="any" aria-labelledby="custom-dialog-title">
+    <div class="dialog-card">
+      <button type="button" class="dialog-close-x" data-close-dialog="custom-dialog" aria-label="关闭定制面板">×</button>
+      <h1 id="custom-dialog-title" class="dialog-title">称呼与落款微调</h1>
+      <p class="dialog-sub">保存后会自动更新全书与纪念卡，并生成带参数的专属链接。</p>
+      <form id="custom-form" class="custom-form">
+        <label class="field-label">
+          <span>收礼人称呼</span>
+          <input type="text" id="input-name" maxlength="20" placeholder="例如：宗义轩同学的妹妹" required autofocus />
+        </label>
+        <label class="field-label">
+          <span>落款</span>
+          <input type="text" id="input-sender" maxlength="24" placeholder="例如：哥哥的舍友 敬祝" />
+        </label>
+        <div class="dialog-btn-row">
+          <button type="submit" class="btn-editorial sm">应用并生成链接</button>
+        </div>
+      </form>
+      <p class="custom-link-tip" id="custom-link-tip" hidden></p>
+    </div>
+  </dialog>
+
+  <script src="./characters.js"></script>
+  <script src="./audio.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
